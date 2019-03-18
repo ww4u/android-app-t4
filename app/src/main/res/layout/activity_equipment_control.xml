@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/postion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="当前坐标位置："
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/equipmentStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="当前设备状态："
+        />
+
+    <TextView
+        android:layout_marginLeft="20dp"
+        android:layout_below="@id/equipmentStatus"
+        android:id="@+id/connectStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="当前连接状态："
+        />
+
+    <Button
+        android:id="@+id/open_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/equipmentStatus"
+        android:layout_alignTop="@id/leftControlView"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="40dp"
+        android:text="开" />
+
+    <Button
+        android:id="@+id/close_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/leftControlView"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="40dp"
+        android:text="闭" />
+
+    <Button
+        android:id="@+id/up_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/equipmentStatus"
+        android:layout_alignTop="@id/leftControlView"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="10dp"
+        android:text="上" />
+
+    <Button
+        android:id="@+id/down_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/leftControlView"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="40dp"
+        android:text="下" />
+
+    <Button
+        android:layout_toRightOf="@id/equipmentStatus"
+        android:id="@+id/restore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="回零"/>
+
+    <Button
+        android:id="@+id/set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@id/restore"
+        android:text="设置" />
+
+    <Button
+        android:id="@+id/mark"
+        android:layout_toRightOf="@id/set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="记录该点"/>
+
+    <Button
+        android:id="@+id/stop"
+        android:layout_toRightOf="@id/mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="紧急停止"/>
+
+
+    <com.megarobo.control.view.DiscView
+        android:id="@+id/leftControlView"
+        android:layout_toRightOf="@id/open_btn"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:layout_alignParentBottom="true"
+        />
+
+    <com.megarobo.control.view.DiscView
+        android:id="@+id/rightControlView"
+        android:layout_alignTop="@id/leftControlView"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/up_btn"
+        />
+
+
+</RelativeLayout>

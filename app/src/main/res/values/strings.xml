@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">镁伽机器人</string>
+
+    <string-array name="jazzy_effects">
+        <item>Standard</item>
+        <item>Tablet</item>
+        <item>CubeIn</item>
+        <item>CubeOut</item>
+        <item>FlipVertical</item>
+        <item>FlipHorizontal</item>
+        <item>Stack</item>
+        <item>ZoomIn</item>
+        <item>ZoomOut</item>
+        <item>RotateUp</item>
+        <item>RotateDown</item>
+        <item>Accordion</item>
+    </string-array>
+
+    <string name="back">返回</string>
+    <string name="close">关闭</string>
+    <string name="menu">菜单</string>
+    <string name="exit">退出</string>
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
+</resources>
