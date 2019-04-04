@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelStateEvent;
@@ -46,6 +49,11 @@ public class SocketClientHandler extends SimpleChannelHandler {
 			Bundle bundle = new Bundle();
 			bundle.putString("ip",host);
 			bundle.putString("content",content);
+
+			JSONObject jsonObject = JSON.parseObject(content);
+			if(jsonObject != null){
+				bundle.putString("command",jsonObject.getString("command"));
+			}
 			message.setData(bundle);
 			mHandler.sendMessage(message);
 		}

@@ -54,6 +54,18 @@ public class Meta {
         this.alias = alias;
     }
 
+
+    /**
+     {
+     "command": "meta",
+     "alias": "test",
+     "model": "AABB",
+     "has_hand": "true",
+     "sn": "111111"
+     }
+     * @param jsonStr
+     * @return
+     */
     public static Meta parseMeta(String jsonStr){
         if(!Utils.isNotEmptyString(jsonStr)){
             return null;

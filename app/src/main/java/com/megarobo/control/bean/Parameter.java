@@ -142,8 +142,11 @@ public class Parameter {
         }
 
         JSONArray idleCurrents = result.getJSONArray("idle_currents");
+        if(idleCurrents == null){
+            return null;
+        }
 
-        for (int i=0;i<currents.size();i++){
+        for (int i=0;i<idleCurrents.size();i++){
             parameter.getIdleCurrents()[i] = idleCurrents.getDouble(i);
         }
 

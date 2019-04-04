@@ -9,6 +9,7 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import com.lidroid.xutils.ViewUtils;
@@ -34,13 +35,7 @@ public class SearchActivity extends BaseActivity {
 
 
     @ViewInject(R.id.search_again_btn)
-    private Button searchAgainBtn;
-
-    @ViewInject(R.id.connectBtn1)
-    private Button connectBtn1;
-
-    @ViewInject(R.id.connectBtn2)
-    private Button connectBtn2;
+    private TextView searchAgainBtn;
 
     private Handler handler;
 
@@ -64,6 +59,10 @@ public class SearchActivity extends BaseActivity {
         initHandler();
 
         robotList = new ArrayList<Robot>();
+        robotList.add(Utils.getTestRobot());//测试用，后面要删掉
+        robotList.add(Utils.getTestRobot());//测试用，后面要删掉
+
+
         adapter = new SearchListAdapter(
                 this,robotList
         );
@@ -87,22 +86,7 @@ public class SearchActivity extends BaseActivity {
             }
         });
 
-        connectBtn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SearchActivity.this, EquipmentActivity.class);
-                startActivity(intent);
-            }
-        });
 
-        connectBtn2.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SearchActivity.this, EquipmentActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @SuppressLint("HandlerLeak")
@@ -123,8 +107,10 @@ public class SearchActivity extends BaseActivity {
                             socketManagerMap.put(ip,realClientManager);
                             realClientManager.connectToServer();
                         }else{//第二次回调,从map里面找到对应的socketManager发起消息
-                            socketManagerMap.get(ip).sendMsgToServer(
-                                    CommandHelper.getInstance().queryCommand("meta"));
+                            if(socketManagerMap.get(ip) != null) {
+                                socketManagerMap.get(ip).sendMsgToServer(
+                                        CommandHelper.getInstance().queryCommand("meta"));
+                            }
                         }
                         break;
                     case ConstantUtil.MESSAGE_RECEIVED:

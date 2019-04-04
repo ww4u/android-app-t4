@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -23,6 +24,7 @@ import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.net.ConstantUtil;
 import com.megarobo.control.utils.CommandHelper;
 import com.megarobo.control.R;
+import com.megarobo.control.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,11 +42,11 @@ import java.util.Set;
 public class ConnectActivity extends BaseActivity {
 
 
-    @ViewInject(R.id.connectBtn)
-    private Button connectBtn;
+//    @ViewInject(R.id.connectBtn)
+//    private TextView connectBtn;
 
     @ViewInject(R.id.searchBtn)
-    private Button searchBtn;
+    private TextView searchBtn;
 
     @ViewInject(R.id.robotList)
     private ListView robotListView;
@@ -80,6 +82,9 @@ public class ConnectActivity extends BaseActivity {
         }
 
         robotList = new ArrayList<Robot>();
+        robotList.add(Utils.getTestRobot());//测试用，后面要删掉
+        robotList.add(Utils.getTestRobot());//测试用，后面要删掉
+
         adapter = new ConnectListAdapter(
                 this,robotList
         );
@@ -88,23 +93,33 @@ public class ConnectActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Robot robot = (Robot) parent.getAdapter().getItem(position);
+                if(robot == null){
+                    return;
+                }
                 MegaApplication.ip = robot.getIp();
-            }
-        });
-
-        connectBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //根据列表里面的ip初始化clientManager
-                //MegaApplication.ip = ConstantUtil.HOST;
-//                clientManager = new SocketClientManager(MegaApplication.ip,
-//                        handler,ConstantUtil.CONTROL_PORT);
-//                clientManager.connectToServer();
+                SocketClientManager socketClientManager = socketManagerMap.get(robot.getIp());
+                if(socketClientManager!=null) {
+                    socketClientManager.sendMsgToServer(CommandHelper.getInstance().indicatorCommand(true));
+                }
 
                 Intent intent = new Intent(ConnectActivity.this, EquipmentActivity.class);
                 startActivity(intent);
             }
         });
+
+//        connectBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //根据列表里面的ip初始化clientManager
+//                //MegaApplication.ip = ConstantUtil.HOST;
+////                clientManager = new SocketClientManager(MegaApplication.ip,
+////                        handler,ConstantUtil.CONTROL_PORT);
+////                clientManager.connectToServer();
+//
+//                Intent intent = new Intent(ConnectActivity.this, EquipmentActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
 
@@ -144,8 +159,11 @@ public class ConnectActivity extends BaseActivity {
                             socketManagerMap.put(ip,realClientManager);
                             realClientManager.connectToServer();
                         }else{//第二次回调,从map里面找到对应的socketManager发起消息
-                            socketManagerMap.get(ip).sendMsgToServer(
-                                    CommandHelper.getInstance().queryCommand("meta"));
+                            if(socketManagerMap.get(ip) != null){
+                                socketManagerMap.get(ip).sendMsgToServer(
+                                        CommandHelper.getInstance().queryCommand("meta"));
+                            }
+
                         }
                         break;
                     case ConstantUtil.MESSAGE_RECEIVED:

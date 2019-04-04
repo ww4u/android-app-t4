@@ -4,11 +4,11 @@ public class ConstantUtil {
 
 	public  static final String HOST = "192.168.1.219";
 
-	public static final int CONTROL_PORT = 2345;
+	public static final int CONTROL_PORT = 50000;
 
-	public static final int QUERY_PORT = 2346;
+	public static final int QUERY_PORT = 50001;
 
-	public static final int EMERGENCY_PORT = 2347;
+	public static final int EMERGENCY_PORT = 50002;
 
 	//控制socket连接
 	public static final int SOCKET_CONNECTED = 88;

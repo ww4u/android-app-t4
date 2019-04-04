@@ -2,23 +2,27 @@ package com.megarobo.control.bean;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.megarobo.control.utils.Utils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 遥控机器人---点集合
  */
 public class DataSet {
 
-    private List<Point> pointArrayList;
+    private Map<String,Point> pointMap;
 
-    public List<Point> getPointArrayList() {
-        return pointArrayList;
+    public Map<String, Point> getPointMap() {
+        return pointMap;
     }
 
-    public void setPointArrayList(List<Point> pointArrayList) {
-        this.pointArrayList = pointArrayList;
+    public void setPointMap(Map<String, Point> pointMap) {
+        this.pointMap = pointMap;
     }
 
     public static DataSet parseDataSet(String jsonStr){
@@ -26,14 +30,27 @@ public class DataSet {
             return null;
         }
 
-        List<Point> pointList = JSON.parseArray(jsonStr,Point.class);
-        if(pointList == null || pointList.isEmpty()){
+        JSONObject result = JSON.parseObject(jsonStr);
+        if(result == null || result.isEmpty()){
             return null;
         }
 
-        DataSet dataSet = new DataSet();
-        dataSet.setPointArrayList(pointList);
+        JSONArray jsonArray = result.getJSONArray("points");
 
+        Map<String,Point> pointMap = new HashMap<>();
+        for(int i=0; i<jsonArray.size();i++){
+            JSONObject pointJson = jsonArray.getJSONObject(i);
+            String name  = pointJson.getString("name");
+            Pose pose = Pose.parsePose(pointJson.getString("pose"));
+
+            Point point = new Point();
+            point.setName(name);
+            point.setPose(pose);
+            pointMap.put(name,point);
+        }
+
+        DataSet dataSet = new DataSet();
+        dataSet.setPointMap(pointMap);
         return dataSet;
     }
 }

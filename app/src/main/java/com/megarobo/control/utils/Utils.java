@@ -1,6 +1,8 @@
 package com.megarobo.control.utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -30,21 +32,29 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import android.view.ViewGroup;
 
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.megarobo.control.R;
+import com.megarobo.control.bean.Meta;
+import com.megarobo.control.bean.Robot;
 
 import org.apache.http.conn.util.InetAddressUtils;
 
@@ -55,6 +65,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -82,6 +93,24 @@ public class Utils {
             }
         }
         return false;
+    }
+
+    /**
+     * 只显示后5位
+     * @param input
+     * @return
+     */
+    public static String replaceX(String input){
+        if(input == null || "".equals(input) || input.length()<6){
+            return input;
+        }
+        String lastFiveStr = input.substring(input.length()-5);
+        String subString = input.substring(0,input.length()-5);
+        for(int i=0;i<subString.length();i++){
+            char c = subString.charAt(i);
+            subString = subString.replace(c,'X');
+        }
+        return new StringBuffer(subString).append(lastFiveStr).toString();
     }
         
     
@@ -584,60 +613,60 @@ public class Utils {
 //        }
 //    }
 
-//    public static void customDialog(Context context, String content,
-//                                    final DialogListenner dialogListenner, String...title) {
-//        Activity activity = (Activity) context;
-//        if(activity == null || activity.isFinishing()){
-//            return;
-//        }
-//        final AlertDialog dialog = new AlertDialog.Builder(context).create();
-//        dialog.show();
-//        Window window = dialog.getWindow();
-//        View view = LayoutInflater.from(context).inflate(R.layout.alert_dialog,
-//            null);
-//        window.setContentView(view);
-//        WindowManager windowManager = ((Activity) context).getWindowManager();
-//        Display display = windowManager.getDefaultDisplay();
-//        LayoutParams params = window.getAttributes();
-//        Point point = new Point();
-//        display.getSize(point);
-//        params.width = (int) (point.x * 0.8);
-//        window.setAttributes(params);
-//
-//        TextView titleTextView = (TextView) window.findViewById(R.id.title);
-//        TextView contentTextView = (TextView) window.findViewById(R.id.content);
-//        Button confirm = (Button) window.findViewById(R.id.confirm);
-//        Button cancel = (Button) window.findViewById(R.id.cancel);
-//
-//        titleTextView.setText("温馨提示");
-//        if(title!=null && title.length>0 && isNotEmptyString(title[0])){
-//            if("cancel".equals(title[0])){
-//                cancel.setVisibility(View.GONE);
-//            }else{
-//                titleTextView.setText(title[0]);
-//            }
-//        }
-//        contentTextView.setText(content);
-//        confirm.setText("确认");
-//        confirm.setOnClickListener(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//                if (dialog != null) {
-//                    dialog.dismiss();
-//                }
-//                dialogListenner.confirm();
-//            }
-//        });
-//        cancel.setText("取消");
-//        cancel.setOnClickListener(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//                dialog.cancel();
-//            }
-//        });
-//    }
+    public static void customDialog(Context context, String content,
+                                    final DialogListenner dialogListenner, String...title) {
+        Activity activity = (Activity) context;
+        if(activity == null || activity.isFinishing()){
+            return;
+        }
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        View view = LayoutInflater.from(context).inflate(R.layout.alert_dialog,
+            null);
+        window.setContentView(view);
+        WindowManager windowManager = ((Activity) context).getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        WindowManager.LayoutParams params = window.getAttributes();
+        Point point = new Point();
+        display.getSize(point);
+        params.width = (int) (point.x * 0.8);
+        window.setAttributes(params);
+
+        TextView titleTextView = (TextView) window.findViewById(R.id.title);
+        TextView contentTextView = (TextView) window.findViewById(R.id.content);
+        Button confirm = (Button) window.findViewById(R.id.confirm);
+        Button cancel = (Button) window.findViewById(R.id.cancel);
+
+        titleTextView.setText("温馨提示");
+        if(title!=null && title.length>0 && isNotEmptyString(title[0])){
+            if("cancel".equals(title[0])){
+                cancel.setVisibility(View.GONE);
+            }else{
+                titleTextView.setText(title[0]);
+            }
+        }
+        contentTextView.setText(content);
+        confirm.setText("确认");
+        confirm.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+                dialogListenner.confirm();
+            }
+        });
+        cancel.setText("取消");
+        cancel.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                dialog.cancel();
+            }
+        });
+    }
     
 //    public static void dialDialog(Context context, String content,
 //                                  final DialogListenner dialogListenner) {
@@ -688,76 +717,75 @@ public class Utils {
 //        });
 //    }
 
-//    public static void customInputDialog(Context context, String title,
-//                                         final DialogInputListenner dialogInputListenner) {
-//        if(context == null){
-//            return;
-//        }
-//        final Dialog dialog = new Dialog(context, R.style.input_dialog);
-//        dialog.show();
-//        Window window = dialog.getWindow();
-//        View view = LayoutInflater.from(context).inflate(
-//            R.layout.alert_input_dialog, null);
-//        window.setContentView(view);
-//        WindowManager windowManager = ((Activity) context).getWindowManager();
-//        Display display = windowManager.getDefaultDisplay();
-//        LayoutParams params = window.getAttributes();
-//        Point point = new Point();
-//        display.getSize(point);
-//        params.width = (int) (point.x * 0.8);
-//        window.setAttributes(params);
-//
-//        TextView mainContent = (TextView) window.findViewById(R.id.title);
-//        final EditText input = (EditText) window.findViewById(R.id.input);
-//        input.setFocusable(true);
-//        Button confirm = (Button) window.findViewById(R.id.confirm);
-//        Button cancel = (Button) window.findViewById(R.id.cancel);
-//
-//        mainContent.setText(title);
-//        confirm.setText("确认");
-//        confirm.setOnClickListener(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//                if (dialog != null) {
-//                    dialog.dismiss();
-//                }
-//                dialogInputListenner.confirm(input.getText().toString());
-//            }
-//        });
-//        cancel.setText("取消");
-//        cancel.setOnClickListener(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//                dialog.cancel();
-//            }
-//        });
-//    }
-//
-//
-//
-//    public static Toast toast;
-//
-//    public static void MakeToast(Context context, String message) {
-//        if (context != null) {
-//            LayoutInflater inflate = (LayoutInflater) context
-//                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            View view = inflate.inflate(R.layout.custom_toast, null);
-//            if (Utils.toast == null) {
-//                Utils.toast = new Toast(context);
-//                Utils.toast.setView(view);
-//                Utils.toast.setText(message);
-//                Utils.toast.setDuration(Toast.LENGTH_SHORT);
-//                Utils.toast.setGravity(Gravity.CENTER, 0, 200);
-//            } else {
-//                Utils.toast.setView(view);
-//                Utils.toast.setText(message);
-//            }
-//            Utils.toast.show();
-//        }
-//    }
+    public static void customInputDialog(Context context, String title,
+                                         final DialogInputListenner dialogInputListenner) {
+        if(context == null){
+            return;
+        }
+        final Dialog dialog = new Dialog(context, R.style.input_dialog);
+        dialog.show();
+        Window window = dialog.getWindow();
+        View view = LayoutInflater.from(context).inflate(
+            R.layout.alert_input_dialog, null);
+        window.setContentView(view);
+        WindowManager windowManager = ((Activity) context).getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        WindowManager.LayoutParams params = window.getAttributes();
+        Point point = new Point();
+        display.getSize(point);
+        params.width = (int) (point.x * 0.8);
+        window.setAttributes(params);
+        window.setWindowAnimations(R.anim.push_bottom_in);
 
+        TextView mainContent = (TextView) window.findViewById(R.id.title);
+        final EditText input = (EditText) window.findViewById(R.id.input);
+        input.setFocusable(true);
+        Button confirm = (Button) window.findViewById(R.id.confirm);
+        Button cancel = (Button) window.findViewById(R.id.cancel);
+
+        mainContent.setText(title);
+        confirm.setText("确认");
+        confirm.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+                dialogInputListenner.confirm(input.getText().toString());
+            }
+        });
+        cancel.setText("取消");
+        cancel.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                dialog.cancel();
+            }
+        });
+    }
+
+    /**
+     * 生成对话框
+     *
+     * @param context
+     * @return
+     */
+    public static Dialog showProgressDialog(Context context, String message,
+                                            boolean cancelableOnTouch) {
+        Dialog dialog = new Dialog(context, R.style.loading_dialog);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        View view = LayoutInflater.from(context).inflate(R.layout.ns_loading,
+                null);
+        dialog.setContentView(view);
+        TextView tv = (TextView) view.findViewById(R.id.tipTextView);
+        tv.setText(message);
+        ImageView imageView = (ImageView) view.findViewById(R.id.img);
+        imageView.startAnimation(AnimationUtils.loadAnimation(context,
+                R.anim.loading_animation));
+        return dialog;
+    }
 
     public static RelativeLayout.LayoutParams getLayoutParams() {
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
@@ -1031,6 +1059,50 @@ public class Utils {
             }
             Utils.toast.show();
         }
+    }
+
+    /**
+     * 计算两点连线通过x坐标轴与x形成的夹角
+     * @param px1
+     * @param py1
+     * @param px2
+     * @param py2
+     * @return
+     */
+    public static int getAngle(float px1, float py1, float px2, float py2) {
+        //两点的x、y值
+        float x,y;
+        double hypotenuse;
+        double cos;
+        double angle;
+        double radian;
+        x = px2-px1;
+        y = py2-py1;
+        hypotenuse = Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2));
+        //斜边长度
+        cos = x/hypotenuse;
+        radian = Math.acos(cos);
+        //求出弧度
+        angle = 180/(Math.PI/radian);
+        //用弧度算出角度
+        if (y<0) {
+            angle = -angle+360;
+        } else if ((y == 0) && (x<0)) {
+            angle = 180;
+        }
+        return (int) Math.round(angle);
+    }
+
+    public static Robot getTestRobot(){
+        Robot robot = new Robot();
+        Meta meta = new Meta();
+        meta.setAlias("test");
+        meta.setModel("test");
+        meta.setHasHand(true);
+        meta.setSn("XXX1234");
+        robot.setIp("192.192.192.192");
+        robot.setMeta(meta);
+        return robot;
     }
 
 }

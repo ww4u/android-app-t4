@@ -12,6 +12,7 @@ import com.megarobo.control.MegaApplication;
 import com.megarobo.control.R;
 import com.megarobo.control.activity.EquipmentActivity;
 import com.megarobo.control.bean.Robot;
+import com.megarobo.control.utils.Utils;
 
 import java.util.List;
 
@@ -51,16 +52,9 @@ public class ConnectListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.robotName.setText(robotList.get(position).getMeta().getAlias());
-        final String robotIP = robotList.get(position).getIp();
-
-        viewHolder.robotName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //发起闪光灯请求
-
-            }
-        });
+        String sn = robotList.get(position).getMeta().getSn();
+        viewHolder.robotName.setText(Utils.replaceX(sn));
+        viewHolder.robotName.setText(robotList.get(position).getIp());
 
         return convertView;
     }

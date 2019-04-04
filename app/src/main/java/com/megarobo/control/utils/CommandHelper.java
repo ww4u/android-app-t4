@@ -1,6 +1,7 @@
 package com.megarobo.control.utils;
 
 
+import com.megarobo.control.bean.Point;
 import com.megarobo.control.bean.Pose;
 
 import org.json.JSONException;
@@ -29,9 +30,11 @@ public class CommandHelper {
     }
 
     /**
-     * 1.控制机器
+     * 1.控制机器，上和下点击时，z会有数值，分别时1和-1，z等于0时，说明在xy方向有运动
+     *
+     * step的圆形区域有连续运动操作
      */
-    public JSONObject stepCommand(int angle,double z,boolean continous){
+    public JSONObject stepCommand(double angle,double z,boolean continous){
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("command","step");
@@ -48,12 +51,18 @@ public class CommandHelper {
 
     /**
      * 2.控制机器爪子
+     *
+     * 界面上的开和闭代表爪子，点击开则value = 1，点击闭则value = -1，按住则continous=true，同时joint=4
+     *
+     * 左边的圆形代表腕运动,joint = 3, continous=false, value=角度
+     *
      * @return
      */
-    public JSONObject jointCommand(boolean continous,int joint){
+    public JSONObject jointCommand(int value,boolean continous,int joint){
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("command","joint_step");
+            jsonObject.put("value",value);
             jsonObject.put("continous",continous);
             jsonObject.put("joint",joint);
 
@@ -106,18 +115,18 @@ public class CommandHelper {
      * 5.记录该点
      * @return
      */
-    public JSONObject addPointCommand(String name,Pose pose){
+    public JSONObject addPointCommand(Point point){
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("command","add");
-            jsonObject.put("name",name);
+            jsonObject.put("name",point.getName());
 
             JSONObject poseObj = new JSONObject();
-            poseObj.put("x",pose.getX()+"");
-            poseObj.put("y",pose.getY()+"");
-            poseObj.put("z",pose.getZ()+"");
-            poseObj.put("w",pose.getW()+"");
-            poseObj.put("h",pose.getH()+"");
+            poseObj.put("x",point.getPose().getX()+"");
+            poseObj.put("y",point.getPose().getY()+"");
+            poseObj.put("z",point.getPose().getZ()+"");
+            poseObj.put("w",point.getPose().getW()+"");
+            poseObj.put("h",point.getPose().getH()+"");
 
             jsonObject.put("pose",poseObj);
 

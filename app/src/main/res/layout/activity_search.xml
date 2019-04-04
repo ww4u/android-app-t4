@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/black_dark">
 
 
     <TextView
@@ -10,81 +11,59 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:text="可用机器人"/>
-
-    <LinearLayout
-        android:visibility="gone"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/equipment_layout"
-        android:layout_below="@id/textViewTop"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="100dp"
-        android:layout_marginLeft="100dp"
-        android:orientation="vertical">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="#93D3F0" />
-        <TextView
+        android:textSize="18sp"
+        android:text="搜索机器人"/>
+
+    <RelativeLayout
+        android:layout_below="@id/textViewTop"
+        android:layout_above="@id/search_again_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/black_gray"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginRight="120dp"
+        >
+
+
+        <ListView
+            android:id="@+id/equipment_list"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:divider="@null"
+            android:layout_height="wrap_content">
+
+
+        </ListView>
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="XXXXXXXXX(占用中)"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="#93D3F0" />
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:src="@drawable/yline1"/>
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="XXXXXXXXX(可连接)"/>
-            <Button
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/connectBtn1"
-                android:text="连接"/>
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="#93D3F0" />
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:src="@drawable/yline2"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"/>
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:src="@drawable/yline3"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/yline4"/>
 
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="XXXXXXXXX(可连接)"/>
-            <Button
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/connectBtn2"
-                android:text="连接"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/equipment_list"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-
-    </ListView>
+    </RelativeLayout>
 
 
     <LinearLayout
@@ -100,12 +79,15 @@
             android:text="未发现可用机器人，请确认您的手机和机器人处于同一网络内"/>
     </LinearLayout>
 
-    <Button
+    <TextView
         android:id="@+id/search_again_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
-        android:text="重新搜索"/>
+        android:layout_marginBottom="20dp"
+        android:text="重新扫描"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_search_selector"/>
 </RelativeLayout>

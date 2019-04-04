@@ -2,77 +2,101 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/black_dark"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/back"
+        android:src="@drawable/ico_return"
+        android:scaleType="center"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="40dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:id="@+id/equipment_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:drawablePadding="5dp"
+        android:textSize="18sp"
+        android:text="当前连接设备：AQ_1234567"/>
+
+    <LinearLayout
+        android:layout_below="@id/equipment_name"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/control_toolbar_selector"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="5dp"
+        >
 
         <TextView
+            android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:text="当前连接设备：XXXXXX"/>
+            android:textColor="@color/white"
+            android:text="当前状态："/>
 
 
-        <LinearLayout
+        <TextView
+            android:layout_marginRight="10dp"
+            android:id="@+id/link_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:textColor="@color/blue_status"
+            android:drawableLeft="@drawable/icon_shebei02"
+            android:drawableRight="@drawable/icon_about"
+            android:drawablePadding="5dp"
+            android:text="正常"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="当前连接设备："/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="当前连接设备："/>
-            <ImageView
-                android:id="@+id/info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/info"/>
-
-        </LinearLayout>
-
+        <TextView
+            android:id="@+id/net_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_status"
+            android:drawableLeft="@drawable/icon_lianjie02"
+            android:drawableRight="@drawable/icon_about"
+            android:drawablePadding="5dp"
+            android:text="正常"/>
 
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp"
+        android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center">
 
-        <Button
-            android:layout_weight="1"
+
+        <TextView
             android:id="@+id/switchBtn"
-            android:text="切换设备"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="10dp"
+            android:text="切换设备"
+            android:textColor="@color/white"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:background="@drawable/control_cancel_selector"
             />
 
-        <Button
-            android:layout_weight="1"
+        <TextView
             android:id="@+id/remoteControlBtn"
-
-            android:text="遥控设备"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="40dp"
+            android:layout_marginLeft="20dp"
+            android:text="遥控设备"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@drawable/control_cancel_selector"
             />
     </LinearLayout>
 </RelativeLayout>

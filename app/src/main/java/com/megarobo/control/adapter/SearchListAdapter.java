@@ -12,6 +12,7 @@ import com.megarobo.control.MegaApplication;
 import com.megarobo.control.R;
 import com.megarobo.control.activity.EquipmentActivity;
 import com.megarobo.control.bean.Robot;
+import com.megarobo.control.utils.Utils;
 
 import java.util.List;
 
@@ -52,7 +53,9 @@ public class SearchListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.aliasTextView.setText(robotList.get(position).getMeta().getAlias());
+        String sn = robotList.get(position).getMeta().getSn();
+        viewHolder.aliasTextView.setText(Utils.replaceX(sn));
+        viewHolder.aliasTextView.setText(robotList.get(position).getIp());
         final String robotIP = robotList.get(position).getIp();
         viewHolder.connectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +72,6 @@ public class SearchListAdapter extends BaseAdapter {
 
     class ViewHolder{
         public TextView aliasTextView;
-        public Button connectBtn;
+        public TextView connectBtn;
     }
 }

@@ -3,79 +3,130 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:orientation="horizontal"
-    android:layout_height="match_parent" >
-
-    <ImageView
-        android:id="@+id/logoImage"
-        android:layout_weight="3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+    android:layout_height="match_parent"
+    android:background="@color/black_dark"
+    >
 
     <LinearLayout
-        android:layout_weight="2"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:padding="20dp"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/yline1"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/yline2"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/yline3"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/yline4"/>
+        <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:scaleType="center"
+            android:src="@drawable/img_robot"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
         android:layout_margin="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         >
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:visibility="gone"
-            >
-            <TextView
-                android:layout_margin="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="请选择并连接你的机器人"/>
-            <TextView
-                android:layout_margin="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="XXXXXXXXXXXXXX(占用中)"/>
-            <TextView
-                android:layout_margin="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="XXXXXXXXXXXXXX(可连接)"/>
-            <TextView
-                android:layout_margin="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="XXXXXXXXXXXXXX(可连接)"/>
-        </LinearLayout>
-        <ListView
-            android:id="@+id/robotList"
+
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-
-        </ListView>
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-
-            android:gravity="center"
+            android:background="@drawable/cardbg"
+            android:layout_marginBottom="15dp"
             >
-        <Button
-            android:id="@+id/connectBtn"
-            android:text="连      接"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
-        <Button
+            <ImageView
+                android:id="@+id/ylogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ylogo"/>
+
+            <TextView
+                android:layout_below="@id/ylogo"
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/white"
+                android:text="请选择并连接您的机器人"
+                android:textSize="18sp"/>
+
+            <View
+                android:id="@+id/line"
+                android:layout_below="@id/title"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="1px"
+                android:background="@drawable/line"/>
+
+
+            <ListView
+                android:layout_below="@id/line"
+                android:id="@+id/robotList"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:layout_marginBottom="20dp"
+                >
+
+
+            </ListView>
+        </RelativeLayout>
+
+
+
+        <TextView
             android:id="@+id/searchBtn"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:text="搜索机器人"
+            android:textColor="@color/white"
+            android:gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_search_selector"/>
+
+    </RelativeLayout>
+
     </LinearLayout>
 
 </LinearLayout>

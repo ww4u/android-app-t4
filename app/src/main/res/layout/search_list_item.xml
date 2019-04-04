@@ -2,24 +2,39 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:gravity="center"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+
     android:orientation="horizontal">
     <TextView
         android:id="@+id/arpitem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#202020"
+        android:textColor="@color/white"
         android:text="192.168.1.1"
         android:textSize="20dp"
         android:paddingLeft="20dp"
         />
-    <Button
-        android:layout_margin="10dp"
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="可连接"
+        android:textColor="@color/yellow"/>
+
+    <TextView
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="5dp"
         android:id="@+id/connect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/yellow"
+        android:background="@drawable/btn_connect_selector"
+        android:gravity="center"
         android:text="连 接"
         />
 </LinearLayout>

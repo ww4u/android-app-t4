@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#99000000"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:clickable="true"
+    >
+
+    <ImageView
+        android:id="@+id/mark_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ico_close"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="40dp"/>
+
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="命名："
+            android:textColor="@color/white"
+            android:layout_toLeftOf="@id/name"
+            android:layout_centerInParent="true"/>
+        <EditText
+            android:id="@+id/name"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:background="@drawable/btn_cancel_nor"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/markCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/control_cancel_selector"
+            />
+
+        <TextView
+            android:id="@+id/markConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@drawable/control_confirm_selector"
+            android:layout_alignParentBottom="true"
+            android:text="确定"/>
+    </LinearLayout>
+
+</RelativeLayout>

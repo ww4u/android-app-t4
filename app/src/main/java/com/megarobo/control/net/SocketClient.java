@@ -2,12 +2,15 @@ package com.megarobo.control.net;
 
 import android.os.Handler;
 
+import com.megarobo.control.utils.Logger;
+
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
+import org.jboss.netty.channel.FixedReceiveBufferSizePredictorFactory;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 import org.jboss.netty.handler.codec.string.StringDecoder;
 import org.jboss.netty.handler.codec.string.StringEncoder;
@@ -20,7 +23,7 @@ public class SocketClient {
 	ClientBootstrap bootstrap;
 	ChannelFuture channelFuture = null;
 	Channel ch;
-	
+
 	public SocketClient(){
 		
 	}
@@ -39,15 +42,20 @@ public class SocketClient {
 				return channelPipeline;
 			}
 		});
+		bootstrap.setOption("receiveBufferSizePredictorFactory", new FixedReceiveBufferSizePredictorFactory(65535));
 		bootstrap.setOption("tcpNoDelay", true);
 		bootstrap.setOption("keepAlive", true);
 		bootstrap.setOption("reuseAddress", true);
-		channelFuture = bootstrap.connect(new InetSocketAddress(host,port));
+		if(host != null) {
+			channelFuture = bootstrap.connect(new InetSocketAddress(host, port));
+		}
 		if(channelFuture!=null)
 			ch = channelFuture.getChannel();
+
 	}
 	
 	public boolean sendmsg(String msg){
+		Logger.v("SendMessageToServer",msg);
 		if(ch!=null && ch.isConnected()){
 			ch.write(msg);
 			return true;

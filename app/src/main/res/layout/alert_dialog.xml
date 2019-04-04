@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:background="@drawable/xml_white_corners_bg" android:layout_width="240.0dip" android:layout_height="200dp"
+<LinearLayout android:gravity="center_vertical"
+	android:orientation="vertical"
+	android:background="@drawable/xml_white_corners_bg"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/root">
         
@@ -9,7 +13,7 @@
 	      android:id="@+id/title"
 	      android:layout_width="match_parent"
 	      android:layout_height="wrap_content"
-	      android:textColor="@color/font_color"
+	      android:textColor="@color/white"
 	      android:textSize="@dimen/font_button"
 	      android:gravity="center"/>
      
@@ -18,17 +22,32 @@
 	      android:id="@+id/content"
 	      android:layout_width="match_parent"
 	      android:layout_height="wrap_content"
-	      android:textColor="@color/font_color"
+	      android:textColor="@color/white"
 	      android:textSize="@dimen/font_text"
 	      android:lineSpacingMultiplier="1.3"
 	      android:layout_marginLeft="14dp"
 	      android:layout_marginRight="14dp"
 	      android:gravity="center"/>
      
-    <View android:background="#cccccc" android:layout_width="fill_parent" android:layout_height="1.0px" />
-    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:background="@drawable/xml_bottom_white_corners_bg" >
-        <Button android:id="@+id/cancel" android:layout_width="0.0dip" android:layout_height="48.0dp" android:text="@string/cancel" android:layout_weight="1.0" style="@style/ShowWidgetButton" />
-        <View android:background="#cccccc" android:layout_width="1.0px" android:layout_height="fill_parent" />
-        <Button android:id="@+id/confirm" android:layout_width="0.0dip" android:layout_height="48.0dp" android:text="@string/confirm" android:layout_weight="1.0" style="@style/ShowWidgetButton"/>
+    <View android:background="#cccccc"
+		android:layout_width="fill_parent"
+		android:layout_height="1.0px" />
+    <LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@drawable/xml_bottom_white_corners_bg" >
+        <Button android:id="@+id/cancel"
+			android:layout_width="0.0dip"
+			android:layout_height="48.0dp"
+			android:text="@string/cancel" android:layout_weight="1.0"
+			style="@style/ShowWidgetButton" />
+        <View android:background="#cccccc"
+			android:layout_width="1.0px"
+			android:layout_height="fill_parent" />
+        <Button android:id="@+id/confirm"
+			android:layout_width="0.0dip"
+			android:layout_height="48.0dp"
+			android:text="@string/confirm" android:layout_weight="1.0" style="@style/ShowWidgetButton"/>
     </LinearLayout>
 </LinearLayout>

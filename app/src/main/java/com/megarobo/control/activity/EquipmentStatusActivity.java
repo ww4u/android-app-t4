@@ -1,6 +1,7 @@
 package com.megarobo.control.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.megarobo.control.MegaApplication;
+import com.megarobo.control.bean.Parameter;
 import com.megarobo.control.net.ConstantUtil;
 import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.CommandHelper;
@@ -22,39 +24,49 @@ public class EquipmentStatusActivity extends BaseActivity {
     @ViewInject(R.id.restoreBtn)
     private Button restoreBtn;
 
+    @ViewInject(R.id.refresh)
+    private Button refreshBtn;
+
     private Handler handler;
-    private SocketClientManager queryClient;
     private SocketClientManager controlClient;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = EquipmentStatusActivity.this;
         setContentView(R.layout.activity_equipment_status);
         ViewUtils.inject(this);
 
         initHandler();
-
         controlClient = new SocketClientManager(MegaApplication.ip,
                 handler,ConstantUtil.CONTROL_PORT);
         controlClient.connectToServer();
 
 
-
-        // TODO 获取设备信息，然后进度条转完之后刷新页面数据
-
-        //异步请求设备信息，获取完毕后刷新界面
-//        getEquipmentInfo();
-
+        //发起恢复出厂姿态请求
         restoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("package"));
-                //判断是否连接中
+                Utils.customDialog(mContext, "此操作不可逆", new Utils.DialogListenner() {
+                    @Override
+                    public void confirm() {
 
-//                controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("package"));
-                controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("meta"));
+                    }
+                },"确定将机器恢复出厂姿势吗");
+                if(Utils.isNotEmptyString(MegaApplication.ip)){
+                    controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("package"));
+                }
+            }
+        });
 
-
+        //刷新按钮，重新发起获取机器参数接口请求
+        refreshBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Utils.isNotEmptyString(MegaApplication.ip)) {
+                    controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("parameter"));
+                }
             }
         });
     }
@@ -67,17 +79,19 @@ public class EquipmentStatusActivity extends BaseActivity {
                 super.handleMessage(msg);
                 switch (msg.what){
                     case ConstantUtil.SOCKET_CONNECTED:
-                        String data = (String) msg.obj;
-                        Utils.MakeToast(EquipmentStatusActivity.this,data);
-//                        controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("package"));
-                        controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("meta"));
-//                        controlClient.joinRoom();
+
                         break;
                     case ConstantUtil.MESSAGE_RECEIVED:
                         Bundle bundle = msg.getData();
                         String content = bundle.getString("content");
-                        Utils.MakeToast(EquipmentStatusActivity.this,content);
-//                        Utils.MakeToast(ConnectActivity.this,content);
+                        String command = bundle.getString("command");
+                        if("parameter".equals(command)){
+                            Utils.MakeToast(EquipmentStatusActivity.this,content);
+                            Parameter parameter = Parameter.parseParameter(content);
+                        }else if("package".equals(command)){
+                            Utils.MakeToast(EquipmentStatusActivity.this,"恢复出厂设置成功");
+                        }
+
                         break;
                 }
 
@@ -85,12 +99,5 @@ public class EquipmentStatusActivity extends BaseActivity {
         };
     }
 
-
-
-    private void getEquipmentInfo() {
-        queryClient = new SocketClientManager(ConstantUtil.HOST,handler,ConstantUtil.QUERY_PORT);
-        queryClient.connectToServer();
-        //发送获取设备信息指令
-    }
 
 }
