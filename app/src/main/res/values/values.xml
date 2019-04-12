@@ -41,4 +41,12 @@
     <color name="black_gray">#2B2B2B</color>
     <color name="blue_status">#1EDBB9</color>
 
+    <color name="table_odd_color">#3C3C3C</color>
+    <color name="table_even_color">#2B2B2B</color>
+    <color name="table_divider_color">#4E4E4E</color>
+
+
+
+
+
 </resources>

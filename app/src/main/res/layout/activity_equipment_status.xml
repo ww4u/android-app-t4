@@ -5,39 +5,553 @@
     android:background="@color/black_gray"
     android:orientation="vertical" >
 
-
-    <TextView
+    <ImageView
+        android:id="@+id/back"
+        android:src="@drawable/icon_return"
+        android:scaleType="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/example_text"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="40dp"
-        android:text="机器人坐标系图示"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:padding="5dp"
+        android:layout_alignParentLeft="true"
+        />
 
-    <ImageView
-        android:layout_below="@id/example_text"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        android:src="@drawable/example"/>
+    <TextView
+        android:id="@+id/textViewTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:layout_marginTop="15dp"
+        android:textSize="18sp"
+        android:text="设备状态"/>
+
+    <ScrollView
+        android:layout_marginBottom="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/back"
+        android:layout_marginTop="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tableText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="40dp"
+                android:textSize="16sp"
+                android:text="数据表格:"/>
+
+            <TextView
+                android:id="@+id/imgText"
+                android:layout_alignTop="@id/tableText"
+                android:layout_alignParentRight="true"
+                android:layout_alignLeft="@id/img_example"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_marginRight="40dp"
+                android:textSize="16sp"
+                android:text="机器人坐标系图示:"/>
+
+            <TableLayout
+                android:layout_below="@id/tableText"
+                android:layout_marginLeft="40dp"
+                android:id="@+id/tableLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:divider="@drawable/table_v_divider"
+                android:orientation="vertical"
+                android:showDividers="middle|beginning|end"
+                 >
+
+                <TableRow
+                    android:background="@color/table_odd_color"
+                    android:gravity="center"
+                    android:divider="@drawable/table_h_divider"
+                    android:showDividers="middle|beginning|end"
+                    >
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="32dp"
+                        />
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="CH1" />
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="CH2" />
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="CH3" />
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="CH4" />
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="CH5" />
+                </TableRow>
+
+                <!-- 驱动电流-->
+                <TableRow
+                    android:background="@color/table_even_color"
+                    android:gravity="center"
+                    android:divider="@drawable/table_h_divider"
+                    android:showDividers="middle|beginning|end"
+                    >
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="32dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="驱动电流"
+                        />
+
+                    <TextView
+                        android:id="@+id/driver_current_1"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/driver_current_2"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/driver_current_3"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/driver_current_4"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/driver_current_5"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+                </TableRow>
+
+                <!-- 空闲电流-->
+                <TableRow
+                    android:background="@color/table_odd_color"
+                    android:gravity="center"
+                    android:divider="@drawable/table_h_divider"
+                    android:showDividers="middle|beginning|end"
+                    >
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="32dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="空闲电流"
+                        />
+
+                    <TextView
+                        android:id="@+id/idle_current_1"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/idle_current_2"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/idle_current_3"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/idle_current_4"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/idle_current_5"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+                </TableRow>
+
+                <!-- 细分数-->
+                <TableRow
+                    android:background="@color/table_even_color"
+                    android:gravity="center"
+                    android:divider="@drawable/table_h_divider"
+                    android:showDividers="middle|beginning|end"
+                    >
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="32dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="细分数"
+                        />
+
+                    <TextView
+                        android:id="@+id/segment_1"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/segment_2"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/segment_3"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/segment_4"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/segment_5"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+                </TableRow>
+
+                <!-- 减速比-->
+                <TableRow
+                    android:background="@color/table_odd_color"
+                    android:gravity="center"
+                    android:divider="@drawable/table_h_divider"
+                    android:showDividers="middle|beginning|end"
+                    >
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="32dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="减速比"
+                        />
+
+                    <TextView
+                        android:id="@+id/slow_1"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/slow_2"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/slow_3"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/slow_4"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/slow_5"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="" />
+                </TableRow>
+            </TableLayout>
 
 
-    <Button
+
+            <ImageView
+                android:id="@+id/img_example"
+                android:layout_width="wrap_content"
+                android:layout_alignTop="@id/tableLayout"
+                android:layout_toRightOf="@id/tableLayout"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="15dp"
+                android:layout_alignBottom="@id/tableLayout"
+                android:background="@color/table_odd_color"
+                android:src="@drawable/xyz"/>
+
+
+            <!-- 机械爪光电-->
+            <TextView
+                android:id="@+id/machine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignLeft="@id/tableLayout"
+                android:layout_below="@id/tableLayout"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:text="机械爪光电" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignRight="@id/tableLayout"
+                android:textColor="@color/white"
+                android:layout_below="@id/tableLayout"
+                android:layout_marginTop="10dp"
+                android:text="开" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignLeft="@id/img_example"
+                android:textColor="@color/white"
+                android:layout_below="@id/tableLayout"
+                android:layout_marginTop="10dp"
+                android:text="实时坐标" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignRight="@id/img_example"
+                android:textColor="@color/white"
+                android:layout_below="@id/tableLayout"
+                android:layout_marginTop="10dp"
+                android:text="x,y,z" />
+
+            <!-- 测距传感器-->
+            <TextView
+                android:id="@+id/sensor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignLeft="@id/tableLayout"
+                android:layout_below="@id/machine"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:text="测距传感器" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignRight="@id/tableLayout"
+                android:textColor="@color/white"
+                android:layout_below="@id/machine"
+                android:layout_marginTop="10dp"
+                android:text="开" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignLeft="@id/img_example"
+                android:textColor="@color/white"
+                android:layout_below="@id/machine"
+                android:layout_marginTop="10dp"
+                android:text="机械零位" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignRight="@id/img_example"
+                android:textColor="@color/white"
+                android:layout_below="@id/machine"
+                android:layout_marginTop="10dp"
+                android:text="x,y,z" />
+
+            <!-- 碰撞保护-->
+            <TextView
+                android:id="@+id/collision"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignLeft="@id/tableLayout"
+                android:layout_below="@id/sensor"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:text="碰撞保护" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignRight="@id/tableLayout"
+                android:textColor="@color/white"
+                android:layout_below="@id/sensor"
+                android:layout_marginTop="10dp"
+                android:text="开" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignLeft="@id/img_example"
+                android:textColor="@color/white"
+                android:layout_below="@id/sensor"
+                android:layout_marginTop="10dp"
+                android:text="最大速度" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignRight="@id/img_example"
+                android:textColor="@color/white"
+                android:layout_below="@id/sensor"
+                android:layout_marginTop="10dp"
+                android:text="x,y,z" />
+
+            <!-- tunning节能-->
+            <TextView
+                android:id="@+id/energy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignLeft="@id/tableLayout"
+                android:layout_below="@id/collision"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:text="tunning节能" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignRight="@id/tableLayout"
+                android:textColor="@color/white"
+                android:layout_below="@id/collision"
+                android:layout_marginTop="10dp"
+                android:text="开" />
+
+
+
+            <TextView
+                android:id="@+id/restoreBtn"
+                android:layout_below="@id/energy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@drawable/btn_restore_selector"
+                android:text="恢复出厂姿态"/>
+
+        </RelativeLayout>
+
+
+
+
+    </ScrollView>
+
+
+    <TextView
         android:id="@+id/refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/btn_refresh_selector"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:drawableLeft="@drawable/ico_refresh"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:text="刷新"/>
 
-    <Button
-        android:id="@+id/restoreBtn"
-        android:layout_toRightOf="@id/refresh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="80dp"
-        android:text="恢复出厂姿态"/>
+
 </RelativeLayout>

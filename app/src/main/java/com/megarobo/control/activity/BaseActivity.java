@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.megarobo.control.MegaApplication;
 import com.megarobo.control.R;
 import com.megarobo.control.utils.Utils;
 
@@ -68,6 +69,8 @@ public abstract class BaseActivity extends FragmentActivity {
                 return true;
             }
         });
+
+        MegaApplication.list.add(this);
 
     }
 
@@ -144,7 +147,7 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-
+        MegaApplication.list.remove(this);
     }
 
     class ExitBroadCast extends BroadcastReceiver {

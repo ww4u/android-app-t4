@@ -41,6 +41,7 @@ public class LoadingActivity extends BaseActivity {
 
                 Intent intent = new Intent(LoadingActivity.this, ConnectActivity.class);
                 startActivity(intent);
+                LoadingActivity.this.finish();
             }
         }, 2000);
     }

@@ -27,6 +27,7 @@ dependencies {
     implementation 'com.github.vilyever:AndroidSocketClient:3.0.3'
     implementation files('libs/netty-3.4.0.Final.jar')
     implementation 'com.alibaba:fastjson:1.1.70.android'
+    compileOnly files('libs/layoutlib.jar')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

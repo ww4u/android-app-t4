@@ -1,7 +1,14 @@
 package com.megarobo.control;
 
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
+
+import com.megarobo.control.utils.MyCrashHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MegaApplication extends Application {
@@ -9,10 +16,45 @@ public class MegaApplication extends Application {
 
     //保存当前连接机器的ip，用于在每个页面进行连接用
     public static String ip;
-    
+    private static MegaApplication mContext;
+
+
+    public static List<Activity> list;
+    private boolean mbMainProcess = false;
+
+
+    public MegaApplication() {
+        mContext = this;
+    }
+
+    public static MegaApplication getInstance() {
+        return mContext;
+    }
+
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        list=new ArrayList<Activity>();
+
+        int pid = android.os.Process.myPid();
+//        如果需要判断多进程时候开启
+        ActivityManager activityMgr = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> mProcesses = activityMgr
+                .getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo item : mProcesses) {
+            if (pid == item.pid) {
+                if (item.processName.equalsIgnoreCase(mContext.getPackageName())) {
+                    mbMainProcess = true;
+                    break;
+                }
+            }
+        }
+
+        if (mbMainProcess) {
+            MyCrashHandler.getInstance().register(mContext);
+        }
     }
     
 }

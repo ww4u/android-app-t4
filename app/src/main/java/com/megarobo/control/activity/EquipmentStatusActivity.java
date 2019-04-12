@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -22,10 +24,13 @@ public class EquipmentStatusActivity extends BaseActivity {
 
 
     @ViewInject(R.id.restoreBtn)
-    private Button restoreBtn;
+    private TextView restoreBtn;
 
     @ViewInject(R.id.refresh)
-    private Button refreshBtn;
+    private TextView refreshBtn;
+
+    @ViewInject(R.id.back)
+    private ImageView backImg;
 
     private Handler handler;
     private SocketClientManager controlClient;
