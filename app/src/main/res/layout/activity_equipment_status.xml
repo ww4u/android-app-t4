@@ -11,9 +11,9 @@
         android:scaleType="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:padding="5dp"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:layout_alignParentLeft="true"
         />
 
@@ -164,8 +164,9 @@
 
                     <TextView
                         android:id="@+id/driver_current_4"
-                        android:layout_width="60dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxWidth="60dp"
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:text="" />
@@ -380,6 +381,7 @@
                 android:text="机械爪光电" />
 
             <TextView
+                android:id="@+id/machine_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -400,6 +402,7 @@
                 android:text="实时坐标" />
 
             <TextView
+                android:id="@+id/position_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -422,6 +425,7 @@
                 android:text="测距传感器" />
 
             <TextView
+                android:id="@+id/sensor_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -442,6 +446,7 @@
                 android:text="机械零位" />
 
             <TextView
+                android:id="@+id/zero_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -464,6 +469,7 @@
                 android:text="碰撞保护" />
 
             <TextView
+                android:id="@+id/collision_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -484,6 +490,7 @@
                 android:text="最大速度" />
 
             <TextView
+                android:id="@+id/speed_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -503,9 +510,10 @@
                 android:layout_below="@id/collision"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/white"
-                android:text="tunning节能" />
+                android:text="节能" />
 
             <TextView
+                android:id="@+id/energy_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"

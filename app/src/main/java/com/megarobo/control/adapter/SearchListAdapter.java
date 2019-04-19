@@ -41,7 +41,7 @@ public class SearchListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;
         if(convertView == null){
             viewHolder = new ViewHolder();
@@ -55,7 +55,7 @@ public class SearchListAdapter extends BaseAdapter {
 
         String sn = robotList.get(position).getMeta().getSn();
         viewHolder.aliasTextView.setText(Utils.replaceX(sn));
-        viewHolder.aliasTextView.setText(robotList.get(position).getIp());
+//        viewHolder.aliasTextView.setText(robotList.get(position).getIp());
         final String robotIP = robotList.get(position).getIp();
         viewHolder.connectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +64,7 @@ public class SearchListAdapter extends BaseAdapter {
                 //根据ip发起连接，并跳转到页面
                 Intent intent = new Intent(mContext, EquipmentActivity.class);
                 MegaApplication.ip = robotIP;
+                MegaApplication.name = Utils.replaceX(robotList.get(position).getMeta().getSn());
                 mContext.startActivity(intent);
             }
         });

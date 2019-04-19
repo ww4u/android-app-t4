@@ -1,18 +1,15 @@
 package com.megarobo.control.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -21,6 +18,7 @@ import android.widget.TextView;
 
 import com.megarobo.control.MegaApplication;
 import com.megarobo.control.R;
+import com.megarobo.control.net.NetBroadcastReceiver;
 import com.megarobo.control.utils.Utils;
 
 
@@ -29,7 +27,7 @@ import com.megarobo.control.utils.Utils;
  * 
  * @author huangli
  */
-public abstract class BaseActivity extends FragmentActivity {
+public abstract class BaseActivity extends FragmentActivity implements NetBroadcastReceiver.NetChangeListener {
 
 	protected TextView back;
     private FrameLayout cover;
@@ -37,10 +35,8 @@ public abstract class BaseActivity extends FragmentActivity {
     protected RelativeLayout nonet;
     protected Button refresh;
     private OnClickListener clickListener;
-    
-    private ExitBroadCast exitReceiver = new ExitBroadCast();
 
-    private Animation animation;
+    private NetBroadcastReceiver netBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +68,19 @@ public abstract class BaseActivity extends FragmentActivity {
 
         MegaApplication.list.add(this);
 
+
+        //实例化IntentFilter对象
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        netBroadcastReceiver = new NetBroadcastReceiver(this);
+        //注册广播接收
+        registerReceiver(netBroadcastReceiver, filter);
+
     }
 
+    @Override
+    public void onChange(int networkState) {
+    }
 
     private boolean isNetworkAvailable() {
         return Utils.isNetwokAvailable(this);
@@ -101,11 +108,11 @@ public abstract class BaseActivity extends FragmentActivity {
     	
 		if (b) {
 			cover.setVisibility(View.VISIBLE);
-			progress.startAnimation(animation);
+//			progress.startAnimation(animation);
 			progress.setVisibility(View.VISIBLE);
 		} else {
             cover.setVisibility(View.GONE);
-            progress.clearAnimation();
+//            progress.clearAnimation();
             progress.setVisibility(View.GONE);
 		}
 	}
@@ -146,38 +153,11 @@ public abstract class BaseActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        if (netBroadcastReceiver != null){
+            unregisterReceiver(netBroadcastReceiver);
+        }
         MegaApplication.list.remove(this);
     }
 
-    class ExitBroadCast extends BroadcastReceiver {
-
-        public static final String ACTION = "com.ucredit.exit";
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ACTION)) {
-                finish();
-            }else if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-            	boolean isWifiConnected = false;  
-                boolean isMobileConnected = false;  
-                ConnectivityManager connMgr = (ConnectivityManager)
-                        context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-                if(networkInfo != null)  
-                isWifiConnected = networkInfo.isConnected();  
-                networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-                if(networkInfo != null)  
-                isMobileConnected = networkInfo.isConnected();     
-                if (isWifiConnected||isMobileConnected) {
-                	if (clickListener!=null) {
-    					clickListener.onClick(refresh);
-    				}
-				}
-				
-			}
-        }
-
-    }
 
 }

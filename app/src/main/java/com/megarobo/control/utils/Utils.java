@@ -105,12 +105,12 @@ public class Utils {
             return input;
         }
         String lastFiveStr = input.substring(input.length()-5);
-        String subString = input.substring(0,input.length()-5);
-        for(int i=0;i<subString.length();i++){
-            char c = subString.charAt(i);
-            subString = subString.replace(c,'X');
-        }
-        return new StringBuffer(subString).append(lastFiveStr).toString();
+//        String subString = input.substring(0,input.length()-5);
+//        for(int i=0;i<subString.length();i++){
+//            char c = subString.charAt(i);
+//            subString = subString.replace(c,'X');
+//        }
+        return new StringBuffer("XXXX").append(lastFiveStr).toString();
     }
         
     
@@ -1093,14 +1093,14 @@ public class Utils {
         return (int) Math.round(angle);
     }
 
-    public static Robot getTestRobot(){
+    public static Robot getTestRobot(String ip){
         Robot robot = new Robot();
         Meta meta = new Meta();
         meta.setAlias("test");
         meta.setModel("test");
         meta.setHasHand(true);
         meta.setSn("XXX1234");
-        robot.setIp("192.192.192.192");
+        robot.setIp(ip);
         robot.setMeta(meta);
         return robot;
     }

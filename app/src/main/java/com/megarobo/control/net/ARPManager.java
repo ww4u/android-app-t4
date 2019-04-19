@@ -6,7 +6,13 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.widget.SimpleAdapter;
 
+import com.megarobo.control.MegaApplication;
 import com.megarobo.control.R;
+import com.megarobo.control.event.IPSearchEvent;
+import com.megarobo.control.event.ReadARPMapEvent;
+import com.megarobo.control.utils.Utils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -24,6 +30,8 @@ import java.util.Map;
 public class ARPManager {
 
     private static ARPManager instance;
+
+    public static int count = 0;
 
     private ARPManager(){
 
@@ -67,6 +75,7 @@ public class ARPManager {
                 }
             }
             br.close();
+            EventBus.getDefault().postSticky(new ReadARPMapEvent("read arp completed!"));
         } catch(Exception e) {
         }
         return map;
@@ -78,6 +87,10 @@ public class ARPManager {
     private String myMac;
 
     public void getNetworkInfo(Context context) {
+        if(Utils.isNotEmptyString(MegaApplication.myIp)){
+            discover(MegaApplication.myIp);
+            return;
+        }
         try {
             WifiManager wm = null;
             try {
@@ -89,12 +102,35 @@ public class ARPManager {
                 WifiInfo wifi = wm.getConnectionInfo();
                 if (wifi.getRssi() != -200) {
                     myIp = getWifiIPAddress(wifi.getIpAddress());
+                    MegaApplication.myIp = myIp;
                 }
-                myWifiName = wifi.getSSID(); //获取被连接网络的名称
-                myMac =  wifi.getBSSID(); //获取被连接网络的mac地址
-                String str = "WIFI: "+myWifiName+"\n"+"WiFiIP: "+myIp+"\n"+"MAC: "+myMac;
-//                connectWifiInfo.setText(str);
                 discover(myIp);
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }
+
+    public void getNetworkInfoSearch(Context context) {
+        if(Utils.isNotEmptyString(MegaApplication.myIp)){
+            discover(MegaApplication.myIp);
+            return;
+        }
+        try {
+            WifiManager wm = null;
+            try {
+                wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+            } catch (Exception e) {
+                wm = null;
+            }
+            if (wm != null && wm.isWifiEnabled()) {
+                WifiInfo wifi = wm.getConnectionInfo();
+                if (wifi.getRssi() != -200) {
+                    myIp = getWifiIPAddress(wifi.getIpAddress());
+                    MegaApplication.myIp = myIp;
+                }
+
+                discoverSearch(myIp);
             }
         } catch (Exception e) {
             e.getMessage();
@@ -110,12 +146,29 @@ public class ARPManager {
         String newip = "";
         if (!ip.equals("")) {
             String ipseg = ip.substring(0, ip.lastIndexOf(".")+1);
+            count = 0;
             for (int i=2; i<255; i++) {
                 newip = ipseg+String.valueOf(i);
                 if (newip.equals(ip)) continue;
-                Thread ut = new UDPThread(newip);
+                Thread ut = new UDPThread1(newip);
                 ut.start();
             }
+//            Thread ut = new UDPThread(ipseg);
+//            ut.start();
+        }
+    }
+
+    /**
+     * 发送ARP请求
+     * @param ip
+     */
+    private void discoverSearch(String ip) {
+        String newip = "";
+        if (!ip.equals("")) {
+            String ipseg = ip.substring(0, ip.lastIndexOf(".")+1);
+
+            Thread ut = new UDPThread(ipseg);
+            ut.start();
         }
     }
 

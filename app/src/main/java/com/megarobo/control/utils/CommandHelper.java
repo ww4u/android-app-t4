@@ -56,6 +56,12 @@ public class CommandHelper {
      *
      * 左边的圆形代表腕运动,joint = 3, continous=false, value=角度
      *
+     * 上是90度，前180度，后0度，下270度
+     *
+     * 1代表正向运动，顺时针
+     *
+     * -1代表反向运动，逆时针
+     *
      * @return
      */
     public JSONObject jointCommand(int value,boolean continous,int joint){
@@ -122,11 +128,11 @@ public class CommandHelper {
             jsonObject.put("name",point.getName());
 
             JSONObject poseObj = new JSONObject();
-            poseObj.put("x",point.getPose().getX()+"");
-            poseObj.put("y",point.getPose().getY()+"");
-            poseObj.put("z",point.getPose().getZ()+"");
-            poseObj.put("w",point.getPose().getW()+"");
-            poseObj.put("h",point.getPose().getH()+"");
+            poseObj.put("x",point.getPose().getX());
+            poseObj.put("y",point.getPose().getY());
+            poseObj.put("z",point.getPose().getZ());
+            poseObj.put("w",point.getPose().getW());
+            poseObj.put("h",point.getPose().getH());
 
             jsonObject.put("pose",poseObj);
 

@@ -16,6 +16,8 @@ public class MegaApplication extends Application {
 
     //保存当前连接机器的ip，用于在每个页面进行连接用
     public static String ip;
+    public static String myIp;
+    public static String name;
     private static MegaApplication mContext;
 
 
@@ -38,23 +40,23 @@ public class MegaApplication extends Application {
 
         list=new ArrayList<Activity>();
 
-        int pid = android.os.Process.myPid();
-//        如果需要判断多进程时候开启
-        ActivityManager activityMgr = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> mProcesses = activityMgr
-                .getRunningAppProcesses();
-        for (ActivityManager.RunningAppProcessInfo item : mProcesses) {
-            if (pid == item.pid) {
-                if (item.processName.equalsIgnoreCase(mContext.getPackageName())) {
-                    mbMainProcess = true;
-                    break;
-                }
-            }
-        }
-
-        if (mbMainProcess) {
-            MyCrashHandler.getInstance().register(mContext);
-        }
+//        int pid = android.os.Process.myPid();
+////        如果需要判断多进程时候开启
+//        ActivityManager activityMgr = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+//        List<ActivityManager.RunningAppProcessInfo> mProcesses = activityMgr
+//                .getRunningAppProcesses();
+//        for (ActivityManager.RunningAppProcessInfo item : mProcesses) {
+//            if (pid == item.pid) {
+//                if (item.processName.equalsIgnoreCase(mContext.getPackageName())) {
+//                    mbMainProcess = true;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        if (mbMainProcess) {
+//            MyCrashHandler.getInstance().register(mContext);
+//        }
     }
     
 }

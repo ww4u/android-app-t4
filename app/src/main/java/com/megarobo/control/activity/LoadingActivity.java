@@ -12,9 +12,6 @@ import com.megarobo.control.R;
 public class LoadingActivity extends BaseActivity {
 
 
-    private Handler handler = new Handler();
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -34,7 +31,7 @@ public class LoadingActivity extends BaseActivity {
      * 加载loading画面
      */
     private void playLoading() {
-        handler.postDelayed(new Runnable() {
+        getWindow().getDecorView().postDelayed(new Runnable() {
 
             @Override
             public void run() {
@@ -43,7 +40,7 @@ public class LoadingActivity extends BaseActivity {
                 startActivity(intent);
                 LoadingActivity.this.finish();
             }
-        }, 2000);
+        }, 1500);
     }
 
 

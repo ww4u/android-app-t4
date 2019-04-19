@@ -10,6 +10,13 @@ public class DeviceStatus {
      *
      * 停止，运行中，异常停止
      */
+
+    public static String STOPED = "stoped";
+
+    public static String RUNNING = "running";
+
+    public static String EXCEPTION_STOPED = "exception_stoped";
+
     private String status;
 
     public String getStatus() {

@@ -19,6 +19,7 @@
     <RelativeLayout
         android:layout_below="@id/textViewTop"
         android:layout_above="@id/search_again_btn"
+        android:id="@+id/listview_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/black_gray"
@@ -67,16 +68,28 @@
 
 
     <LinearLayout
+        android:layout_centerHorizontal="true"
         android:visibility="gone"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:id="@+id/no_equipment_layout"
         android:layout_below="@id/textViewTop"
+        android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="未发现可用机器人，请确认您的手机和机器人处于同一网络内"/>
+            android:layout_gravity="center"
+            android:src="@drawable/img_nofind"/>
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="请确认您的手机和机器人处于同一网络内"/>
+
     </LinearLayout>
 
     <TextView

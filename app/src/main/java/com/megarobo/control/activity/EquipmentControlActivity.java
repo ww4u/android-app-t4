@@ -23,18 +23,22 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.custom.widgt.jazzyviewpager.Util;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.megarobo.control.MegaApplication;
 import com.megarobo.control.bean.Config;
 import com.megarobo.control.bean.DataSet;
+import com.megarobo.control.bean.DeviceStatus;
 import com.megarobo.control.bean.LinkStatus;
 import com.megarobo.control.bean.Point;
 import com.megarobo.control.bean.Pose;
 import com.megarobo.control.net.ConstantUtil;
 import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.CommandHelper;
+import com.megarobo.control.utils.NetUtil;
 import com.megarobo.control.utils.Utils;
 import com.megarobo.control.view.DiscView;
 import com.megarobo.control.R;
@@ -101,6 +105,13 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     @ViewInject(R.id.angle)
     private TextView angle;
 
+    @ViewInject(R.id.link_status)
+    private TextView linkStatus;
+
+    @ViewInject(R.id.net_status)
+    private TextView netStatus;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,6 +139,35 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
         receiver = new MyBroadCastReceiver();
         manager.registerReceiver(receiver,filter);
 
+    }
+
+    private void setStatus(DeviceStatus deviceStatus) {
+        if(deviceStatus.getStatus().equals(DeviceStatus.RUNNING)){
+            linkStatus.setText("运动中");
+            linkStatus.setTextColor(getResources().getColor(R.color.blue_status));
+        }else if(deviceStatus.getStatus().equals(DeviceStatus.STOPED)){
+            linkStatus.setText("停止");
+            linkStatus.setTextColor(getResources().getColor(R.color.blue_status));
+        }else if(deviceStatus.getStatus().equals(DeviceStatus.EXCEPTION_STOPED)){
+            linkStatus.setText("异常");
+            linkStatus.setTextColor(getResources().getColor(R.color.orange));
+        }
+
+    }
+
+    @Override
+    public void onChange(int networkState) {
+        super.onChange(networkState);
+        if(networkState == NetUtil.NETWORK_NONE){
+            netStatus.setText("断开");
+            netStatus.setTextColor(getResources().getColor(R.color.orange));
+        }else if(networkState == NetUtil.NETWORK_MOBILE){
+            netStatus.setText("断开");
+            netStatus.setTextColor(getResources().getColor(R.color.orange));
+        }else{
+            netStatus.setText("正常");
+            netStatus.setTextColor(getResources().getColor(R.color.blue_status));
+        }
     }
 
     @Override
@@ -175,6 +215,10 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
             case R.id.back:
                 onBackPressed();
                 break;
+            case R.id.link_status:
+                Intent intent = new Intent(mContext, EquipmentStatusActivity.class);
+                startActivity(intent);
+                break;
 
         }
     }
@@ -189,6 +233,10 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     private void doMarkAction() {
         //点击先弹出页面展示已经保存的点位置
         controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("dataset"));
+        //同时要查询目前该点位置
+        controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
+        point = new Point();
+
         showMarkView(R.layout.control_mark_layout);
         markConfirm = findViewById(R.id.markConfirm);
         markCancel = findViewById(R.id.markCancel);
@@ -209,11 +257,12 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
         markConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.MakeToast(EquipmentControlActivity.this,"确定");
-
-                if(dataSet!=null && dataSet.getPointMap() != null &&
-                        dataSet.getPointMap().containsKey(name.getText().toString())){
-                    controlClient.sendMsgToServer(CommandHelper.getInstance().addPointCommand(point));
+                if(dataSet!=null && dataSet.getPointMap() != null){
+                    if(dataSet.getPointMap().containsKey(name.getText().toString())){
+                        Utils.MakeToast(EquipmentControlActivity.this,"已经存在该名字的点，请重新命名");
+                    }else{
+                        controlClient.sendMsgToServer(CommandHelper.getInstance().addPointCommand(setPointName()));
+                    }
                 }
             }
         });
@@ -277,6 +326,17 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 showSelectDialog();
             }
         });
+        //读取用户设置的信息，速度，步距
+        controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("config"));
+    }
+
+    Config config;
+    private void initSpeed() {
+        if(config != null) {
+            speed.setText(config.getSpeed() + "");
+            stepEdit.setText(config.getStep() + "");
+            jointStepEdit.setText(config.getJointStep() + "");
+        }
     }
 
     private double parseSpeed(String speed){
@@ -372,17 +432,17 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
 
     DataSet dataSet;
     Point point;
+    Pose pose;
     /**
      * TODO 获取用户设置的点
      * @return
      */
-    private Point getPoint() {
-        point = new Point();
-
-        controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
-
-        point.setName("test");
-
+    private Point setPointName() {
+        if(point == null){
+            return null;
+        }
+        point.setName(name.getText().toString());
+        point.setPose(pose);
         return point;
     }
 
@@ -394,6 +454,7 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 super.handleMessage(msg);
                 switch (msg.what){
                     case ConstantUtil.SOCKET_CONNECTED:
+                        controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("device_status"));
                         break;
                     case ConstantUtil.MESSAGE_RECEIVED:
                         processMsg(msg);
@@ -426,22 +487,26 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
         String content = bundle.getString("content");
         String command = bundle.getString("command");
         if("config".equals(command)){
-            Config config = Config.parseConfig(content);
-            Utils.MakeToast(EquipmentControlActivity.this,config.getSpeed()+"");
+            config = Config.parseConfig(content);
+            initSpeed();
         }else if("package".equals(command)){
 
         }else if("link_status".equals(command)){
             LinkStatus linkStatus = LinkStatus.parseLinkStatus(content);
-            Utils.MakeToast(EquipmentControlActivity.this,linkStatus.getStatus()+"");
-        }else if("add".equals(command)){
 
+        }else if("add".equals(command)){
+            Utils.MakeToast(EquipmentControlActivity.this,"记录成功");
+            goneBottomView();
         }else if("dataset".equals(command)){
             dataSet = DataSet.parseDataSet(content);
         }else if("pose".equals(command)){
-            Pose pose = Pose.parsePose(content);
-            point.setPose(pose);
-            //设置界面上的点位置。
-
+            JSONObject result = JSON.parseObject(content);
+            if(result != null || !result.isEmpty()){
+                pose = Pose.parsePose(result.getString("pose"));
+            }
+        }else if("device_status".equals(command)){
+            DeviceStatus deviceStatus = DeviceStatus.parseDeviceStatus(content);
+            setStatus(deviceStatus);
         }
     }
 
@@ -544,6 +609,8 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
         downBtn.setOnTouchListener(this);
         leftControlView.setOnTouchListener(this);
         rightControlView.setOnTouchListener(this);
+
+        linkStatus.setOnClickListener(this);
     }
 
 

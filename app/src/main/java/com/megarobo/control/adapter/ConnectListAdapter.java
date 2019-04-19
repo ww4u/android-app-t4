@@ -54,7 +54,6 @@ public class ConnectListAdapter extends BaseAdapter {
 
         String sn = robotList.get(position).getMeta().getSn();
         viewHolder.robotName.setText(Utils.replaceX(sn));
-        viewHolder.robotName.setText(robotList.get(position).getIp());
 
         return convertView;
     }

@@ -6,6 +6,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.megarobo.control.utils.Utils;
 
+import java.text.DecimalFormat;
+
 /**
  * 设备状态
  */
@@ -34,6 +36,18 @@ public class Parameter {
 
     //碰撞开关
     private boolean collide;
+
+    //机械零位
+    private boolean mechanicalIo;
+
+    //最大末端速度
+    private float maxSpeed;
+
+    //最大关节速度
+    private float maxJointSpeed;
+
+    //位置信息
+    private Pose pose;
 
     public Parameter(){
         currents = new Double[5];
@@ -109,6 +123,38 @@ public class Parameter {
         this.collide = collide;
     }
 
+    public boolean isMechanicalIo() {
+        return mechanicalIo;
+    }
+
+    public void setMechanicalIo(boolean mechanicalIo) {
+        this.mechanicalIo = mechanicalIo;
+    }
+
+    public float getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public void setMaxSpeed(float maxSpeed) {
+        this.maxSpeed = maxSpeed;
+    }
+
+    public float getMaxJointSpeed() {
+        return maxJointSpeed;
+    }
+
+    public void setMaxJointSpeed(float maxJointSpeed) {
+        this.maxJointSpeed = maxJointSpeed;
+    }
+
+    public Pose getPose() {
+        return pose;
+    }
+
+    public void setPose(Pose pose) {
+        this.pose = pose;
+    }
+
     /**
      {
      "currents":[1.0,2.0,3.0,4.0,5.0],
@@ -137,8 +183,9 @@ public class Parameter {
 
         JSONArray currents = result.getJSONArray("currents");
 
+        DecimalFormat df = new DecimalFormat("#.00");
         for (int i=0;i<currents.size();i++){
-            parameter.getCurrents()[i] = currents.getDouble(i);
+            parameter.getCurrents()[i] = Double.valueOf(df.format(currents.getDouble(i)));
         }
 
         JSONArray idleCurrents = result.getJSONArray("idle_currents");
@@ -182,6 +229,18 @@ public class Parameter {
         for (int i=0;i<tunning.size();i++){
             parameter.getTunning()[i] = tunning.getBoolean(i);
         }
+
+        parameter.setMechanicalIo(result.getBooleanValue("mechanical_io"));
+        parameter.setMaxSpeed(result.getFloatValue("max_tcp_speed"));
+        parameter.setMaxJointSpeed(result.getFloatValue("max_joint_speed"));
+
+        Pose pose = new Pose();
+        pose.setH(result.getFloatValue("h"));
+        pose.setW(result.getFloatValue("w"));
+        pose.setX(result.getFloatValue("x"));
+        pose.setY(result.getFloatValue("y"));
+        pose.setZ(result.getFloatValue("z"));
+        parameter.setPose(pose);
 
         return parameter;
     }
