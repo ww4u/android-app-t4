@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
@@ -377,7 +378,6 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
         //记录该点
     }
 
-
     private TextView speed;
     private TextView setConfirm;
     private TextView setCancel;
@@ -573,9 +573,23 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
 
             if(event.getAction() == MotionEvent.ACTION_UP){
                 controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("stop"));
-                controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
+
                 setLeftEnable(true);
                 setRightEnable(true);
+                //由于左边腕快捷键不会一下到位，所以在获取位置信息要等一会儿
+                if(v.getId()==R.id.left_control_up
+                        || v.getId() == R.id.left_control_down
+                        || v.getId() == R.id.left_control_front
+                        || v.getId() == R.id.left_control_back){
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
+                        }
+                    },5000);
+                }else{
+                    controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
+                }
             }
             break;
         }

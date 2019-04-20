@@ -45,7 +45,6 @@ public abstract class BaseActivity extends FragmentActivity implements NetBroadc
         if(this.getResources().getConfiguration().orientation ==Configuration.ORIENTATION_PORTRAIT){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
-
         setContentView(R.layout.activity_base);
         cover =(FrameLayout) findViewById(R.id.cover);
         progress=(ImageView) findViewById(R.id.rotate_progress);
@@ -67,7 +66,6 @@ public abstract class BaseActivity extends FragmentActivity implements NetBroadc
         });
 
         MegaApplication.list.add(this);
-
 
         //实例化IntentFilter对象
         IntentFilter filter = new IntentFilter();
@@ -103,9 +101,7 @@ public abstract class BaseActivity extends FragmentActivity implements NetBroadc
         }
     }
 
-
     protected void setMask(boolean b) {
-    	
 		if (b) {
 			cover.setVisibility(View.VISIBLE);
 //			progress.startAnimation(animation);
@@ -127,11 +123,9 @@ public abstract class BaseActivity extends FragmentActivity implements NetBroadc
         startActivityForResult(intent,requestCode);
     }
 
-
     protected boolean hasBack() {
         return true;
     }
-
 
     protected void onResume() {
         super.onResume();

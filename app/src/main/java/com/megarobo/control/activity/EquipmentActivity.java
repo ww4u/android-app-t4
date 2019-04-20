@@ -49,8 +49,6 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
 
     private Handler handler;
     private SocketClientManager controlClient;
-    private Context mContext;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +56,10 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_equipment);
         ViewUtils.inject(this);
 
-
         backImg.setOnClickListener(this);
         switchBtn.setOnClickListener(this);
         remoteControlBtn.setOnClickListener(this);
         linkStatus.setOnClickListener(this);
-
 
         initHandler();
         controlClient = new SocketClientManager(MegaApplication.ip,
@@ -71,7 +67,6 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
         controlClient.connectToServer();
 
         equipmentName.setText(MegaApplication.name);
-
     }
 
     @SuppressLint("HandlerLeak")

@@ -48,6 +48,7 @@
         <Button android:id="@+id/confirm"
 			android:layout_width="0.0dip"
 			android:layout_height="48.0dp"
-			android:text="@string/confirm" android:layout_weight="1.0" style="@style/ShowWidgetButton"/>
+			android:text="@string/confirm" android:layout_weight="1.0"
+			style="@style/ShowWidgetButton"/>
     </LinearLayout>
 </LinearLayout>

@@ -24,7 +24,6 @@ import com.megarobo.control.R;
 
 public class EquipmentStatusActivity extends BaseActivity implements View.OnClickListener{
 
-
     @ViewInject(R.id.restoreBtn)
     private TextView restoreBtn;
 
@@ -110,7 +109,6 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
         controlClient.connectToServer();
 
         setListener();
-
     }
 
     private void setListener() {
@@ -136,13 +134,11 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
                         String content = bundle.getString("content");
                         String command = bundle.getString("command");
                         if("parameter".equals(command)){
-//                            Utils.MakeToast(EquipmentStatusActivity.this,content);
                             Parameter parameter = Parameter.parseParameter(content);
                             setEquipmentStatus(parameter);
                         }else if("package".equals(command)){
                             Utils.MakeToast(EquipmentStatusActivity.this,"恢复出厂设置成功");
                         }
-
                         break;
                 }
 
@@ -163,11 +159,11 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
         idleCurrent4.setText(parameter.getIdleCurrents()[3].toString());
         idleCurrent5.setText(parameter.getIdleCurrents()[4].toString());
 
-        segment1.setText(parameter.getMicroSteps()[0].toString());
-        segment2.setText(parameter.getMicroSteps()[1].toString());
-        segment3.setText(parameter.getMicroSteps()[2].toString());
-        segment4.setText(parameter.getMicroSteps()[3].toString());
-        segment5.setText(parameter.getMicroSteps()[4].toString());
+        segment1.setText(Math.round(parameter.getMicroSteps()[0])+"");
+        segment2.setText(Math.round(parameter.getMicroSteps()[1])+"");
+        segment3.setText(Math.round(parameter.getMicroSteps()[2])+"");
+        segment4.setText(Math.round(parameter.getMicroSteps()[3])+"");
+        segment5.setText(Math.round(parameter.getMicroSteps()[4])+"");
 
         slow1.setText(parameter.getSlowRatio()[0].toString());
         slow2.setText(parameter.getSlowRatio()[1].toString());
@@ -210,12 +206,11 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
                 Utils.customDialog(mContext, "此操作不可逆", new Utils.DialogListenner() {
                     @Override
                     public void confirm() {
-
+                        if(Utils.isNotEmptyString(MegaApplication.ip)){
+                            controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("package"));
+                        }
                     }
-                },"确定将机器恢复出厂姿势吗");
-                if(Utils.isNotEmptyString(MegaApplication.ip)){
-                    controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("package"));
-                }
+                },"确定将机器恢复出厂姿态吗");
                 break;
             case R.id.back:
                 onBackPressed();

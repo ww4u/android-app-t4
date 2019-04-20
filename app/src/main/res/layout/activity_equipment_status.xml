@@ -135,7 +135,7 @@
                         android:layout_height="32dp"
                         android:gravity="center"
                         android:textColor="@color/white"
-                        android:text="驱动电流"
+                        android:text="驱动电流(A)"
                         />
 
                     <TextView
@@ -193,7 +193,7 @@
                         android:layout_height="32dp"
                         android:gravity="center"
                         android:textColor="@color/white"
-                        android:text="空闲电流"
+                        android:text="空闲电流(A)"
                         />
 
                     <TextView
