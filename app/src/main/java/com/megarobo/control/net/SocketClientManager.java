@@ -83,7 +83,7 @@ public class SocketClientManager {
 	
 	public void sendMsgToServer(JSONObject jsonObject){
 		try {
-    	    if(!mQueryClient.sendmsg(jsonObject.toString()+"#")){
+    	    if(mQueryClient!=null && !mQueryClient.sendmsg(jsonObject.toString()+"#")){
     	    	connectToServer();
     	    	Logger.v("SendMessageToServer","Error connect,channel is closed");
     	    }

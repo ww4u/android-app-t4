@@ -37,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:digits="@string/alphabet_and_number"
             android:text=""
             android:textColor="@color/white"
             android:background="@drawable/btn_cancel_nor"

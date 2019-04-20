@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.InputType;
+import android.text.Spanned;
+import android.text.method.DigitsKeyListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
@@ -369,6 +372,7 @@ public class EquipmentControlActivity1 extends BaseActivity implements View.OnCl
         markCancel = findViewById(R.id.markCancel);
         markClose = findViewById(R.id.mark_close);
         name = findViewById(R.id.name);
+
         markClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -468,10 +472,22 @@ public class EquipmentControlActivity1 extends BaseActivity implements View.OnCl
     Config config;
     private void initSpeed() {
         if(config != null) {
-            speed.setText(config.getSpeed() + "");
-            stepEdit.setText(config.getStep() + "");
-            jointStepEdit.setText(config.getJointStep() + "");
+            speed.setText(config.getSpeed() * 100 + "%");
+            speedWhich = getSpeedwhich(config.getSpeed() * 100);
+            stepEdit.setText(config.getStep() * 100 + "%");
+            jointStepEdit.setText(config.getJointStep() * 100 + "%");
         }
+    }
+
+    private int getSpeedwhich(double speedPercent){
+        if(20 == speedPercent){
+            return 0;
+        }else if(50 == speedPercent){
+            return 1;
+        }else if(100 == speedPercent){
+            return 2;
+        }
+        return 2;
     }
 
     private double parseSpeed(String speed){

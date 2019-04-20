@@ -4,8 +4,13 @@ package com.megarobo.control;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
+import android.os.SystemClock;
 
+import com.megarobo.control.activity.ConnectActivity;
+import com.megarobo.control.bean.AreaDeviceBean;
+import com.megarobo.control.utils.AllUitls;
 import com.megarobo.control.utils.MyCrashHandler;
+import com.megarobo.control.utils.ThreadPoolWrap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +28,7 @@ public class MegaApplication extends Application {
 
     public static List<Activity> list;
     private boolean mbMainProcess = false;
-
+    public static List<AreaDeviceBean> beans = new ArrayList<>();
 
     public MegaApplication() {
         mContext = this;
@@ -39,6 +44,21 @@ public class MegaApplication extends Application {
         super.onCreate();
 
         list=new ArrayList<Activity>();
+
+        myIp = AllUitls.getIPAddressStr(MegaApplication.this);
+
+        ThreadPoolWrap.getThreadPool().executeTask(new Runnable() {
+            @Override
+            public void run() {
+                AllUitls.initAreaIp(MegaApplication.this);
+                int sum = 0;
+                while (beans.size() == 0 && sum < 8) {
+                    beans.addAll(AllUitls.getAllCacheMac(MegaApplication.myIp));
+                    SystemClock.sleep(beans.size()>0?0:1000);
+                    sum++;
+                }
+            }
+        });
 
 //        int pid = android.os.Process.myPid();
 ////        如果需要判断多进程时候开启

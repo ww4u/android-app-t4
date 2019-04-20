@@ -69,14 +69,17 @@ public class SocketClient {
 	
 	public void disconnect() {
 		try {
-			Channel channel = channelFuture.awaitUninterruptibly().getChannel();
+
 			if(ch!=null){
 				ch.disconnect();
 				ch.close();
 				ch = null;
 			}
-			if (channel != null) {
-				channel.close().awaitUninterruptibly();
+			if(channelFuture != null && channelFuture.awaitUninterruptibly() != null) {
+				Channel channel = channelFuture.awaitUninterruptibly().getChannel();
+				if (channel != null) {
+					channel.close().awaitUninterruptibly();
+				}
 			}
 			if (bootstrap != null) {
 				bootstrap.releaseExternalResources();

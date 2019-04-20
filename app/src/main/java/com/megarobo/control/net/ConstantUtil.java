@@ -17,6 +17,9 @@ public class ConstantUtil {
 	public static final int MESSAGE_RECEIVED = 89;
 
 	//控制socket连接
+	public static final int IP_SEARCH_FINISHED = 90;
+
+	//控制socket连接
 	public static final int SOCKET_CONTROL_CONNECTED = 801;
 
 	//查询socket连接

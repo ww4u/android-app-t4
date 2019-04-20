@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -16,8 +17,10 @@ import android.widget.TextView;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.megarobo.control.MegaApplication;
 import com.megarobo.control.R;
 import com.megarobo.control.adapter.SearchListAdapter;
+import com.megarobo.control.bean.AreaDeviceBean;
 import com.megarobo.control.bean.Meta;
 import com.megarobo.control.bean.Robot;
 import com.megarobo.control.event.IPSearchEvent;
@@ -25,7 +28,9 @@ import com.megarobo.control.event.ReadARPMapEvent;
 import com.megarobo.control.net.ARPManager;
 import com.megarobo.control.net.ConstantUtil;
 import com.megarobo.control.net.SocketClientManager;
+import com.megarobo.control.utils.AllUitls;
 import com.megarobo.control.utils.CommandHelper;
+import com.megarobo.control.utils.Logger;
 import com.megarobo.control.utils.ThreadPoolWrap;
 import com.megarobo.control.utils.Utils;
 
@@ -69,6 +74,9 @@ public class SearchActivity extends BaseActivity {
     private SocketClientManager clientManager;
 
     private Map<String,SocketClientManager> socketManagerMap;
+
+    boolean isSearchFinished = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +91,13 @@ public class SearchActivity extends BaseActivity {
         );
         robotListView.setAdapter(adapter);
 
-        getList();
+        ThreadPoolWrap.getThreadPool().executeTask(new Runnable() {
+            @Override
+            public void run() {
+                getList();
+            }
+        });
+
 
         socketManagerMap = new HashMap<String,SocketClientManager>();
 
@@ -91,8 +105,18 @@ public class SearchActivity extends BaseActivity {
         searchAgainBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //1.获取连接的设备ip列表
-            getList();
+                if(!isSearchFinished){
+                    return;
+                }
+                Utils.MakeToast(SearchActivity.this,"开始搜索......");
+                //1.获取连接的设备ip列表
+                ThreadPoolWrap.getThreadPool().executeTask(new Runnable() {
+                    @Override
+                    public void run() {
+                        getList();
+                    }
+                });
+                isSearchFinished = false;
             }
         });
 
@@ -111,15 +135,23 @@ public class SearchActivity extends BaseActivity {
     }
 
     private void getList() {
-        ARPManager.getInstance().getNetworkInfoSearch(SearchActivity.this);
-        Map<String, String> map = ARPManager.getInstance().readArpMap();
+        AllUitls.initAreaIp(SearchActivity.this);
+        List<AreaDeviceBean> beans = new ArrayList<>();
+        int sum = 0;
+        while (beans.size() == 0 && sum < 8) {
+            beans.addAll(AllUitls.getAllCacheMac(MegaApplication.myIp));
+            SystemClock.sleep(beans.size()>0?0:1000);
+            sum++;
+        }
         clientManager = new SocketClientManager(ConstantUtil.HOST,
                 handler,ConstantUtil.CONTROL_PORT);
-        for(String ip : map.keySet()){
-            clientManager.setHost(ip);
+        for(int i=0;i<beans.size();i++){
+            clientManager.setHost(beans.get(i).getIp());
             clientManager.connectToServer();
         }
-
+        isSearchFinished = true;
+        SystemClock.sleep(10000);
+        handler.sendEmptyMessage(ConstantUtil.IP_SEARCH_FINISHED);
     }
 
 
@@ -135,7 +167,6 @@ public class SearchActivity extends BaseActivity {
                         String ip = bundle.getString("ip");
                         if(!ipSet.contains(ip)){//第一次回调，主要是将ip添加到set中
                             ipSet.add(ip);
-                            Utils.MakeToast(SearchActivity.this,"重新搜索......"+ip);
                             SocketClientManager realClientManager = new SocketClientManager(ip,
                                     handler,ConstantUtil.CONTROL_PORT);
                             socketManagerMap.put(ip,realClientManager);
@@ -159,6 +190,12 @@ public class SearchActivity extends BaseActivity {
                             realIpSet.add(robot.getIp());
                             robotList.add(robot);
                             adapter.notifyDataSetChanged();
+                            showNoEquipment(false);
+                        }
+                        break;
+                    case ConstantUtil.IP_SEARCH_FINISHED:
+                        if(robotList != null && robotList.size() == 0){
+                            showNoEquipment(true);
                         }
                         break;
                     default:

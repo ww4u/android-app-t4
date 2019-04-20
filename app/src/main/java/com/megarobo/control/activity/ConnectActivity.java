@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.megarobo.control.MegaApplication;
 import com.megarobo.control.adapter.ConnectListAdapter;
+import com.megarobo.control.bean.AreaDeviceBean;
 import com.megarobo.control.bean.Meta;
 import com.megarobo.control.bean.Robot;
 import com.megarobo.control.event.IPSearchEvent;
@@ -25,6 +28,7 @@ import com.megarobo.control.event.ReadARPMapEvent;
 import com.megarobo.control.net.ARPManager;
 import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.net.ConstantUtil;
+import com.megarobo.control.utils.AllUitls;
 import com.megarobo.control.utils.CommandHelper;
 import com.megarobo.control.R;
 import com.megarobo.control.utils.Logger;
@@ -80,8 +84,6 @@ public class ConnectActivity extends BaseActivity {
         setContentView(R.layout.activity_connect);
         ViewUtils.inject(this);
 
-        EventBus.getDefault().register(this);
-
         robotList = new ArrayList<Robot>();
 
         initHandler();
@@ -90,7 +92,7 @@ public class ConnectActivity extends BaseActivity {
         ThreadPoolWrap.getThreadPool().executeTask(new Runnable() {
             @Override
             public void run() {
-                ARPManager.getInstance().getNetworkInfo(ConnectActivity.this);
+                getList();
 
             }
         });
@@ -123,54 +125,25 @@ public class ConnectActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-//                Intent intent = new Intent(ConnectActivity.this, SearchActivity.class);
-//                startActivity(intent);
-                Utils.MakeToast(ConnectActivity.this,"正在搜索机器人......");
-                ThreadPoolWrap.getThreadPool().executeTask(new Runnable() {
-                    @Override
-                    public void run() {
-                        ARPManager.getInstance().getNetworkInfo(ConnectActivity.this);
-
-                    }
-                });
+                Intent intent = new Intent(ConnectActivity.this, SearchActivity.class);
+                startActivity(intent);
 
             }
         });
     }
 
-
-    public Map<String, String> map;
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event(IPSearchEvent event){
-        ThreadPoolWrap.getThreadPool().executeTask(new Runnable() {
-            @Override
-            public void run() {
-                map = ARPManager.getInstance().readArpMap();
-            }
-        });
-
-        Utils.MakeToast(ConnectActivity.this,"正在搜索机器人......");
-        clientManager = new SocketClientManager(ConstantUtil.HOST,
-                handler,ConstantUtil.CONTROL_PORT);
-
-        if(map != null) {
-            for (String ip : map.keySet()) {
-                clientManager.setHost(ip);
-                clientManager.connectToServer();
-
-            }
+    private void getList() {
+        Logger.e("MegaApplication.beans",MegaApplication.beans.size()+"......");
+        if(MegaApplication.beans == null || MegaApplication.beans.size() == 0){
+            return;
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void Event1(ReadARPMapEvent event){
-//        Utils.MakeToast(ConnectActivity.this,"!!!!");
         clientManager = new SocketClientManager(ConstantUtil.HOST,
                 handler,ConstantUtil.CONTROL_PORT);
-        for(String ip : map.keySet()){
-            clientManager.setHost(ip);
+        for(int i=0;i<MegaApplication.beans.size();i++){
+            clientManager.setHost(MegaApplication.beans.get(i).getIp());
             clientManager.connectToServer();
         }
+
     }
 
     @SuppressLint("HandlerLeak")
@@ -233,9 +206,6 @@ public class ConnectActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(EventBus.getDefault().isRegistered(this)){
-            EventBus.getDefault().unregister(this);
-        }
         if(clientManager!=null){
             clientManager.exit();
         }

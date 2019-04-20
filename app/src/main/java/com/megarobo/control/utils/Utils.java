@@ -101,16 +101,21 @@ public class Utils {
      * @return
      */
     public static String replaceX(String input){
-        if(input == null || "".equals(input) || input.length()<6){
+        if(input == null || "".equals(input) || input.length()<8){
             return input;
         }
-        String lastFiveStr = input.substring(input.length()-5);
+//        String lastFiveStr = input.substring(input.length()-5);
+//        String firstFourStr = input.substring(0,4);
 //        String subString = input.substring(0,input.length()-5);
 //        for(int i=0;i<subString.length();i++){
 //            char c = subString.charAt(i);
 //            subString = subString.replace(c,'X');
 //        }
-        return new StringBuffer("XXXX").append(lastFiveStr).toString();
+        String lastFiveStr = input.substring(input.length()-4);
+        String firstFourStr = input.substring(0,4);
+
+        return new StringBuffer(firstFourStr).append("...")
+                .append(lastFiveStr).toString();
     }
         
     
