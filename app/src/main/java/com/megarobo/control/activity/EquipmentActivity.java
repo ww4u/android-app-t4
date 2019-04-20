@@ -8,19 +8,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.megarobo.control.MegaApplication;
 import com.megarobo.control.R;
 import com.megarobo.control.bean.DeviceStatus;
-import com.megarobo.control.bean.Meta;
-import com.megarobo.control.bean.Parameter;
-import com.megarobo.control.bean.Robot;
 import com.megarobo.control.net.ConstantUtil;
 import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.CommandHelper;
@@ -149,7 +144,7 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.remoteControlBtn:
-                Intent intent1 = new Intent(EquipmentActivity.this, EquipmentControlActivity1.class);
+                Intent intent1 = new Intent(EquipmentActivity.this, EquipmentControlActivity.class);
                 startActivity(intent1);
                 break;
             case R.id.link_status:

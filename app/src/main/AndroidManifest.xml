@@ -31,7 +31,7 @@
 
         </activity>
 
-        <activity android:name=".activity.EquipmentControlActivity1"
+        <activity android:name=".activity.EquipmentControlActivity"
             android:screenOrientation="landscape" >
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->

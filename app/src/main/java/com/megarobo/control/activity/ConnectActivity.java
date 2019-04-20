@@ -20,24 +20,15 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.megarobo.control.MegaApplication;
 import com.megarobo.control.adapter.ConnectListAdapter;
-import com.megarobo.control.bean.AreaDeviceBean;
 import com.megarobo.control.bean.Meta;
 import com.megarobo.control.bean.Robot;
-import com.megarobo.control.event.IPSearchEvent;
-import com.megarobo.control.event.ReadARPMapEvent;
-import com.megarobo.control.net.ARPManager;
 import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.net.ConstantUtil;
-import com.megarobo.control.utils.AllUitls;
 import com.megarobo.control.utils.CommandHelper;
 import com.megarobo.control.R;
 import com.megarobo.control.utils.Logger;
 import com.megarobo.control.utils.ThreadPoolWrap;
 import com.megarobo.control.utils.Utils;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;

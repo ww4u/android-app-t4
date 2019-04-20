@@ -2,33 +2,28 @@ package com.megarobo.control.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.custom.widgt.jazzyviewpager.Util;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.megarobo.control.MegaApplication;
+import com.megarobo.control.R;
 import com.megarobo.control.bean.Config;
 import com.megarobo.control.bean.DataSet;
 import com.megarobo.control.bean.DeviceStatus;
@@ -40,9 +35,6 @@ import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.CommandHelper;
 import com.megarobo.control.utils.NetUtil;
 import com.megarobo.control.utils.Utils;
-import com.megarobo.control.view.DiscView;
-import com.megarobo.control.R;
-import com.megarobo.control.view.RightControl;
 
 
 /**
@@ -58,12 +50,6 @@ import com.megarobo.control.view.RightControl;
  *
  */
 public class EquipmentControlActivity extends BaseActivity implements View.OnClickListener,View.OnLongClickListener,View.OnTouchListener{
-
-    private TextView textView;
-    private MyBroadCastReceiver receiver;
-    private LocalBroadcastManager manager;
-    private DiscView leftControlView;
-    private RightControl rightControlView;
 
     private Handler handler;
     private SocketClientManager controlClient;
@@ -102,26 +88,74 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     @ViewInject(R.id.back)
     private ImageView backImg;
 
-    @ViewInject(R.id.angle)
-    private TextView angle;
-
     @ViewInject(R.id.link_status)
     private TextView linkStatus;
 
     @ViewInject(R.id.net_status)
     private TextView netStatus;
 
+    @ViewInject(R.id.left_control_up)
+    private TextView leftControlUp;
+
+    @ViewInject(R.id.left_control_down)
+    private TextView leftControlDown;
+
+    @ViewInject(R.id.left_control_front)
+    private TextView leftControlFront;
+
+    @ViewInject(R.id.left_control_back)
+    private TextView leftControlBack;
+
+    @ViewInject(R.id.clockwise)
+    private ImageButton clockWise;
+
+    @ViewInject(R.id.counterclockwise)
+    private ImageButton counterClockWise;
+
+    //右边控制按钮
+    @ViewInject(R.id.right_bg)
+    private ImageView rightBg;
+
+
+    //前后左右
+    @ViewInject(R.id.right_btn_front)
+    private TextView rightBtnFront;
+
+    @ViewInject(R.id.right_btn_back)
+    private TextView rightBtnBack;
+
+    @ViewInject(R.id.right_btn_left)
+    private TextView rightBtnLeft;
+
+    @ViewInject(R.id.right_btn_right)
+    private TextView rightBtnRight;
+
+    //四个角度
+    @ViewInject(R.id.right_northwest)
+    private ImageButton rightNorthwest;
+
+    @ViewInject(R.id.right_northeast)
+    private ImageButton rightNortheast;
+
+    @ViewInject(R.id.right_southeast)
+    private ImageButton rightSoutheast;
+
+    @ViewInject(R.id.right_southwest)
+    private ImageButton rightSouthwest;
+
+    @ViewInject(R.id.position)
+    private TextView position;
+
+    @ViewInject(R.id.angle)
+    private TextView angle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_equipment_control);
+        setContentView(R.layout.activity_equipment_control1);
         ViewUtils.inject(this);
         mContext = this;
-
-        leftControlView = findViewById(R.id.leftControlView);
-        rightControlView = findViewById(R.id.rightControlView);
-        textView = findViewById(R.id.postion);
 
         setClickListener();
 
@@ -129,15 +163,6 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
         controlClient = new SocketClientManager(MegaApplication.ip,
                 handler,ConstantUtil.CONTROL_PORT);
         controlClient.connectToServer();
-
-        /**
-         * 注册本地广播接收器就，接收广播
-         **/
-        manager = LocalBroadcastManager.getInstance(this);
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(DiscView.DISC_BROADCAST);
-        receiver = new MyBroadCastReceiver();
-        manager.registerReceiver(receiver,filter);
 
     }
 
@@ -184,19 +209,15 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.open_btn:
-                Utils.MakeToast(EquipmentControlActivity.this,"开");
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(1,false,4));
                 break;
             case R.id.close_btn:
-                Utils.MakeToast(EquipmentControlActivity.this,"闭");
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(-1,false,4));
                 break;
             case R.id.up_btn:
-                Utils.MakeToast(EquipmentControlActivity.this,"上");
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(0,1,false));
                 break;
             case R.id.down_btn:
-                Utils.MakeToast(EquipmentControlActivity.this,"下");
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(0,-1,false));
                 break;
             case R.id.restore:
@@ -219,8 +240,92 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 Intent intent = new Intent(mContext, EquipmentStatusActivity.class);
                 startActivity(intent);
                 break;
+            //4个方向点击事件
+            case R.id.left_control_up:
+                setRightEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(90,false,3));
+                break;
+            case R.id.left_control_down:
+                setRightEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(270,false,3));
+                break;
+            case R.id.left_control_front:
+                setRightEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(180,false,3));
+                break;
+            case R.id.left_control_back:
+                setRightEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(0,false,3));
+                break;
+            //顺时针，逆时针单击事件
+            case R.id.clockwise:
+                setRightEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(1,false,3));
+                break;
+            case R.id.counterclockwise:
+                setRightEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(-1,false,3));
+                break;
+            //前后左右
+            case R.id.right_btn_front:
+                float x = v.getX();
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(90,0,false));
+                break;
+            case R.id.right_btn_back:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(270,0,false));
+                break;
+            case R.id.right_btn_left:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(180,0,false));
+                break;
+            case R.id.right_btn_right:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(0,0,false));
+                break;
 
+            case R.id.right_northeast:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(45,0,false));
+                break;
+            case R.id.right_northwest:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(135,0,false));
+                break;
+            case R.id.right_southeast:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(225,0,false));
+                break;
+            case R.id.right_southwest:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(315,0,false));
+                break;
         }
+    }
+
+    //设置右边是否可点击
+    private void setRightEnable(boolean isEnable){
+//        rightBtnFront.setEnabled(isEnable);
+//        rightBtnBack.setEnabled(isEnable);
+//        rightBtnLeft.setEnabled(isEnable);
+//        rightBtnRight.setEnabled(isEnable);
+//
+//        rightNorthwest.setEnabled(isEnable);
+//        rightNortheast.setEnabled(isEnable);
+//        rightSouthwest.setEnabled(isEnable);
+//        rightSoutheast.setEnabled(isEnable);
+    }
+
+    //设置左边是否可点击
+    private void setLeftEnable(boolean isEnable){
+//        leftControlFront.setEnabled(isEnable);
+//        leftControlBack.setEnabled(isEnable);
+//        leftControlUp.setEnabled(isEnable);
+//        leftControlDown.setEnabled(isEnable);
+//
+//        clockWise.setEnabled(isEnable);
+//        counterClockWise.setEnabled(isEnable);
     }
 
     private TextView markConfirm;
@@ -242,6 +347,7 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
         markCancel = findViewById(R.id.markCancel);
         markClose = findViewById(R.id.mark_close);
         name = findViewById(R.id.name);
+
         markClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,6 +368,7 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                         Utils.MakeToast(EquipmentControlActivity.this,"已经存在该名字的点，请重新命名");
                     }else{
                         controlClient.sendMsgToServer(CommandHelper.getInstance().addPointCommand(setPointName()));
+                        goneBottomView();
                     }
                 }
             }
@@ -308,10 +415,22 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                     Utils.MakeToast(EquipmentControlActivity.this,"步距和开合步距不能为空");
                     return;
                 }
+                //去掉后面%
+                String stepString = stepEdit.getText().toString();
+                double stepValue = Double.parseDouble(stepString.substring(0,stepString.trim().length()-1));
+
+                String jointString = jointStepEdit.getText().toString();
+                double jointStepValue = Double.parseDouble(jointString.substring(0,jointString.trim().length()-1));
+
+                if(stepValue > 100 || jointStepValue > 100){
+                    Utils.MakeToast(EquipmentControlActivity.this,"步距和开合步距不能超过100");
+                    return;
+                }
                 speedNum = parseSpeed(speed.getText().toString());
-                step = Double.parseDouble(stepEdit.getText().toString());
-                jointStep = Double.parseDouble(jointStepEdit.getText().toString());
+                step = stepValue;
+                jointStep = jointStepValue;
                 controlClient.sendMsgToServer(CommandHelper.getInstance().configCommand(step,jointStep,speedNum));
+                goneBottomView();
             }
         });
         setCancel.setOnClickListener(new View.OnClickListener() {
@@ -333,10 +452,22 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     Config config;
     private void initSpeed() {
         if(config != null) {
-            speed.setText(config.getSpeed() + "");
-            stepEdit.setText(config.getStep() + "");
-            jointStepEdit.setText(config.getJointStep() + "");
+            speed.setText(config.getSpeed() * 100 + "%");
+            speedWhich = getSpeedwhich(config.getSpeed() * 100);
+            stepEdit.setText(config.getStep() + "%");
+            jointStepEdit.setText(config.getJointStep() + "%");
         }
+    }
+
+    private int getSpeedwhich(double speedPercent){
+        if(20 == speedPercent){
+            return 0;
+        }else if(50 == speedPercent){
+            return 1;
+        }else if(100 == speedPercent){
+            return 2;
+        }
+        return 2;
     }
 
     private double parseSpeed(String speed){
@@ -354,11 +485,9 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     public boolean onLongClick(View v) {
         switch (v.getId()) {
             case R.id.open_btn:
-                Utils.MakeToast(EquipmentControlActivity.this, "开开开开开开");
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(1,true,4));
                 break;
             case R.id.close_btn:
-                Utils.MakeToast(EquipmentControlActivity.this, "闭闭闭闭");
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(-1,true,4));
                 break;
             case R.id.up_btn:
@@ -366,6 +495,51 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 break;
             case R.id.down_btn:
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(0,-1,true));
+                break;
+
+            case R.id.clockwise:
+                setRightEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(1,true,3));
+                break;
+            case R.id.counterclockwise:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(-1,true,3));
+                break;
+
+            //前后左右
+            case R.id.right_btn_front:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(90,0,true));
+                break;
+            case R.id.right_btn_back:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(270,0,true));
+                break;
+            case R.id.right_btn_left:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(180,0,true));
+                break;
+            case R.id.right_btn_right:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(0,0,true));
+                break;
+
+            //四个角度
+            case R.id.right_northeast:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(45,0,true));
+                break;
+            case R.id.right_northwest:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(135,0,true));
+                break;
+            case R.id.right_southeast:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(225,0,true));
+                break;
+            case R.id.right_southwest:
+                setLeftEnable(false);
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(315,0,true));
                 break;
         }
         return false;
@@ -378,54 +552,32 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
             case R.id.close_btn:
             case R.id.up_btn:
             case R.id.down_btn:
-                if(event.getAction() == MotionEvent.ACTION_UP){
-                    Utils.MakeToast(EquipmentControlActivity.this, "停止运行");
-                    controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("stop"));
-                }
-                break;
-            case R.id.leftControlView://控制左侧圆形按钮的操作
-                switch (event.getAction()){
-                    case MotionEvent.ACTION_MOVE:
-                        System.out.println(event.getX() + " " + event.getY()+"angle"+leftControlView.getAngle());
-                        leftControlView.sendAction();//实时更新页面上的角度信息
-                        leftControlView.setBtnX((int) event.getX());
-                        leftControlView.setBtnY((int) event.getY());
-                        if (leftControlView.isRevoke()){
-                            leftControlView.changeBtnLocation();
-                        }
-                        leftControlView.invalidate();
-                        controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(leftControlView.getAngle(),false,3));
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        System.out.println(event.getX() + " " + event.getY() + "TAG angle"+leftControlView.getAngle());
-                        leftControlView.sendAction();//实时更新页面上的角度信息
-                        leftControlView.setBtnX(0);
-                        leftControlView.setBtnY(0);
-                        leftControlView.invalidate();
-                        break;
-                }
-                break;
-            case R.id.rightControlView:
-                switch (event.getAction()){
-                    case MotionEvent.ACTION_MOVE:
-                        System.out.println(event.getX() + " " + event.getY()+"rangle"+rightControlView.getAngle());
-                        rightControlView.setBtnX((int) event.getX());
-                        rightControlView.setBtnY((int) event.getY());
-//                        if (rightControlView.isRevoke()){
-//                            rightControlView.changeBtnLocation();
-//                        }
-                        rightControlView.invalidate();
-                        controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(rightControlView.getAngle(),0,true));
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        System.out.println(event.getX() + " " + event.getY() + "rTAG rangle"+rightControlView.getAngle());
-                        controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("stop"));
-//                        rightControlView.setBtnX(0);
-//                        rightControlView.setBtnY(0);
-                        rightControlView.invalidate();
-                        break;
-                }
-                break;
+
+            case R.id.clockwise:
+            case R.id.counterclockwise:
+
+            case R.id.left_control_up:
+            case R.id.left_control_down:
+            case R.id.left_control_front:
+            case R.id.left_control_back:
+
+            case R.id.right_btn_back:
+            case R.id.right_btn_front:
+            case R.id.right_btn_left:
+            case R.id.right_btn_right:
+
+            case R.id.right_northeast:
+            case R.id.right_northwest:
+            case R.id.right_southeast:
+            case R.id.right_southwest:
+
+            if(event.getAction() == MotionEvent.ACTION_UP){
+                controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("stop"));
+                controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
+                setLeftEnable(true);
+                setRightEnable(true);
+            }
+            break;
         }
         return false;
     }
@@ -434,7 +586,6 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     Point point;
     Pose pose;
     /**
-     * TODO 获取用户设置的点
      * @return
      */
     private Point setPointName() {
@@ -455,6 +606,7 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 switch (msg.what){
                     case ConstantUtil.SOCKET_CONNECTED:
                         controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("device_status"));
+                        controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
                         break;
                     case ConstantUtil.MESSAGE_RECEIVED:
                         processMsg(msg);
@@ -503,6 +655,10 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
             JSONObject result = JSON.parseObject(content);
             if(result != null || !result.isEmpty()){
                 pose = Pose.parsePose(result.getString("pose"));
+                angle.setText(Math.round(pose.getW())+"°");
+                position.setText(Math.round(pose.getX())+","+
+                        Math.round(pose.getY())+","+
+                        Math.round(pose.getZ())+",");
             }
         }else if("device_status".equals(command)){
             DeviceStatus deviceStatus = DeviceStatus.parseDeviceStatus(content);
@@ -607,20 +763,61 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
         closeBtn.setOnTouchListener(this);
         upBtn.setOnTouchListener(this);
         downBtn.setOnTouchListener(this);
-        leftControlView.setOnTouchListener(this);
-        rightControlView.setOnTouchListener(this);
+        clockWise.setOnTouchListener(this);
+        counterClockWise.setOnTouchListener(this);
+
+        //上下，前后点击事件
+        leftControlBack.setOnClickListener(this);
+        leftControlBack.setOnTouchListener(this);
+        leftControlUp.setOnClickListener(this);
+        leftControlUp.setOnTouchListener(this);
+        leftControlDown.setOnClickListener(this);
+        leftControlDown.setOnTouchListener(this);
+        leftControlFront.setOnClickListener(this);
+        leftControlFront.setOnTouchListener(this);
+
+        //顺时针，逆时针事件
+        clockWise.setOnClickListener(this);
+        counterClockWise.setOnClickListener(this);
+        //长按事件
+        clockWise.setOnLongClickListener(this);
+        counterClockWise.setOnLongClickListener(this);
+
+        //右边点击事件
+        rightBtnFront.setOnClickListener(this);
+        rightBtnFront.setOnLongClickListener(this);
+        rightBtnFront.setOnTouchListener(this);
+
+        rightBtnBack.setOnClickListener(this);
+        rightBtnBack.setOnLongClickListener(this);
+        rightBtnBack.setOnTouchListener(this);
+
+        rightBtnLeft.setOnClickListener(this);
+        rightBtnLeft.setOnLongClickListener(this);
+        rightBtnLeft.setOnTouchListener(this);
+
+        rightBtnRight.setOnClickListener(this);
+        rightBtnRight.setOnLongClickListener(this);
+        rightBtnRight.setOnTouchListener(this);
+
+        rightNortheast.setOnClickListener(this);
+        rightNortheast.setOnLongClickListener(this);
+        rightNortheast.setOnTouchListener(this);
+
+        rightNorthwest.setOnClickListener(this);
+        rightNorthwest.setOnLongClickListener(this);
+        rightNorthwest.setOnTouchListener(this);
+
+        rightSoutheast.setOnClickListener(this);
+        rightSoutheast.setOnLongClickListener(this);
+        rightSoutheast.setOnTouchListener(this);
+
+        rightSouthwest.setOnClickListener(this);
+        rightSouthwest.setOnLongClickListener(this);
+        rightSouthwest.setOnTouchListener(this);
 
         linkStatus.setOnClickListener(this);
     }
 
-
-    class MyBroadCastReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String angleStr = intent.getStringExtra("angle");
-            angle.setText(angleStr);
-        }
-    }
 
 }
