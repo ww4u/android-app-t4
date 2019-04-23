@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -61,6 +64,9 @@ public class SearchActivity extends BaseActivity {
     @ViewInject(R.id.listview_layout)
     private RelativeLayout listviewLayout;
 
+    @ViewInject(R.id.rotate_progress)
+    private ImageView progressImg;
+
     private List<Robot> robotList;
     private SearchListAdapter adapter;
 
@@ -70,6 +76,9 @@ public class SearchActivity extends BaseActivity {
 
     boolean isSearchFinished = false;
 
+    private Animation animation;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,12 +87,16 @@ public class SearchActivity extends BaseActivity {
         initHandler();
 
         robotList = new ArrayList<Robot>();
+        animation=AnimationUtils.loadAnimation(this, R.drawable.rotate_progress);
+
 
         adapter = new SearchListAdapter(
                 this,robotList
         );
         robotListView.setAdapter(adapter);
 
+        Utils.MakeToast(SearchActivity.this,"正在搜索机器人......");
+        setMask(true);
         ThreadPoolWrap.getThreadPool().executeTask(new Runnable() {
             @Override
             public void run() {
@@ -100,6 +113,7 @@ public class SearchActivity extends BaseActivity {
                     return;
                 }
                 Utils.MakeToast(SearchActivity.this,"开始搜索......");
+                setMask(true);
                 //1.获取连接的设备ip列表
                 ThreadPoolWrap.getThreadPool().executeTask(new Runnable() {
                     @Override
@@ -178,6 +192,7 @@ public class SearchActivity extends BaseActivity {
                         robot.setMeta(Meta.parseMeta(content));
                         //真实的机器人IP
                         if(!realIpSet.contains(robot.getIp())){
+                            setMask(false);
                             realIpSet.add(robot.getIp());
                             robotList.add(robot);
                             adapter.notifyDataSetChanged();
@@ -186,6 +201,7 @@ public class SearchActivity extends BaseActivity {
                         break;
                     case ConstantUtil.IP_SEARCH_FINISHED:
                         if(robotList != null && robotList.size() == 0){
+                            setMask(false);
                             showNoEquipment(true);
                         }
                         break;
@@ -203,6 +219,16 @@ public class SearchActivity extends BaseActivity {
         super.onDestroy();
         if(clientManager!=null){
             clientManager.exit();
+        }
+    }
+
+    protected void setMask(boolean b) {
+        if (b) {
+            progressImg.startAnimation(animation);
+            progressImg.setVisibility(View.VISIBLE);
+        } else {
+            progressImg.clearAnimation();
+            progressImg.setVisibility(View.GONE);
         }
     }
 }

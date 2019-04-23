@@ -3,9 +3,9 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <solid android:color="@color/white" />
-            <corners android:bottomLeftRadius="5dp"
-                android:bottomRightRadius="5dp" />
+            <solid android:color="@color/table_divider_color" />
+            <corners
+                android:bottomRightRadius="12dp" />
         </shape>
     </item>
 </selector>

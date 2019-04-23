@@ -34,7 +34,7 @@
     <LinearLayout android:orientation="horizontal"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:background="@drawable/xml_bottom_white_corners_bg" >
+		android:background="@drawable/xml_bottom_white_corners_bg_right" >
         <Button android:id="@+id/cancel"
 			android:layout_width="0.0dip"
 			android:layout_height="48.0dp" android:text="@string/cancel"

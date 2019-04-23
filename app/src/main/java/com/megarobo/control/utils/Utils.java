@@ -624,7 +624,7 @@ public class Utils {
         if(activity == null || activity.isFinishing()){
             return;
         }
-        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        final Dialog dialog = new Dialog(context,R.style.input_dialog);
         dialog.show();
         Window window = dialog.getWindow();
         View view = LayoutInflater.from(context).inflate(R.layout.alert_dialog,
@@ -635,7 +635,8 @@ public class Utils {
         WindowManager.LayoutParams params = window.getAttributes();
         Point point = new Point();
         display.getSize(point);
-        params.width = (int) (point.x * 0.8);
+        params.width = (int) (point.x * 0.5);
+        params.height = (int) (point.y * 0.5);
         window.setAttributes(params);
 
         TextView titleTextView = (TextView) window.findViewById(R.id.title);

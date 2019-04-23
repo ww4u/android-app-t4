@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center_vertical"
+<RelativeLayout android:gravity="center_vertical"
 	android:orientation="vertical"
 	android:background="@drawable/xml_white_corners_bg"
 	android:layout_width="wrap_content"
-	android:layout_height="wrap_content"
+	android:layout_height="match_parent"
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/root">
         
-     <TextView 
-	      android:layout_marginTop="10dp"
+     <TextView
+	      android:layout_marginTop="20dp"
 	      android:layout_marginBottom="20dp"
 	      android:id="@+id/title"
 	      android:layout_width="match_parent"
@@ -17,8 +17,10 @@
 	      android:textSize="@dimen/font_button"
 	      android:gravity="center"/>
      
-     <TextView  
-	      android:layout_marginBottom="20dp"
+     <TextView
+		 android:layout_below="@id/title"
+		 android:layout_marginTop="10dp"
+	      android:layout_marginBottom="10dp"
 	      android:id="@+id/content"
 	      android:layout_width="match_parent"
 	      android:layout_height="wrap_content"
@@ -28,27 +30,42 @@
 	      android:layout_marginLeft="14dp"
 	      android:layout_marginRight="14dp"
 	      android:gravity="center"/>
-     
-    <View android:background="#cccccc"
+
+
+
+	<View android:background="#cccccc"
 		android:layout_width="fill_parent"
+		android:id="@+id/bottom_line"
+		android:layout_above="@id/bottomLayout"
 		android:layout_height="1.0px" />
+
     <LinearLayout
+		android:layout_alignParentBottom="true"
+		android:id="@+id/bottomLayout"
 		android:orientation="horizontal"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:background="@drawable/xml_bottom_white_corners_bg" >
+		>
+
         <Button android:id="@+id/cancel"
 			android:layout_width="0.0dip"
 			android:layout_height="48.0dp"
-			android:text="@string/cancel" android:layout_weight="1.0"
+			android:text="@string/cancel"
+			android:layout_weight="1.0"
+			android:background="@drawable/xml_dialog_click_left"
 			style="@style/ShowWidgetButton" />
+
         <View android:background="#cccccc"
 			android:layout_width="1.0px"
 			android:layout_height="fill_parent" />
+
         <Button android:id="@+id/confirm"
 			android:layout_width="0.0dip"
 			android:layout_height="48.0dp"
-			android:text="@string/confirm" android:layout_weight="1.0"
+			android:text="@string/confirm"
+			android:layout_weight="1.0"
+			android:background="@drawable/xml_dialog_click_right"
 			style="@style/ShowWidgetButton"/>
     </LinearLayout>
-</LinearLayout>
+
+</RelativeLayout>

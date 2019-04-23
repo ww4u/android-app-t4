@@ -7,10 +7,13 @@
             <!--<corners android:radius="5.0dip" />-->
         <!--</shape>-->
     <!--</item>-->
-    <item android:width="240dp" android:height="160dp">
+    <item>
         <shape android:shape="rectangle">
             <solid android:color="#ff4e4e4e" />
-            <corners android:topLeftRadius="12dp" android:topRightRadius="12dp" android:bottomLeftRadius="12dp" android:bottomRightRadius="12dp" />
+            <corners android:topLeftRadius="12dp"
+                android:topRightRadius="12dp"
+                android:bottomLeftRadius="12dp"
+                android:bottomRightRadius="12dp" />
         </shape>
     </item>
 </selector>

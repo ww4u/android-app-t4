@@ -10,6 +10,9 @@ import android.support.v4.app.FragmentActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -38,6 +41,9 @@ public abstract class BaseActivity extends FragmentActivity implements NetBroadc
 
     private NetBroadcastReceiver netBroadcastReceiver;
 
+    private Animation animation;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +51,12 @@ public abstract class BaseActivity extends FragmentActivity implements NetBroadc
         if(this.getResources().getConfiguration().orientation ==Configuration.ORIENTATION_PORTRAIT){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
+        //隐藏状态栏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_base);
+        animation=AnimationUtils.loadAnimation(this, R.drawable.rotate_progress);
+
         cover =(FrameLayout) findViewById(R.id.cover);
         progress=(ImageView) findViewById(R.id.rotate_progress);
         nonet=(RelativeLayout) findViewById(R.id.no_net);
@@ -104,11 +115,11 @@ public abstract class BaseActivity extends FragmentActivity implements NetBroadc
     protected void setMask(boolean b) {
 		if (b) {
 			cover.setVisibility(View.VISIBLE);
-//			progress.startAnimation(animation);
+			progress.startAnimation(animation);
 			progress.setVisibility(View.VISIBLE);
 		} else {
             cover.setVisibility(View.GONE);
-//            progress.clearAnimation();
+            progress.clearAnimation();
             progress.setVisibility(View.GONE);
 		}
 	}

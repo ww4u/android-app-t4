@@ -11,7 +11,7 @@
     <color name="toast_bg">#a0393939</color>
     <color name="button_text_color">#a8b4c7</color>
     <color name="inner_text_color">#8f8e94</color>
-    <color name="main_blue_color">#28a7e2</color>
+    <color name="main_blue_color">#999999</color>
     <color name="main_green_color">#7CCB25</color>
 
     <color name="holo_blue">#FF33E5B5</color>

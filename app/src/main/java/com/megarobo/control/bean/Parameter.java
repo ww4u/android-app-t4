@@ -194,7 +194,7 @@ public class Parameter {
         }
 
         for (int i=0;i<idleCurrents.size();i++){
-            parameter.getIdleCurrents()[i] = idleCurrents.getDouble(i);
+            parameter.getIdleCurrents()[i] = Double.valueOf(df.format(idleCurrents.getDouble(i)));
         }
 
         JSONArray slowRatio = result.getJSONArray("slow_ratio");

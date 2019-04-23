@@ -296,11 +296,11 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 break;
             case R.id.right_southeast:
                 setLeftEnable(false);
-                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(225,0,false));
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(315,0,false));
                 break;
             case R.id.right_southwest:
                 setLeftEnable(false);
-                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(315,0,false));
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(225,0,false));
                 break;
         }
     }
@@ -535,14 +535,14 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 break;
             case R.id.right_southeast:
                 setLeftEnable(false);
-                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(225,0,true));
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(315,0,true));
                 break;
             case R.id.right_southwest:
                 setLeftEnable(false);
-                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(315,0,true));
+                controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(225,0,true));
                 break;
         }
-        return false;
+        return true;
     }
 
     @Override

@@ -8,8 +8,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import android.os.SystemClock;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -48,6 +52,9 @@ public class ConnectActivity extends BaseActivity {
     @ViewInject(R.id.robotList)
     private ListView robotListView;
 
+    @ViewInject(R.id.rotate_progress)
+    private ImageView progressImg;
+
     private List<Robot> robotList;
     private ConnectListAdapter adapter;
 
@@ -65,6 +72,8 @@ public class ConnectActivity extends BaseActivity {
     private static final int MSG_EXIT_ROOM = 5001;
     private static final int MSG_EXIT_ROOM_DELAY = 2000;
 
+    private Animation animation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +82,13 @@ public class ConnectActivity extends BaseActivity {
         ViewUtils.inject(this);
 
         robotList = new ArrayList<Robot>();
+        animation=AnimationUtils.loadAnimation(this, R.drawable.rotate_progress);
+
 
         initHandler();
         socketManagerMap = new HashMap<String,SocketClientManager>();
         //获取局域网内所有机器人
+        setMask(true);
         ThreadPoolWrap.getThreadPool().executeTask(new Runnable() {
             @Override
             public void run() {
@@ -131,7 +143,8 @@ public class ConnectActivity extends BaseActivity {
             clientManager.setHost(MegaApplication.beans.get(i).getIp());
             clientManager.connectToServer();
         }
-
+        SystemClock.sleep(10000);
+        handler.sendEmptyMessage(ConstantUtil.IP_SEARCH_FINISHED);
     }
 
     @SuppressLint("HandlerLeak")
@@ -167,6 +180,7 @@ public class ConnectActivity extends BaseActivity {
                         robot.setMeta(Meta.parseMeta(content));
                         //真实的机器人IP
                         if(!realIpSet.contains(robot.getIp())){
+                            setMask(false);
                             realIpSet.add(robot.getIp());
                             robotList.add(robot);
                             adapter.notifyDataSetChanged();
@@ -174,6 +188,10 @@ public class ConnectActivity extends BaseActivity {
                         break;
                     case MSG_EXIT_ROOM:
                         isExit = false;
+                    case ConstantUtil.IP_SEARCH_FINISHED:
+                        if(robotList != null && robotList.size() == 0){
+                            setMask(false);
+                        }
                         break;
                 }
             }
@@ -196,6 +214,16 @@ public class ConnectActivity extends BaseActivity {
         super.onDestroy();
         if(clientManager!=null){
             clientManager.exit();
+        }
+    }
+
+    protected void setMask(boolean b) {
+        if (b) {
+            progressImg.startAnimation(animation);
+            progressImg.setVisibility(View.VISIBLE);
+        } else {
+            progressImg.clearAnimation();
+            progressImg.setVisibility(View.GONE);
         }
     }
 }

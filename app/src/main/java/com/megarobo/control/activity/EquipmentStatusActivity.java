@@ -210,7 +210,7 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
                             controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("package"));
                         }
                     }
-                },"确定将机器恢复出厂姿态吗");
+                },"确定将机器恢复出厂姿态吗?");
                 break;
             case R.id.back:
                 onBackPressed();
