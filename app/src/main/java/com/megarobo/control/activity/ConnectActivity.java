@@ -157,6 +157,7 @@ public class ConnectActivity extends BaseActivity {
                     case ConstantUtil.SOCKET_CONNECTED:
                         Bundle bundle = msg.getData();
                         String ip = bundle.getString("ip");
+                        Logger.e("ip",""+ip);
                         if(!ipSet.contains(ip)){//第一次回调，主要是将ip添加到set中
                             ipSet.add(ip);
                             SocketClientManager realClientManager = new SocketClientManager(ip,

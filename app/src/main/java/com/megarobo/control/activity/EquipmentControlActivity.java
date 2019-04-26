@@ -34,6 +34,7 @@ import com.megarobo.control.bean.Pose;
 import com.megarobo.control.net.ConstantUtil;
 import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.CommandHelper;
+import com.megarobo.control.utils.Logger;
 import com.megarobo.control.utils.NetUtil;
 import com.megarobo.control.utils.Utils;
 
@@ -199,7 +200,6 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     @Override
     protected void onResume() {
         super.onResume();
-//        controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("link_status"));
     }
 
     /**
@@ -243,63 +243,48 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 break;
             //4个方向点击事件
             case R.id.left_control_up:
-                setRightEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(90,false,3));
                 break;
             case R.id.left_control_down:
-                setRightEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(270,false,3));
                 break;
             case R.id.left_control_front:
-                setRightEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(180,false,3));
                 break;
             case R.id.left_control_back:
-                setRightEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(0,false,3));
                 break;
             //顺时针，逆时针单击事件
             case R.id.clockwise:
-                setRightEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(1,false,3));
                 break;
             case R.id.counterclockwise:
-                setRightEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(-1,false,3));
                 break;
             //前后左右
             case R.id.right_btn_front:
-                float x = v.getX();
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(90,0,false));
                 break;
             case R.id.right_btn_back:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(270,0,false));
                 break;
             case R.id.right_btn_left:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(180,0,false));
                 break;
             case R.id.right_btn_right:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(0,0,false));
                 break;
 
             case R.id.right_northeast:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(45,0,false));
                 break;
             case R.id.right_northwest:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(135,0,false));
                 break;
             case R.id.right_southeast:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(315,0,false));
                 break;
             case R.id.right_southwest:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(225,0,false));
                 break;
         }
@@ -307,26 +292,32 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
 
     //设置右边是否可点击
     private void setRightEnable(boolean isEnable){
-//        rightBtnFront.setEnabled(isEnable);
-//        rightBtnBack.setEnabled(isEnable);
-//        rightBtnLeft.setEnabled(isEnable);
-//        rightBtnRight.setEnabled(isEnable);
-//
-//        rightNorthwest.setEnabled(isEnable);
-//        rightNortheast.setEnabled(isEnable);
-//        rightSouthwest.setEnabled(isEnable);
-//        rightSoutheast.setEnabled(isEnable);
+        rightBtnFront.setEnabled(isEnable);
+        rightBtnBack.setEnabled(isEnable);
+        rightBtnLeft.setEnabled(isEnable);
+        rightBtnRight.setEnabled(isEnable);
+
+        rightNorthwest.setEnabled(isEnable);
+        rightNortheast.setEnabled(isEnable);
+        rightSouthwest.setEnabled(isEnable);
+        rightSoutheast.setEnabled(isEnable);
+
+        upBtn.setEnabled(isEnable);
+        downBtn.setEnabled(isEnable);
     }
 
     //设置左边是否可点击
     private void setLeftEnable(boolean isEnable){
-//        leftControlFront.setEnabled(isEnable);
-//        leftControlBack.setEnabled(isEnable);
-//        leftControlUp.setEnabled(isEnable);
-//        leftControlDown.setEnabled(isEnable);
-//
-//        clockWise.setEnabled(isEnable);
-//        counterClockWise.setEnabled(isEnable);
+        openBtn.setEnabled(isEnable);
+        closeBtn.setEnabled(isEnable);
+
+        leftControlFront.setEnabled(isEnable);
+        leftControlBack.setEnabled(isEnable);
+        leftControlUp.setEnabled(isEnable);
+        leftControlDown.setEnabled(isEnable);
+
+        clockWise.setEnabled(isEnable);
+        counterClockWise.setEnabled(isEnable);
     }
 
     private TextView markConfirm;
@@ -378,7 +369,7 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
         //记录该点
     }
 
-    private TextView speed;
+    private EditText speed;
     private TextView setConfirm;
     private TextView setCancel;
     private ImageView setClose;
@@ -417,10 +408,20 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 }
                 //去掉后面%
                 String stepString = stepEdit.getText().toString();
-                double stepValue = Double.parseDouble(stepString.substring(0,stepString.trim().length()-1));
+                double stepValue = 0;
+                if(stepString.contains("%")) {
+                    stepValue = Double.parseDouble(stepString.substring(0, stepString.trim().length() - 1));
+                }else{
+                    stepValue = Double.parseDouble(stepString);
+                }
 
                 String jointString = jointStepEdit.getText().toString();
-                double jointStepValue = Double.parseDouble(jointString.substring(0,jointString.trim().length()-1));
+                double jointStepValue = 0;
+                if(jointString.contains("%")) {
+                    jointStepValue = Double.parseDouble(jointString.substring(0, jointString.trim().length() - 1));
+                }else{
+                    jointStepValue = Double.parseDouble(jointString);
+                }
 
                 if(stepValue > 100 || jointStepValue > 100){
                     Utils.MakeToast(EquipmentControlActivity.this,"步距和开合步距不能超过100");
@@ -453,25 +454,32 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     private void initSpeed() {
         if(config != null) {
             speed.setText(config.getSpeed() * 100 + "%");
+            speed.setSelection(speed.getText().length());
             speedWhich = getSpeedwhich(config.getSpeed() * 100);
             stepEdit.setText(config.getStep() + "%");
+            stepEdit.setSelection(stepEdit.getText().length());
             jointStepEdit.setText(config.getJointStep() + "%");
+            jointStepEdit.setSelection(jointStepEdit.getText().length());
         }
     }
 
     private int getSpeedwhich(double speedPercent){
-        if(20 == speedPercent){
+        if(1 == speedPercent){
             return 0;
-        }else if(50 == speedPercent){
+        }else if(20 == speedPercent){
             return 1;
-        }else if(100 == speedPercent){
+        }else if(50 == speedPercent){
             return 2;
+        }else if(100 == speedPercent){
+            return 3;
         }
         return 2;
     }
 
     private double parseSpeed(String speed){
-        if("20%".equals(speed)){
+        if("1%".equals(speed)){
+            return 0.01;
+        }else if("20%".equals(speed)){
             return 0.2;
         }else if("50%".equals(speed)){
             return 0.5;
@@ -498,47 +506,37 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 break;
 
             case R.id.clockwise:
-                setRightEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(1,true,3));
                 break;
             case R.id.counterclockwise:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(-1,true,3));
                 break;
 
             //前后左右
             case R.id.right_btn_front:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(90,0,true));
                 break;
             case R.id.right_btn_back:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(270,0,true));
                 break;
             case R.id.right_btn_left:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(180,0,true));
                 break;
             case R.id.right_btn_right:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(0,0,true));
                 break;
 
             //四个角度
             case R.id.right_northeast:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(45,0,true));
                 break;
             case R.id.right_northwest:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(135,0,true));
                 break;
             case R.id.right_southeast:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(315,0,true));
                 break;
             case R.id.right_southwest:
-                setLeftEnable(false);
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(225,0,true));
                 break;
         }
@@ -573,22 +571,21 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
 
             if(event.getAction() == MotionEvent.ACTION_UP){
                 controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("stop"));
-
                 setLeftEnable(true);
                 setRightEnable(true);
-                //由于左边腕快捷键不会一下到位，所以在获取位置信息要等一会儿
+            }
+            if(event.getAction() == MotionEvent.ACTION_DOWN){
                 if(v.getId()==R.id.left_control_up
                         || v.getId() == R.id.left_control_down
                         || v.getId() == R.id.left_control_front
-                        || v.getId() == R.id.left_control_back){
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
-                        }
-                    },5000);
+                        || v.getId() == R.id.left_control_back
+                        || v.getId() == R.id.open_btn
+                        || v.getId() == R.id.close_btn
+                        || v.getId() == R.id.clockwise
+                        || v.getId() == R.id.counterclockwise){
+                    setRightEnable(false);
                 }else{
-                    controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
+                    setLeftEnable(false);
                 }
             }
             break;
@@ -611,6 +608,8 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
         return point;
     }
 
+
+    boolean isFirstIn = true;
     @SuppressLint("HandlerLeak")
     private void initHandler(){
         handler = new Handler(){
@@ -619,8 +618,12 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 super.handleMessage(msg);
                 switch (msg.what){
                     case ConstantUtil.SOCKET_CONNECTED:
-                        controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("device_status"));
-                        controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
+                        Logger.e("control","socket_connected");
+                        if(isFirstIn) {
+                            controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("device_status"));
+                            controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
+                            isFirstIn = false;
+                        }
                         break;
                     case ConstantUtil.MESSAGE_RECEIVED:
                         processMsg(msg);
@@ -731,7 +734,7 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     }
 
 
-    private String speedPercent[] = new String[] { "20%", "50%", "100%"};
+    private String speedPercent[] = new String[] { "1%","20%", "50%", "100%"};
     private int speedWhich = 2;
 
     /**
@@ -797,6 +800,9 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
         clockWise.setOnLongClickListener(this);
         counterClockWise.setOnLongClickListener(this);
 
+        clockWise.setOnTouchListener(this);
+        counterClockWise.setOnTouchListener(this);
+
         //右边点击事件
         rightBtnFront.setOnClickListener(this);
         rightBtnFront.setOnLongClickListener(this);
@@ -834,4 +840,12 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(controlClient != null && controlClient.isConnected()){
+            controlClient.exit();
+        }
+        Logger.e("controlActivity","onDestroy.........");
+    }
 }

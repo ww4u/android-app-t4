@@ -32,17 +32,7 @@ import com.megarobo.control.utils.Utils;
  */
 public abstract class BaseActivity extends FragmentActivity implements NetBroadcastReceiver.NetChangeListener {
 
-	protected TextView back;
-    private FrameLayout cover;
-    private ImageView progress;
-    protected RelativeLayout nonet;
-    protected Button refresh;
-    private OnClickListener clickListener;
-
     private NetBroadcastReceiver netBroadcastReceiver;
-
-    private Animation animation;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,26 +45,6 @@ public abstract class BaseActivity extends FragmentActivity implements NetBroadc
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_base);
-        animation=AnimationUtils.loadAnimation(this, R.drawable.rotate_progress);
-
-        cover =(FrameLayout) findViewById(R.id.cover);
-        progress=(ImageView) findViewById(R.id.rotate_progress);
-        nonet=(RelativeLayout) findViewById(R.id.no_net);
-        refresh=(Button) findViewById(R.id.refresh);
-        nonet.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-
-            }
-        });
-        cover.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-                return true;
-            }
-        });
 
         MegaApplication.list.add(this);
 
@@ -89,53 +59,6 @@ public abstract class BaseActivity extends FragmentActivity implements NetBroadc
 
     @Override
     public void onChange(int networkState) {
-    }
-
-    private boolean isNetworkAvailable() {
-        return Utils.isNetwokAvailable(this);
-    }
-
-    protected void checkNet(OnClickListener listener) {
-        if (!isNetworkAvailable()) {
-            this.clickListener=listener;
-            nonet.setVisibility(View.VISIBLE);
-            refresh.setOnClickListener(listener);
-            if (back!=null) {
-                back.setEnabled(false);
-            }
-        } else {
-            this.clickListener=null;
-            nonet.setVisibility(View.GONE);
-            if (back!=null) {
-                back.setEnabled(true);
-            }
-        }
-    }
-
-    protected void setMask(boolean b) {
-		if (b) {
-			cover.setVisibility(View.VISIBLE);
-			progress.startAnimation(animation);
-			progress.setVisibility(View.VISIBLE);
-		} else {
-            cover.setVisibility(View.GONE);
-            progress.clearAnimation();
-            progress.setVisibility(View.GONE);
-		}
-	}
-    
-    protected void toActivity(Class<?> activity) {
-        Intent intent = new Intent(this, activity);
-        startActivity(intent);
-    }
-
-    protected void toActivityForResult(Class<?> activity, int requestCode) {
-        Intent intent = new Intent(this, activity);
-        startActivityForResult(intent,requestCode);
-    }
-
-    protected boolean hasBack() {
-        return true;
     }
 
     protected void onResume() {

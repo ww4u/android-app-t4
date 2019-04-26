@@ -30,6 +30,7 @@ import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.AllUitls;
 import com.megarobo.control.utils.CommandHelper;
 
+import com.megarobo.control.utils.Logger;
 import com.megarobo.control.utils.ThreadPoolWrap;
 import com.megarobo.control.utils.Utils;
 
@@ -113,7 +114,6 @@ public class SearchActivity extends BaseActivity {
                     return;
                 }
                 Utils.MakeToast(SearchActivity.this,"开始搜索......");
-                setMask(true);
                 //1.获取连接的设备ip列表
                 ThreadPoolWrap.getThreadPool().executeTask(new Runnable() {
                     @Override
@@ -190,9 +190,9 @@ public class SearchActivity extends BaseActivity {
                         Robot robot = new Robot();
                         robot.setIp(bundle1.getString("ip"));
                         robot.setMeta(Meta.parseMeta(content));
+                        setMask(false);
                         //真实的机器人IP
                         if(!realIpSet.contains(robot.getIp())){
-                            setMask(false);
                             realIpSet.add(robot.getIp());
                             robotList.add(robot);
                             adapter.notifyDataSetChanged();
@@ -220,6 +220,8 @@ public class SearchActivity extends BaseActivity {
         if(clientManager!=null){
             clientManager.exit();
         }
+        Logger.e("SearchActivity","onDestroy.........");
+
     }
 
     protected void setMask(boolean b) {

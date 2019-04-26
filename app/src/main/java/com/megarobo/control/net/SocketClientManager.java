@@ -24,8 +24,8 @@ public class SocketClientManager {
 	
 	private Timer mTimer;
 	private TimerTask mTimerTask;
-	private final int DELAY = 1000 * 5;
-	private final int PERIOD = 1000 * 5;
+	private final int DELAY = 1000 * 2;
+	private final int PERIOD = 1000 * 2;
 	
 	public SocketClientManager(String host,Handler mHandler,int port){
 		this.host = host;
@@ -64,17 +64,17 @@ public class SocketClientManager {
 	}
 
 	public boolean isConnected(){
+		if(mQueryClient == null){
+			return false;
+		}
 		return mQueryClient.isConnected();
 	}
 	
-	public void sendMessage(int msgType, String desUid, String dsUname, String content) throws JSONException {
+	public void sendEmptyMessage() throws JSONException {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("msghead", "");
 		
 		JSONObject objBody = new JSONObject();
-			objBody.put("dstuid", desUid);
-			objBody.put("dstnickname", dsUname);
-			objBody.put("content", content);
 			objBody.put("os", 1);
 		jsonObject.put("msgbody", objBody);
 		
@@ -97,6 +97,7 @@ public class SocketClientManager {
 
 	 */
 	public void connectToServer(){
+		Logger.e("connectToServer","connectToServer.......");
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
@@ -121,6 +122,7 @@ public class SocketClientManager {
 	 * 开启心跳包
 	 */
 	public void startkeepAlive(){
+		Logger.e("startKeepAlive","start...send ...alive");
 		stopkeepAlive();
 		
 		mTimerTask = new TimerTask() {
@@ -129,7 +131,7 @@ public class SocketClientManager {
 			public void run() {
 				
 				try {
-					sendMessage(7, "", "", "");
+					sendEmptyMessage();
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -137,7 +139,6 @@ public class SocketClientManager {
 			}
 		};
 		mTimer = new Timer();
-		//30秒后，每隔30秒发送心跳包
 		mTimer.schedule(mTimerTask, DELAY, PERIOD);
 	}
 	/**

@@ -55,7 +55,6 @@ public class SearchListAdapter extends BaseAdapter {
 
         String sn = robotList.get(position).getMeta().getSn();
         viewHolder.aliasTextView.setText(Utils.replaceX(sn));
-//        viewHolder.aliasTextView.setText(robotList.get(position).getIp());
         final String robotIP = robotList.get(position).getIp();
         viewHolder.connectBtn.setOnClickListener(new View.OnClickListener() {
             @Override

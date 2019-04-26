@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/back"
-        android:src="@drawable/icon_return"
+        android:src="@drawable/ico_return_selector"
         android:scaleType="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

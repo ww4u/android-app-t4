@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/back"
-        android:background="@drawable/btn_returnbg"
+        android:background="@drawable/control_btn_return_selector"
         android:src="@drawable/icon_return"
         android:scaleType="center"
         android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
 
     <TextView
         android:layout_toLeftOf="@id/set"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="15dp"
         android:id="@+id/restore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -124,8 +124,8 @@
 
     <TextView
         android:id="@+id/set"
-        android:layout_toLeftOf="@id/mark"
-        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@id/stop"
+        android:layout_marginRight="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@drawable/control_font_selector"
@@ -134,19 +134,6 @@
         android:background="@drawable/control_toolbar_selector"
         android:drawablePadding="5dp"
         android:text="设置" />
-
-    <TextView
-        android:id="@+id/mark"
-        android:layout_toLeftOf="@id/stop"
-        android:layout_marginRight="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textColor="@drawable/control_font_selector"
-        android:drawableLeft="@drawable/ico_mark"
-        android:background="@drawable/control_toolbar_selector"
-        android:drawablePadding="5dp"
-        android:text="记录该点"/>
 
     <TextView
         android:id="@+id/stop"
@@ -396,6 +383,15 @@
     </RelativeLayout>
 
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        >
 
     <LinearLayout
         android:id="@+id/bottom_layout"
@@ -404,7 +400,6 @@
         android:background="@drawable/control_toolbar_selector"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
         >
 
         <TextView
@@ -441,6 +436,19 @@
             android:drawablePadding="5dp"
             android:text="0°"/>
 
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/mark"
+        android:layout_toRightOf="@id/bottom_layout"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@drawable/control_font_selector"
+        android:drawableLeft="@drawable/ico_mark"
+        android:background="@drawable/control_toolbar_selector"
+        android:drawablePadding="5dp"
+        android:text="记录该点"/>
 
     </LinearLayout>
 

@@ -27,7 +27,6 @@ public class MegaApplication extends Application {
 
 
     public static List<Activity> list;
-    private boolean mbMainProcess = false;
     public static List<AreaDeviceBean> beans = new ArrayList<>();
 
     public MegaApplication() {
@@ -60,23 +59,6 @@ public class MegaApplication extends Application {
             }
         });
 
-//        int pid = android.os.Process.myPid();
-////        如果需要判断多进程时候开启
-//        ActivityManager activityMgr = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-//        List<ActivityManager.RunningAppProcessInfo> mProcesses = activityMgr
-//                .getRunningAppProcesses();
-//        for (ActivityManager.RunningAppProcessInfo item : mProcesses) {
-//            if (pid == item.pid) {
-//                if (item.processName.equalsIgnoreCase(mContext.getPackageName())) {
-//                    mbMainProcess = true;
-//                    break;
-//                }
-//            }
-//        }
-//
-//        if (mbMainProcess) {
-//            MyCrashHandler.getInstance().register(mContext);
-//        }
     }
     
 }
