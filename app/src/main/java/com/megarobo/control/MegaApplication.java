@@ -8,6 +8,7 @@ import android.os.SystemClock;
 
 import com.megarobo.control.activity.ConnectActivity;
 import com.megarobo.control.bean.AreaDeviceBean;
+import com.megarobo.control.bean.Robot;
 import com.megarobo.control.utils.AllUitls;
 import com.megarobo.control.utils.MyCrashHandler;
 import com.megarobo.control.utils.ThreadPoolWrap;
@@ -29,6 +30,8 @@ public class MegaApplication extends Application {
     public static List<Activity> list;
     public static List<AreaDeviceBean> beans = new ArrayList<>();
 
+    public static List<Robot> robotList;
+
     public MegaApplication() {
         mContext = this;
     }
@@ -41,6 +44,8 @@ public class MegaApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        robotList = new ArrayList<Robot>();
 
         list=new ArrayList<Activity>();
 

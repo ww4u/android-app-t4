@@ -75,6 +75,7 @@ public class ConnectActivity extends BaseActivity {
     private Animation animation;
 
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +131,19 @@ public class ConnectActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(MegaApplication.robotList != null && MegaApplication.robotList.size() != 0){
+            if(adapter != null && robotList != null){
+                robotList.clear();
+                robotList.addAll(MegaApplication.robotList);
+                adapter.notifyDataSetChanged();
+                setMask(false);
+            }
+        }
     }
 
     private void getList() {
@@ -215,6 +229,14 @@ public class ConnectActivity extends BaseActivity {
         super.onDestroy();
         if(clientManager!=null){
             clientManager.exit();
+        }
+        if(robotList != null){
+            robotList.clear();
+            robotList = null;
+        }
+        if(MegaApplication.robotList != null){
+            MegaApplication.robotList.clear();
+            MegaApplication.robotList = null;
         }
     }
 

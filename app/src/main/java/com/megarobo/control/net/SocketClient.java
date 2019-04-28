@@ -5,6 +5,7 @@ import android.os.Handler;
 import com.megarobo.control.utils.Logger;
 
 import org.jboss.netty.bootstrap.ClientBootstrap;
+import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelPipeline;
@@ -12,6 +13,8 @@ import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.FixedReceiveBufferSizePredictorFactory;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
+import org.jboss.netty.handler.codec.frame.DelimiterBasedFrameDecoder;
+import org.jboss.netty.handler.codec.frame.Delimiters;
 import org.jboss.netty.handler.codec.string.StringDecoder;
 import org.jboss.netty.handler.codec.string.StringEncoder;
 
@@ -36,8 +39,10 @@ public class SocketClient {
 			@Override
 			public ChannelPipeline getPipeline() throws Exception {
 				ChannelPipeline channelPipeline = Channels.pipeline();
+
 				channelPipeline.addLast("encode", new StringEncoder());
-				channelPipeline.addLast("decode", new StringDecoder());
+				channelPipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192,Delimiters.lineDelimiter()));
+				channelPipeline.addLast("decode", new ResponseDecoder());
 				channelPipeline.addLast("handler", new SocketClientHandler(mHandler,host));
 				return channelPipeline;
 			}
@@ -55,8 +60,7 @@ public class SocketClient {
 	}
 	
 	public boolean sendmsg(String msg){
-		Logger.e("sendmsg",ch==null?"ch == null":"ch !!!! null");
-		Logger.e("sendmsg",ch.isConnected()?"ch isConnected":"ch !!!! connected");
+		Logger.e("sendmsg",msg);
 		if(ch!=null && ch.isConnected()){
 			ch.write(msg);
 			return true;

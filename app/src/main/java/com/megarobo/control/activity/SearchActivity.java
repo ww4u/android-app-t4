@@ -198,6 +198,7 @@ public class SearchActivity extends BaseActivity {
                             adapter.notifyDataSetChanged();
                             showNoEquipment(false);
                         }
+                        MegaApplication.robotList = robotList;
                         break;
                     case ConstantUtil.IP_SEARCH_FINISHED:
                         if(robotList != null && robotList.size() == 0){

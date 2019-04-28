@@ -28,6 +28,7 @@ public class SocketClientHandler extends SimpleChannelHandler {
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e){
+		Logger.e("exception",e.getCause().getMessage());
 		Channel channel = e.getChannel();
 		if(channel!=null) {
 			channel.close();

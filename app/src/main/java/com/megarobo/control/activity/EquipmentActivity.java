@@ -19,6 +19,7 @@ import com.megarobo.control.bean.DeviceStatus;
 import com.megarobo.control.net.ConstantUtil;
 import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.CommandHelper;
+import com.megarobo.control.utils.Logger;
 import com.megarobo.control.utils.NetUtil;
 import com.megarobo.control.utils.Utils;
 
@@ -168,5 +169,14 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
             }
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(controlClient != null && controlClient.isConnected()){
+            controlClient.exit();
+        }
+        Logger.e("EquipmentActivity","onDestroy.........");
     }
 }

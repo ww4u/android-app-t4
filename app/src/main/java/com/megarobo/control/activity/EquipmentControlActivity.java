@@ -2,6 +2,7 @@ package com.megarobo.control.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -55,6 +56,7 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
 
     private Handler handler;
     private SocketClientManager controlClient;
+
     private Context mContext;
 
     @ViewInject(R.id.open_btn)
@@ -384,6 +386,7 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     private void doSetAction() {
         showSetView(R.layout.control_set_layout);
         speed = findViewById(R.id.speed);
+        speed.requestFocus();
         setConfirm = findViewById(R.id.confirm);
         setCancel = findViewById(R.id.cancel);
         setClose = findViewById(R.id.img_close);
@@ -440,10 +443,25 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 goneBottomView();
             }
         });
-        speed.setOnClickListener(new View.OnClickListener() {
+        speed.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-                showSelectDialog();
+            public boolean onLongClick(View v) {
+                showSelectDialog(speed);
+                return true;
+            }
+        });
+        stepEdit.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showSelectDialog(stepEdit);
+                return true;
+            }
+        });
+        jointStepEdit.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showSelectDialog(jointStepEdit);
+                return true;
             }
         });
         //读取用户设置的信息，速度，步距
@@ -740,20 +758,23 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     /**
      * 显示选择
      */
-    public void showSelectDialog() {
+    public void showSelectDialog(final EditText editText) {
+        editText.requestFocus();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("选择速度");
+        builder.setTitle("请选择：");
         // 选择下标
         builder.setSingleChoiceItems(speedPercent, speedWhich,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         speedWhich = which;
-                        speed.setText(speedPercent[which]);
+                        editText.setText(speedPercent[which]);
+                        editText.setSelection(editText.getText().length());
                         dialog.cancel();
                     }
                 });
-        builder.create().show();
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 
 
