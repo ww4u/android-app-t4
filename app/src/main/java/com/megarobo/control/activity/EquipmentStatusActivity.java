@@ -182,7 +182,7 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
                 Math.round(parameter.getPose().getW())+","+
                 Math.round(parameter.getPose().getH()));
         zeroValue.setText(parameter.isMechanicalIo()?"开":"关");
-        speedValue.setText(parameter.getMaxSpeed()+"mm/s,"+parameter.getMaxJointSpeed()+"");
+        speedValue.setText(parameter.getMaxSpeed()+"mm/s,"+parameter.getMaxJointSpeed()+"度/s");
 
     }
 
@@ -221,6 +221,14 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
                 }
                 break;
 
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(controlClient != null && controlClient.isConnected()){
+            controlClient.exit();
         }
     }
 }
