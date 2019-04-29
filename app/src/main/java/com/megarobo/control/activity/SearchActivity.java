@@ -80,6 +80,7 @@ public class SearchActivity extends BaseActivity {
     private Animation animation;
 
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

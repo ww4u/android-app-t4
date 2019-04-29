@@ -72,7 +72,7 @@
                 android:divider="@drawable/table_v_divider"
                 android:orientation="vertical"
                 android:showDividers="middle|beginning|end"
-                 >
+                >
 
                 <TableRow
                     android:background="@color/table_odd_color"

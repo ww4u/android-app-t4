@@ -79,6 +79,8 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
                 switch (msg.what){
                     case ConstantUtil.SOCKET_CONNECTED:
                         controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("device_status"));
+                        //发送连接命令
+                        controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(true));
                         break;
                     case ConstantUtil.MESSAGE_RECEIVED:
                         Bundle bundle = msg.getData();
@@ -138,8 +140,14 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
             case R.id.switchBtn:
                 Intent intent = new Intent(EquipmentActivity.this, ConnectActivity.class);
                 startActivity(intent);
+                if(controlClient!=null){
+                    controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(false));
+                }
                 break;
             case R.id.remoteControlBtn:
+                if(controlClient!=null){
+                    controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(true));
+                }
                 Intent intent1 = new Intent(EquipmentActivity.this, EquipmentControlActivity.class);
                 startActivity(intent1);
                 break;
@@ -160,6 +168,9 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
             Utils.MakeToast(EquipmentActivity.this,"再按一次退出程序");
             handler.sendEmptyMessageDelayed(MSG_EXIT_ROOM, MSG_EXIT_ROOM_DELAY);
         }else{
+            if(controlClient!=null){
+                controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(false));
+            }
             if(MegaApplication.list!=null && MegaApplication.list.size()>0){
                 for (Activity activity : MegaApplication.list){
                     if(activity!=null && !activity.isDestroyed()){

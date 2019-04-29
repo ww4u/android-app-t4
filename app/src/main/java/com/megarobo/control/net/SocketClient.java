@@ -30,7 +30,13 @@ public class SocketClient {
 	public SocketClient(){
 		
 	}
-	
+
+	/**
+	 * https://bylijinnan.iteye.com/blog/1985813 粘包
+	 * @param host
+	 * @param port
+	 * @param mHandler
+	 */
 	public void start(final String host, int port, final Handler mHandler){
 		bootstrap = new ClientBootstrap(new NioClientSocketChannelFactory(
 				Executors.newCachedThreadPool(),
@@ -42,7 +48,7 @@ public class SocketClient {
 
 				channelPipeline.addLast("encode", new StringEncoder());
 				channelPipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192,Delimiters.lineDelimiter()));
-				channelPipeline.addLast("decode", new ResponseDecoder());
+				channelPipeline.addLast("decode", new StringDecoder());
 				channelPipeline.addLast("handler", new SocketClientHandler(mHandler,host));
 				return channelPipeline;
 			}

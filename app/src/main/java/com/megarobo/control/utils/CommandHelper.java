@@ -118,6 +118,23 @@ public class CommandHelper {
     }
 
     /**
+     * 发送连接和退出连接命令
+     * @return
+     */
+    public JSONObject linkCommand(boolean status){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("command","link_status");
+            jsonObject.put("status",status);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
+    }
+
+    /**
      * 5.记录该点
      * @return
      */

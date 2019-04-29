@@ -26,6 +26,7 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.megarobo.control.MegaApplication;
 import com.megarobo.control.R;
+import com.megarobo.control.activity.subview.StatusSubView;
 import com.megarobo.control.bean.Config;
 import com.megarobo.control.bean.DataSet;
 import com.megarobo.control.bean.DeviceStatus;
@@ -88,6 +89,9 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
 
     @ViewInject(R.id.mark_view_stub)
     private ViewStub markViewStub;
+
+    @ViewInject(R.id.status_view_stub)
+    private ViewStub statusViewStub;
 
     @ViewInject(R.id.back)
     private ImageView backImg;
@@ -202,6 +206,10 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     @Override
     protected void onResume() {
         super.onResume();
+        if(controlClient!=null && controlClient.isConnected()){
+            Logger.e("onResume","isConnected............");
+            controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("device_status"));
+        }
     }
 
     /**
@@ -411,7 +419,7 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 }
                 //去掉后面%
                 String stepString = stepEdit.getText().toString();
-                double stepValue = 0;
+                double stepValue;
                 if(stepString.contains("%")) {
                     stepValue = Double.parseDouble(stepString.substring(0, stepString.trim().length() - 1));
                 }else{
@@ -419,18 +427,26 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 }
 
                 String jointString = jointStepEdit.getText().toString();
-                double jointStepValue = 0;
+                double jointStepValue;
                 if(jointString.contains("%")) {
                     jointStepValue = Double.parseDouble(jointString.substring(0, jointString.trim().length() - 1));
                 }else{
                     jointStepValue = Double.parseDouble(jointString);
                 }
 
-                if(stepValue > 100 || jointStepValue > 100){
-                    Utils.MakeToast(EquipmentControlActivity.this,"步距和开合步距不能超过100");
+                String speedString = speed.getText().toString();
+                double speedValue;
+                if(jointString.contains("%")) {
+                    speedValue = Double.parseDouble(speedString.substring(0, speedString.trim().length() - 1));
+                }else{
+                    speedValue = Double.parseDouble(speedString);
+                }
+
+                if(stepValue > 100 || jointStepValue > 100 || speedValue > 100){
+                    Utils.MakeToast(EquipmentControlActivity.this,"输入数据不能超过100");
                     return;
                 }
-                speedNum = parseSpeed(speed.getText().toString());
+                speedNum = speedValue;
                 step = stepValue;
                 jointStep = jointStepValue;
                 controlClient.sendMsgToServer(CommandHelper.getInstance().configCommand(step,jointStep,speedNum));
@@ -471,9 +487,10 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     Config config;
     private void initSpeed() {
         if(config != null) {
-            speed.setText(config.getSpeed() * 100 + "%");
+            Logger.e("config","speed:"+config.getSpeed()+"step:"+config.getStep()+"jointStep:"+config.getJointStep());
+            speed.setText(config.getSpeed() + "%");
             speed.setSelection(speed.getText().length());
-            speedWhich = getSpeedwhich(config.getSpeed() * 100);
+            speedWhich = getSpeedwhich(config.getSpeed());
             stepEdit.setText(config.getStep() + "%");
             stepEdit.setSelection(stepEdit.getText().length());
             jointStepEdit.setText(config.getJointStep() + "%");
@@ -492,19 +509,6 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
             return 3;
         }
         return 2;
-    }
-
-    private double parseSpeed(String speed){
-        if("1%".equals(speed)){
-            return 0.01;
-        }else if("20%".equals(speed)){
-            return 0.2;
-        }else if("50%".equals(speed)){
-            return 0.5;
-        }else if("100%".equals(speed)){
-            return 1;
-        }
-        return 1;
     }
 
     @Override
@@ -642,9 +646,15 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                             controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
                             isFirstIn = false;
                         }
+                        netStatus.setText("正常");
+                        netStatus.setTextColor(getResources().getColor(R.color.blue_status));
                         break;
                     case ConstantUtil.MESSAGE_RECEIVED:
                         processMsg(msg);
+                        break;
+                    case ConstantUtil.SOCKET_DISCONNECTED:
+                        netStatus.setText("断开");
+                        netStatus.setTextColor(getResources().getColor(R.color.orange));
                         break;
                 }
 
@@ -691,18 +701,23 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
             if(result != null || !result.isEmpty()){
                 pose = Pose.parsePose(result.getString("pose"));
                 angle.setText(Math.round(pose.getW())+"°");
-                position.setText(Math.round(pose.getX())+","+
+                String positionStr = Math.round(pose.getX())+","+
                         Math.round(pose.getY())+","+
-                        Math.round(pose.getZ())+",");
+                        Math.round(pose.getZ())+",";
+                position.setText(positionStr);
             }
         }else if("device_status".equals(command)){
             DeviceStatus deviceStatus = DeviceStatus.parseDeviceStatus(content);
             setStatus(deviceStatus);
+        }else if("notify".equals(command)){
+            controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(false));
+            onBackPressed();
         }
     }
 
     private RelativeLayout mSetView;
     private RelativeLayout mMarkView;
+    private RelativeLayout mStatusView;
 
     /**
      * 点击设置和记录该点时弹出底部隐藏view

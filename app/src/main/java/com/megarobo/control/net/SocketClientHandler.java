@@ -19,8 +19,7 @@ public class SocketClientHandler extends SimpleChannelHandler {
 	
 	private Handler mHandler;
 	private String host;
-	private String temp="";
-	
+
 	public SocketClientHandler(Handler mHandler,String host) {
 		this.host = host;
 		this.mHandler = mHandler;
@@ -35,8 +34,19 @@ public class SocketClientHandler extends SimpleChannelHandler {
 		}
 	}
 
+    @Override
+    public void channelDisconnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
+        super.channelDisconnected(ctx, e);
+        Logger.e("channelDisconnected",e.getState().toString());
+        Message message = new Message();
+        message.what = ConstantUtil.SOCKET_DISCONNECTED;
+        Bundle bundle = new Bundle();
+        bundle.putString("ip",host);
+        message.setData(bundle);
+        mHandler.sendMessage(message);
+    }
 
-	/**
+    /**
 	 * 收到服务器发来的查询消息
 	 * @param ctx
 	 * @param e
@@ -70,6 +80,7 @@ public class SocketClientHandler extends SimpleChannelHandler {
 	 */
 	@Override
 	public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e){
+		Logger.e("channelConnected",e.getState().toString());
 		Message message = new Message();
 		message.what = ConstantUtil.SOCKET_CONNECTED;
 		Bundle bundle = new Bundle();

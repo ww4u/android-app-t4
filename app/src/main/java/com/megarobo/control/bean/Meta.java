@@ -22,6 +22,9 @@ public class Meta {
     //是否有爪子
     private boolean hasHand;
 
+    //是否被占用
+    private boolean link;
+
     public String getModel() {
         return model;
     }
@@ -54,6 +57,13 @@ public class Meta {
         this.alias = alias;
     }
 
+    public boolean isLink() {
+        return link;
+    }
+
+    public void setLink(boolean link) {
+        this.link = link;
+    }
 
     /**
      {
@@ -80,6 +90,7 @@ public class Meta {
         meta.setAlias(result.getString("alias"));
         meta.setModel(result.getString("model"));
         meta.setHasHand(result.getBooleanValue("has_hand"));
+        meta.setLink(result.getBooleanValue("link"));
         meta.setSn(result.getString("sn"));
 
         return meta;

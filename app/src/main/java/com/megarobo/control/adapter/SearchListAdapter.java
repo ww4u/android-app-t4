@@ -48,6 +48,7 @@ public class SearchListAdapter extends BaseAdapter {
             convertView = View.inflate(mContext, R.layout.search_list_item,null);
             viewHolder.aliasTextView = convertView.findViewById(R.id.arpitem);
             viewHolder.connectBtn = convertView.findViewById(R.id.connect);
+            viewHolder.status = convertView.findViewById(R.id.status);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
@@ -55,6 +56,17 @@ public class SearchListAdapter extends BaseAdapter {
 
         String sn = robotList.get(position).getMeta().getSn();
         viewHolder.aliasTextView.setText(Utils.replaceX(sn));
+        viewHolder.status.setText(robotList.get(position).getMeta().isLink()?"占用中":"可连接");
+        if(robotList.get(position).getMeta().isLink()){
+            viewHolder.aliasTextView.setTextColor(mContext.getResources().getColor(R.color.status_link));
+            viewHolder.status.setTextColor(mContext.getResources().getColor(R.color.status_link));
+            viewHolder.connectBtn.setVisibility(View.INVISIBLE);
+        }else{
+            viewHolder.aliasTextView.setTextColor(mContext.getResources().getColor(R.color.white));
+            viewHolder.status.setTextColor(mContext.getResources().getColor(R.color.status_idle));
+            viewHolder.connectBtn.setVisibility(View.VISIBLE);
+        }
+
         final String robotIP = robotList.get(position).getIp();
         viewHolder.connectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,5 +85,6 @@ public class SearchListAdapter extends BaseAdapter {
     class ViewHolder{
         public TextView aliasTextView;
         public TextView connectBtn;
+        public TextView status;
     }
 }

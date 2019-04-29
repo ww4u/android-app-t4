@@ -47,6 +47,7 @@ public class ConnectListAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView = View.inflate(mContext, R.layout.connect_list_item,null);
             viewHolder.robotName = convertView.findViewById(R.id.robotName);
+            viewHolder.status = convertView.findViewById(R.id.status);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
@@ -54,11 +55,20 @@ public class ConnectListAdapter extends BaseAdapter {
 
         String sn = robotList.get(position).getMeta().getSn();
         viewHolder.robotName.setText(Utils.replaceX(sn));
-
+        viewHolder.status.setText(robotList.get(position).getMeta().isLink()?"占用中":"可连接");
+        if(robotList.get(position).getMeta().isLink()){
+            viewHolder.robotName.setTextColor(mContext.getResources().getColor(R.color.status_link));
+            viewHolder.status.setTextColor(mContext.getResources().getColor(R.color.status_link));
+        }else{
+            viewHolder.robotName.setTextColor(mContext.getResources().getColor(R.color.white));
+            viewHolder.status.setTextColor(mContext.getResources().getColor(R.color.status_idle));
+        }
         return convertView;
     }
 
     class ViewHolder{
         public TextView robotName;
+        public TextView status;
+
     }
 }

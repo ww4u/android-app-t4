@@ -11,6 +11,9 @@ public class ConstantUtil {
 	public static final int EMERGENCY_PORT = 50002;
 
 	//控制socket连接
+	public static final int SOCKET_DISCONNECTED = 87;
+
+	//控制socket连接
 	public static final int SOCKET_CONNECTED = 88;
 
 	//控制socket连接

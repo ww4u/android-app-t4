@@ -107,16 +107,15 @@ public class ConnectActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Robot robot = (Robot) parent.getAdapter().getItem(position);
-                if(robot == null){
+                if(robot == null || robot.getMeta().isLink()){
                     return;
                 }
                 MegaApplication.ip = robot.getIp();
                 MegaApplication.name = Utils.replaceX(robotList.get(position).getMeta().getSn());
                 SocketClientManager socketClientManager = socketManagerMap.get(robot.getIp());
-                if(socketClientManager!=null) {
-                    socketClientManager.sendMsgToServer(CommandHelper.getInstance().indicatorCommand(true));
-                }
-
+//                if(socketClientManager!=null) {
+//                    socketClientManager.sendMsgToServer(CommandHelper.getInstance().indicatorCommand(true));
+//                }
                 Intent intent = new Intent(ConnectActivity.this, EquipmentActivity.class);
                 startActivity(intent);
             }
@@ -229,6 +228,7 @@ public class ConnectActivity extends BaseActivity {
         super.onDestroy();
         if(clientManager!=null){
             clientManager.exit();
+            clientManager = null;
         }
         if(robotList != null){
             robotList.clear();
