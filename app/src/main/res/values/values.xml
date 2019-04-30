@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="background_tab_pressed">#6633B5E5</color>
-    <color name="titlebar_left_pressed_color">#26345f73</color>
-    <color name="black_translucent">#00000000</color>
     <color name="white">#ffffff</color>
-    <color name="login_hint">#a3a3b6</color>
-    <color name="blue">#2a2e53</color>
-    <color name="button_pressed">#33364a</color>
-    <color name="toast_bg">#a0393939</color>
-    <color name="button_text_color">#a8b4c7</color>
-    <color name="inner_text_color">#8f8e94</color>
     <color name="main_blue_color">#999999</color>
     <color name="main_green_color">#7CCB25</color>
 
@@ -19,20 +10,13 @@
 
     <!-- 主页 -->
     <color name="main_backgroud">#202020</color>
-    <color name="main_btn_bg">#7CCB25</color>
     <color name="line_color">#93D3F0</color>
 
-    <color name="default_font_color">#d0d0d0</color>
     <color name="font_color">#2a2e53</color>
-    <color name="spinner_color">#e8e8e8</color>
-    <color name="gray">#a8b4c7</color>
     <color name="gray_default">#E2E2E2</color>
 
 
     <color name="text_color_detail">#808080</color>
-    <color name="button_bg_normal">#7CCB25</color>
-    <color name="button_bg_pressed">#3f91dc</color>
-    <color name="bottom_button_bg_normal">#7CCB25</color>
     <color name="bottom_button_bg_pressed">#B8E986</color>
 
     <color name="orange">#FF624D</color>

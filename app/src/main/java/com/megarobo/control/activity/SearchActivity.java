@@ -114,6 +114,10 @@ public class SearchActivity extends BaseActivity {
                 if(!isSearchFinished){
                     return;
                 }
+                if(robotList!=null && realIpSet != null){
+                    robotList.clear();
+                    realIpSet.clear();
+                }
                 Utils.MakeToast(SearchActivity.this,"开始搜索......");
                 //1.获取连接的设备ip列表
                 ThreadPoolWrap.getThreadPool().executeTask(new Runnable() {

@@ -15,12 +15,17 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.megarobo.control.MegaApplication;
 import com.megarobo.control.bean.Parameter;
+import com.megarobo.control.event.ParameterReceiveEvent;
 import com.megarobo.control.net.ConstantUtil;
 import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.CommandHelper;
 import com.megarobo.control.utils.Logger;
 import com.megarobo.control.utils.Utils;
 import com.megarobo.control.R;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class EquipmentStatusActivity extends BaseActivity implements View.OnClickListener{
 
@@ -33,8 +38,6 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
     @ViewInject(R.id.back)
     private ImageView backImg;
 
-    private Handler handler;
-    private SocketClientManager controlClient;
     private Context mContext;
 
     @ViewInject(R.id.driver_current_1)
@@ -102,11 +105,9 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
         mContext = EquipmentStatusActivity.this;
         setContentView(R.layout.activity_equipment_status);
         ViewUtils.inject(this);
+        EventBus.getDefault().register(this);
 
-        initHandler();
-        controlClient = new SocketClientManager(MegaApplication.ip,
-                handler,ConstantUtil.CONTROL_PORT);
-        controlClient.connectToServer();
+        MegaApplication.getInstance().controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("parameter"));
 
         setListener();
     }
@@ -117,33 +118,9 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
         backImg.setOnClickListener(this);
     }
 
-    @SuppressLint("HandlerLeak")
-    private void initHandler(){
-        handler = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                switch (msg.what){
-                    case ConstantUtil.SOCKET_CONNECTED:
-                        if(Utils.isNotEmptyString(MegaApplication.ip)) {
-                            controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("parameter"));
-                        }
-                        break;
-                    case ConstantUtil.MESSAGE_RECEIVED:
-                        Bundle bundle = msg.getData();
-                        String content = bundle.getString("content");
-                        String command = bundle.getString("command");
-                        if("parameter".equals(command)){
-                            Parameter parameter = Parameter.parseParameter(content);
-                            setEquipmentStatus(parameter);
-                        }else if("package".equals(command)){
-                            Utils.MakeToast(EquipmentStatusActivity.this,"恢复出厂设置成功");
-                        }
-                        break;
-                }
-
-            }
-        };
+    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
+    public void loadData(ParameterReceiveEvent event){
+        setEquipmentStatus(event.getParameter());
     }
 
     private void setEquipmentStatus(Parameter parameter) {
@@ -207,7 +184,7 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
                     @Override
                     public void confirm() {
                         if(Utils.isNotEmptyString(MegaApplication.ip)){
-                            controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("package"));
+                            MegaApplication.getInstance().controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("package"));
                         }
                     }
                 },"确定将机器恢复出厂姿态吗?");
@@ -217,7 +194,7 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.refresh:
                 if(Utils.isNotEmptyString(MegaApplication.ip)) {
-                    controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("parameter"));
+                    MegaApplication.getInstance().controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("parameter"));
                 }
                 break;
 
@@ -227,8 +204,6 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(controlClient != null && controlClient.isConnected()){
-            controlClient.exit();
-        }
+        EventBus.getDefault().unregister(this);
     }
 }

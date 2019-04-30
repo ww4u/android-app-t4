@@ -4,8 +4,7 @@
 	android:background="@drawable/xml_white_corners_bg"
 	android:layout_width="wrap_content"
 	android:layout_height="match_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/root">
+  xmlns:android="http://schemas.android.com/apk/res/android">
         
      <TextView
 	      android:layout_marginTop="20dp"
@@ -35,8 +34,7 @@
 
 	<View android:background="#cccccc"
 		android:layout_width="fill_parent"
-		android:id="@+id/bottom_line"
-		android:layout_above="@id/bottomLayout"
+        android:layout_above="@id/bottomLayout"
 		android:layout_height="1.0px" />
 
     <LinearLayout

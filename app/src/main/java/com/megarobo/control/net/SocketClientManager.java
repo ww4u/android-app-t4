@@ -154,5 +154,5 @@ public class SocketClientManager {
 		mTimer = null;
 		mTimerTask = null;
 	}
-	
+
 }

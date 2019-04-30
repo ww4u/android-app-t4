@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewStub;
@@ -26,19 +25,22 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.megarobo.control.MegaApplication;
 import com.megarobo.control.R;
-import com.megarobo.control.activity.subview.StatusSubView;
 import com.megarobo.control.bean.Config;
 import com.megarobo.control.bean.DataSet;
 import com.megarobo.control.bean.DeviceStatus;
 import com.megarobo.control.bean.LinkStatus;
+import com.megarobo.control.bean.Parameter;
 import com.megarobo.control.bean.Point;
 import com.megarobo.control.bean.Pose;
+import com.megarobo.control.event.ParameterReceiveEvent;
 import com.megarobo.control.net.ConstantUtil;
 import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.CommandHelper;
 import com.megarobo.control.utils.Logger;
 import com.megarobo.control.utils.NetUtil;
 import com.megarobo.control.utils.Utils;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 /**
@@ -90,9 +92,6 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     @ViewInject(R.id.mark_view_stub)
     private ViewStub markViewStub;
 
-    @ViewInject(R.id.status_view_stub)
-    private ViewStub statusViewStub;
-
     @ViewInject(R.id.back)
     private ImageView backImg;
 
@@ -119,11 +118,6 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
 
     @ViewInject(R.id.counterclockwise)
     private ImageButton counterClockWise;
-
-    //右边控制按钮
-    @ViewInject(R.id.right_bg)
-    private ImageView rightBg;
-
 
     //前后左右
     @ViewInject(R.id.right_btn_front)
@@ -171,6 +165,7 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
         controlClient = new SocketClientManager(MegaApplication.ip,
                 handler,ConstantUtil.CONTROL_PORT);
         controlClient.connectToServer();
+        MegaApplication.getInstance().controlClient = controlClient;
 
     }
 
@@ -712,12 +707,14 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
         }else if("notify".equals(command)){
             controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(false));
             onBackPressed();
+        }else if("parameter".equals(command)){
+            Parameter parameter = Parameter.parseParameter(content);
+            EventBus.getDefault().postSticky(new ParameterReceiveEvent(parameter));
         }
     }
 
     private RelativeLayout mSetView;
     private RelativeLayout mMarkView;
-    private RelativeLayout mStatusView;
 
     /**
      * 点击设置和记录该点时弹出底部隐藏view

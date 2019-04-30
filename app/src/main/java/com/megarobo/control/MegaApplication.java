@@ -9,6 +9,7 @@ import android.os.SystemClock;
 import com.megarobo.control.activity.ConnectActivity;
 import com.megarobo.control.bean.AreaDeviceBean;
 import com.megarobo.control.bean.Robot;
+import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.AllUitls;
 import com.megarobo.control.utils.MyCrashHandler;
 import com.megarobo.control.utils.ThreadPoolWrap;
@@ -39,6 +40,8 @@ public class MegaApplication extends Application {
     public static MegaApplication getInstance() {
         return mContext;
     }
+
+    public SocketClientManager controlClient;
 
 
     @Override

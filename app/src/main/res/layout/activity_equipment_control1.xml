@@ -58,7 +58,6 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/postion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="当前坐标位置："
@@ -159,7 +158,6 @@
         android:layout_marginBottom="40dp"
         >
         <ImageView
-            android:id="@+id/lefg_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -251,7 +249,6 @@
         android:layout_toLeftOf="@id/up_btn"
         >
         <ImageView
-            android:id="@+id/right_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -262,7 +259,6 @@
             android:layout_centerInParent="true"
             android:src="@drawable/bg_centerpoint"/>
         <View
-            android:id="@+id/right_center"
             android:layout_width="1dp"
             android:layout_height="1dp"
             android:layout_centerInParent="true"
@@ -462,12 +458,6 @@
 
     <ViewStub
         android:id="@+id/mark_view_stub"
-        android:layout_alignParentBottom="true"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
-
-    <ViewStub
-        android:id="@+id/status_view_stub"
         android:layout_alignParentBottom="true"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>

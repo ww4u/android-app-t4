@@ -112,7 +112,7 @@ public class ConnectActivity extends BaseActivity {
                 }
                 MegaApplication.ip = robot.getIp();
                 MegaApplication.name = Utils.replaceX(robotList.get(position).getMeta().getSn());
-                SocketClientManager socketClientManager = socketManagerMap.get(robot.getIp());
+//                SocketClientManager socketClientManager = socketManagerMap.get(robot.getIp());
 //                if(socketClientManager!=null) {
 //                    socketClientManager.sendMsgToServer(CommandHelper.getInstance().indicatorCommand(true));
 //                }

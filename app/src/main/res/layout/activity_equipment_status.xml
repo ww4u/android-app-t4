@@ -51,7 +51,6 @@
                 android:text="数据表格:"/>
 
             <TextView
-                android:id="@+id/imgText"
                 android:layout_alignTop="@id/tableText"
                 android:layout_alignParentRight="true"
                 android:layout_alignLeft="@id/img_example"
