@@ -43,6 +43,7 @@
             android:background="@drawable/btn_cancel_nor"
             android:text="50%"
             android:textColor="@color/white"
+            android:inputType="number|numberDecimal"
             android:clickable="true"
             android:textSize="18sp" />
     </LinearLayout>

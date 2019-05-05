@@ -4,6 +4,6 @@
     <style name="AppTheme" parent="AppTheme.Base">
         <item name="android:colorPrimary">@color/main_backgroud</item>
         <item name="android:colorPrimaryDark">@color/main_backgroud</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:colorAccent">@color/yellow</item>
     </style>
 </resources>

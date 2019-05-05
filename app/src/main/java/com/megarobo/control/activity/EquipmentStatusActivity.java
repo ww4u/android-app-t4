@@ -118,7 +118,7 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
         backImg.setOnClickListener(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
+    @Subscribe(threadMode = ThreadMode.MAIN,sticky = false)
     public void loadData(ParameterReceiveEvent event){
         setEquipmentStatus(event.getParameter());
     }

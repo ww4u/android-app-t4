@@ -723,54 +723,6 @@ public class Utils {
 //        });
 //    }
 
-    public static void customInputDialog(Context context, String title,
-                                         final DialogInputListenner dialogInputListenner) {
-        if(context == null){
-            return;
-        }
-        final Dialog dialog = new Dialog(context, R.style.input_dialog);
-        dialog.show();
-        Window window = dialog.getWindow();
-        View view = LayoutInflater.from(context).inflate(
-            R.layout.alert_input_dialog, null);
-        window.setContentView(view);
-        WindowManager windowManager = ((Activity) context).getWindowManager();
-        Display display = windowManager.getDefaultDisplay();
-        WindowManager.LayoutParams params = window.getAttributes();
-        Point point = new Point();
-        display.getSize(point);
-        params.width = (int) (point.x * 0.8);
-        window.setAttributes(params);
-        window.setWindowAnimations(R.anim.push_bottom_in);
-
-        TextView mainContent = (TextView) window.findViewById(R.id.title);
-        final EditText input = (EditText) window.findViewById(R.id.input);
-        input.setFocusable(true);
-        Button confirm = (Button) window.findViewById(R.id.confirm);
-        Button cancel = (Button) window.findViewById(R.id.cancel);
-
-        mainContent.setText(title);
-        confirm.setText("确认");
-        confirm.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-                dialogInputListenner.confirm(input.getText().toString());
-            }
-        });
-        cancel.setText("取消");
-        cancel.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                dialog.cancel();
-            }
-        });
-    }
-
     /**
      * 生成对话框
      *

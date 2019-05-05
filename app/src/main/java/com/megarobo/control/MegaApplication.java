@@ -2,16 +2,13 @@ package com.megarobo.control;
 
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.Application;
 import android.os.SystemClock;
 
-import com.megarobo.control.activity.ConnectActivity;
 import com.megarobo.control.bean.AreaDeviceBean;
 import com.megarobo.control.bean.Robot;
 import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.AllUitls;
-import com.megarobo.control.utils.MyCrashHandler;
 import com.megarobo.control.utils.ThreadPoolWrap;
 
 import java.util.ArrayList;
