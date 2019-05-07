@@ -44,10 +44,6 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
     @ViewInject(R.id.equipment_name)
     private TextView equipmentName;
 
-    private boolean isExit;
-    private static final int MSG_EXIT_ROOM = 5001;
-    private static final int MSG_EXIT_ROOM_DELAY = 2000;
-
     private Handler handler;
     private SocketClientManager controlClient;
 
@@ -90,9 +86,6 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
                             DeviceStatus deviceStatus = DeviceStatus.parseDeviceStatus(content);
                             setStatus(deviceStatus);
                         }
-                        break;
-                    case MSG_EXIT_ROOM:
-                        isExit = false;
                         break;
                 }
 
@@ -151,10 +144,6 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
                 Intent intent1 = new Intent(EquipmentActivity.this, EquipmentControlActivity.class);
                 startActivity(intent1);
                 break;
-            case R.id.link_status:
-                Intent intent2 = new Intent(EquipmentActivity.this, EquipmentStatusActivity.class);
-                startActivity(intent2);
-                break;
         }
     }
 
@@ -163,23 +152,11 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
     @SuppressLint("NewApi")
     @Override
     public void onBackPressed() {
-        if(!isExit){
-            isExit = true;
-            Utils.MakeToast(EquipmentActivity.this,"再按一次退出程序");
-            handler.sendEmptyMessageDelayed(MSG_EXIT_ROOM, MSG_EXIT_ROOM_DELAY);
-        }else{
-            if(controlClient!=null){
-                controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(false));
-            }
-            if(MegaApplication.list!=null && MegaApplication.list.size()>0){
-                for (Activity activity : MegaApplication.list){
-                    if(activity!=null && !activity.isDestroyed()){
-                        activity.finish();
-                    }
-                }
-            }
-            super.onBackPressed();
+        if(controlClient!=null){
+            controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(false));
         }
+        super.onBackPressed();
+
     }
 
     @Override

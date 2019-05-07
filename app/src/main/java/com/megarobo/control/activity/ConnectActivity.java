@@ -135,7 +135,7 @@ public class ConnectActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(MegaApplication.robotList != null && MegaApplication.robotList.size() != 0){
+        if(MegaApplication.robotList != null){
             if(adapter != null && robotList != null){
                 robotList.clear();
                 robotList.addAll(MegaApplication.robotList);
@@ -143,6 +143,7 @@ public class ConnectActivity extends BaseActivity {
                 setMask(false);
             }
         }
+
     }
 
     private void getList() {
@@ -202,6 +203,7 @@ public class ConnectActivity extends BaseActivity {
                         break;
                     case MSG_EXIT_ROOM:
                         isExit = false;
+                        break;
                     case ConstantUtil.IP_SEARCH_FINISHED:
                         if(robotList != null && robotList.size() == 0){
                             setMask(false);

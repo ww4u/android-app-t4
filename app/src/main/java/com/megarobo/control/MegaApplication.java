@@ -45,7 +45,6 @@ public class MegaApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        robotList = new ArrayList<Robot>();
 
         list=new ArrayList<Activity>();
 

@@ -30,7 +30,6 @@ import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.AllUitls;
 import com.megarobo.control.utils.CommandHelper;
 
-import com.megarobo.control.utils.Logger;
 import com.megarobo.control.utils.ThreadPoolWrap;
 import com.megarobo.control.utils.Utils;
 
@@ -210,6 +209,7 @@ public class SearchActivity extends BaseActivity {
                             setMask(false);
                             showNoEquipment(true);
                         }
+                        MegaApplication.robotList = robotList;
                         break;
                     default:
                         showNoEquipment(true);
@@ -226,8 +226,6 @@ public class SearchActivity extends BaseActivity {
         if(clientManager!=null){
             clientManager.exit();
         }
-        Logger.e("SearchActivity","onDestroy.........");
-
     }
 
     protected void setMask(boolean b) {

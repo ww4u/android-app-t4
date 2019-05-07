@@ -28,6 +28,14 @@ public class SocketClientHandler extends SimpleChannelHandler {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e){
 		Logger.e("exception",e.getCause().getMessage());
+		if(e.getCause().getMessage().contains("recvfrom failed")){
+			Message message = new Message();
+			message.what = ConstantUtil.SOCKET_DISCONNECTED;
+			Bundle bundle = new Bundle();
+			bundle.putString("ip",host);
+			message.setData(bundle);
+			mHandler.sendMessage(message);
+		}
 		Channel channel = e.getChannel();
 		if(channel!=null) {
 			channel.close();

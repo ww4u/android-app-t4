@@ -412,30 +412,17 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                     Utils.MakeToast(EquipmentControlActivity.this,"步距和开合步距不能为空");
                     return;
                 }
-                //去掉后面%
                 String stepString = stepEdit.getText().toString();
                 double stepValue;
-                if(stepString.contains("%")) {
-                    stepValue = Double.parseDouble(stepString.substring(0, stepString.trim().length() - 1));
-                }else{
-                    stepValue = Double.parseDouble(stepString);
-                }
+                stepValue = Double.parseDouble(stepString);
 
                 String jointString = jointStepEdit.getText().toString();
                 double jointStepValue;
-                if(jointString.contains("%")) {
-                    jointStepValue = Double.parseDouble(jointString.substring(0, jointString.trim().length() - 1));
-                }else{
-                    jointStepValue = Double.parseDouble(jointString);
-                }
+                jointStepValue = Double.parseDouble(jointString);
 
                 String speedString = speed.getText().toString();
                 double speedValue;
-                if(jointString.contains("%")) {
-                    speedValue = Double.parseDouble(speedString.substring(0, speedString.trim().length() - 1));
-                }else{
-                    speedValue = Double.parseDouble(speedString);
-                }
+                speedValue = Double.parseDouble(speedString);
 
                 if(stepValue > 100 || jointStepValue > 100 || speedValue > 100){
                     Utils.MakeToast(EquipmentControlActivity.this,"输入数据不能超过100");
@@ -483,12 +470,12 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     private void initSpeed() {
         if(config != null) {
             Logger.e("config","speed:"+config.getSpeed()+"step:"+config.getStep()+"jointStep:"+config.getJointStep());
-            speed.setText(config.getSpeed() + "%");
+            speed.setText(config.getSpeed() + "");
             speed.setSelection(speed.getText().length());
             speedWhich = getSpeedwhich(config.getSpeed());
-            stepEdit.setText(config.getStep() + "%");
+            stepEdit.setText(config.getStep() + "");
             stepEdit.setSelection(stepEdit.getText().length());
-            jointStepEdit.setText(config.getJointStep() + "%");
+            jointStepEdit.setText(config.getJointStep() + "");
             jointStepEdit.setSelection(jointStepEdit.getText().length());
         }
     }
@@ -764,7 +751,7 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
     }
 
 
-    private String speedPercent[] = new String[] { "1%","20%", "50%", "100%"};
+    private String speedPercent[] = new String[] { "1","20", "50", "100"};
     private int speedWhich = 2;
 
     /**
