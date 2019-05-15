@@ -111,7 +111,7 @@ public class Utils {
 //            char c = subString.charAt(i);
 //            subString = subString.replace(c,'X');
 //        }
-        String lastFiveStr = input.substring(input.length()-4);
+        String lastFiveStr = input.substring(input.length()-6);
         String firstFourStr = input.substring(0,4);
 
         return new StringBuffer(firstFourStr).append("...")

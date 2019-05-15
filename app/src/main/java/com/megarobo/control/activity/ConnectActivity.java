@@ -148,14 +148,13 @@ public class ConnectActivity extends BaseActivity {
 
     private void getList() {
         Logger.e("MegaApplication.beans",MegaApplication.beans.size()+"......");
-        if(MegaApplication.beans == null || MegaApplication.beans.size() == 0){
-            return;
-        }
-        clientManager = new SocketClientManager(ConstantUtil.HOST,
-                handler,ConstantUtil.CONTROL_PORT);
-        for(int i=0;i<MegaApplication.beans.size();i++){
-            clientManager.setHost(MegaApplication.beans.get(i).getIp());
-            clientManager.connectToServer();
+        if(MegaApplication.beans != null && MegaApplication.beans.size() != 0){
+            clientManager = new SocketClientManager(ConstantUtil.HOST,
+                    handler,ConstantUtil.CONTROL_PORT);
+            for(int i=0;i<MegaApplication.beans.size();i++){
+                clientManager.setHost(MegaApplication.beans.get(i).getIp());
+                clientManager.connectToServer();
+            }
         }
         SystemClock.sleep(10000);
         handler.sendEmptyMessage(ConstantUtil.IP_SEARCH_FINISHED);
