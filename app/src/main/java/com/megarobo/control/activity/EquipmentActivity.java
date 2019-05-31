@@ -16,6 +16,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.megarobo.control.MegaApplication;
 import com.megarobo.control.R;
 import com.megarobo.control.bean.DeviceStatus;
+import com.megarobo.control.blockly.PythonActivity;
 import com.megarobo.control.net.ConstantUtil;
 import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.CommandHelper;
@@ -44,6 +45,17 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
     @ViewInject(R.id.equipment_name)
     private TextView equipmentName;
 
+    @ViewInject(R.id.simpleProgramBtn)
+    private TextView simpleProgramBtn;
+
+    @ViewInject(R.id.customProgramBtn)
+    private TextView customProgramBtn;
+
+    @ViewInject(R.id.myProgramBtn)
+    private TextView myProgramBtn;
+
+
+
     private Handler handler;
     private SocketClientManager controlClient;
 
@@ -57,11 +69,17 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
         switchBtn.setOnClickListener(this);
         remoteControlBtn.setOnClickListener(this);
         linkStatus.setOnClickListener(this);
+        simpleProgramBtn.setOnClickListener(this);
+        customProgramBtn.setOnClickListener(this);
+        myProgramBtn.setOnClickListener(this);
 
         initHandler();
         controlClient = new SocketClientManager(MegaApplication.ip,
                 handler,ConstantUtil.CONTROL_PORT);
         controlClient.connectToServer();
+        if(MegaApplication.getInstance().controlClient == null) {
+            MegaApplication.getInstance().controlClient = controlClient;
+        }
 
         equipmentName.setText(MegaApplication.name);
     }
@@ -143,6 +161,27 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
                 }
                 Intent intent1 = new Intent(EquipmentActivity.this, EquipmentControlActivity.class);
                 startActivity(intent1);
+                break;
+            case R.id.simpleProgramBtn:
+                if(controlClient!=null){
+                    controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(true));
+                }
+                Intent simpleIntent = new Intent(EquipmentActivity.this, PythonActivity.class);
+                startActivity(simpleIntent);
+                break;
+            case R.id.customProgramBtn:
+                if(controlClient!=null){
+                    controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(true));
+                }
+                Intent customIntent = new Intent(EquipmentActivity.this, EquipmentControlActivity.class);
+                startActivity(customIntent);
+                break;
+            case R.id.myProgramBtn:
+                if(controlClient!=null){
+                    controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(true));
+                }
+                Intent myIntent = new Intent(EquipmentActivity.this, EquipmentControlActivity.class);
+                startActivity(myIntent);
                 break;
         }
     }

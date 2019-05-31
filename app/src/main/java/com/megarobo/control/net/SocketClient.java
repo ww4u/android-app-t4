@@ -58,6 +58,7 @@ public class SocketClient {
 		bootstrap.setOption("reuseAddress", true);
 		if(host != null) {
 			channelFuture = bootstrap.connect(new InetSocketAddress(host, port));
+			Logger.e("host",""+host);
 		}
 		if(channelFuture!=null)
 			ch = channelFuture.getChannel();

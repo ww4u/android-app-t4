@@ -17,7 +17,7 @@
         android:icon="@drawable/icon2"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme1"
         tools:replace="android:allowBackup"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".activity.ConnectActivity"
@@ -28,6 +28,12 @@
 
         <activity android:name=".activity.EquipmentActivity"
             android:screenOrientation="landscape" >
+
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
 
         </activity>
 
@@ -43,6 +49,20 @@
 
         <activity android:name=".activity.SearchActivity"
             android:screenOrientation="landscape" >
+
+        </activity>
+
+        <activity
+            android:name=".blockly.PythonActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="landscape">
+
+        </activity>
+
+        <activity
+            android:name=".blockly.TurtleActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="landscape">
 
         </activity>
 

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.megarobo.control.MegaApplication;
 import com.megarobo.control.R;
 import com.megarobo.control.activity.EquipmentActivity;
+import com.megarobo.control.activity.SearchActivity;
 import com.megarobo.control.bean.Robot;
 import com.megarobo.control.utils.Utils;
 
@@ -21,7 +22,7 @@ public class SearchListAdapter extends BaseAdapter {
     private Context mContext;
     private List<Robot> robotList;
 
-    public SearchListAdapter(Context context, List<Robot> robotList){
+    public SearchListAdapter(SearchActivity context, List<Robot> robotList){
         this.mContext = context;
         this.robotList = robotList;
     }

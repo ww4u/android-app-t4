@@ -206,4 +206,21 @@ public class CommandHelper {
 
         return jsonObject;
     }
+
+    /**
+     * 8.script
+     * @param
+     * @return
+     */
+    public JSONObject scriptCommand(String pythonScript){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("command","execute");
+            jsonObject.put("script",pythonScript);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
+    }
 }

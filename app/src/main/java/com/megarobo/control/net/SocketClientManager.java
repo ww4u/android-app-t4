@@ -102,6 +102,7 @@ public class SocketClientManager {
 			@Override
 			public void run() {
 				try {
+					Logger.e("connectToServer","connectToServer......."+host);
 					mQueryClient = new SocketClient();
 					mQueryClient.start(host, port,mHandler);
 				} catch (Exception e) {

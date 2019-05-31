@@ -2,10 +2,13 @@ package com.megarobo.control.activity;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -30,10 +33,12 @@ import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.AllUitls;
 import com.megarobo.control.utils.CommandHelper;
 
+import com.megarobo.control.utils.Logger;
 import com.megarobo.control.utils.ThreadPoolWrap;
 import com.megarobo.control.utils.Utils;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -144,6 +149,23 @@ public class SearchActivity extends BaseActivity {
     }
 
     private void getList() {
+        clientManager = new SocketClientManager(ConstantUtil.HOST,
+                handler,ConstantUtil.CONTROL_PORT);
+        //1.首先判断最近列表是否有，有则直接尝试连接
+        if(MegaApplication.latestRoboSet.size() > 0){
+            Logger.e("latestRoboSet",MegaApplication.latestRoboSet.size()+"");
+            for (String ip : MegaApplication.latestRoboSet){
+                Logger.e("latestRoboSet",ip+"");
+                if(socketManagerMap != null && socketManagerMap.get(ip)!=null) {
+                    Logger.e("latestRoboSet111",ip+"");
+                    socketManagerMap.get(ip).connectToServer();
+                }else{
+                    new SocketClientManager(ip,
+                            handler, ConstantUtil.CONTROL_PORT).connectToServer();
+                }
+            }
+        }
+
         AllUitls.initAreaIp(SearchActivity.this);
         List<AreaDeviceBean> beans = new ArrayList<>();
         int sum = 0;
@@ -152,11 +174,17 @@ public class SearchActivity extends BaseActivity {
             SystemClock.sleep(beans.size()>0?0:1000);
             sum++;
         }
-        clientManager = new SocketClientManager(ConstantUtil.HOST,
-                handler,ConstantUtil.CONTROL_PORT);
-        for(int i=0;i<beans.size();i++){
+
+        int size = beans.size();
+        for(int i=0;i<size;i++){
+            if(MegaApplication.latestRoboSet.contains(beans.get(i).getIp())){
+                continue;
+            }
+            Logger.e("beans.ip",beans.get(i).getIp());
             clientManager.setHost(beans.get(i).getIp());
             clientManager.connectToServer();
+            SystemClock.sleep(100);
+
         }
         isSearchFinished = true;
         SystemClock.sleep(10000);
@@ -182,6 +210,7 @@ public class SearchActivity extends BaseActivity {
                             realClientManager.connectToServer();
                         }else{//第二次回调,从map里面找到对应的socketManager发起消息
                             if(socketManagerMap.get(ip) != null) {
+                                Logger.e("late",ip+"");
                                 socketManagerMap.get(ip).sendMsgToServer(
                                         CommandHelper.getInstance().queryCommand("meta"));
                             }
@@ -203,17 +232,21 @@ public class SearchActivity extends BaseActivity {
                             showNoEquipment(false);
                         }
                         MegaApplication.robotList = robotList;
+                        MegaApplication.latestRoboSet.add(robot.getIp());
                         break;
                     case ConstantUtil.IP_SEARCH_FINISHED:
                         if(robotList != null && robotList.size() == 0){
+                            Logger.e("robotList",""+robotList.size());
+
                             setMask(false);
                             showNoEquipment(true);
                         }
                         MegaApplication.robotList = robotList;
                         break;
-                    default:
-                        showNoEquipment(true);
-                        break;
+//                    default:
+//                        Logger.e("robotList",""+robotList.size()+"msg.what"+msg.what);
+//                        showNoEquipment(true);
+//                        break;
                 }
             }
         };
@@ -237,4 +270,7 @@ public class SearchActivity extends BaseActivity {
             progressImg.setVisibility(View.GONE);
         }
     }
+
+
+
 }

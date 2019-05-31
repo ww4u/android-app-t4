@@ -51,4 +51,17 @@
         <attr name="ratio" format="float" />
         <attr name="prefer" format="integer" />
     </declare-styleable>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme1" parent="BlocklyVerticalTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/main_backgroud</item>
+        <item name="colorPrimaryDark">@color/main_backgroud</item>
+        <item name="colorAccent">@color/yellow</item>
+    </style>
+
+    <style name="StylesDemoTheme" parent="BlocklyVerticalTheme">
+        <item name="blockTextSize">34sp</item>
+        <item name="android:textColorPrimary">@color/yellow</item>
+    </style>
 </resources>

@@ -12,7 +12,9 @@ import com.megarobo.control.utils.AllUitls;
 import com.megarobo.control.utils.ThreadPoolWrap;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class MegaApplication extends Application {
@@ -29,6 +31,7 @@ public class MegaApplication extends Application {
     public static List<AreaDeviceBean> beans = new ArrayList<>();
 
     public static List<Robot> robotList;
+    public static Set<String> latestRoboSet = new HashSet<String>();
 
     public MegaApplication() {
         mContext = this;
@@ -44,7 +47,6 @@ public class MegaApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
 
         list=new ArrayList<Activity>();
 

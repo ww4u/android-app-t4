@@ -429,7 +429,8 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                     return;
                 }
                 speedNum = speedValue;
-                step = stepValue;
+                //step = stepValue;
+                step = speedValue; //修改两个速度一样
                 jointStep = jointStepValue;
                 controlClient.sendMsgToServer(CommandHelper.getInstance().configCommand(step,jointStep,speedNum));
                 goneBottomView();
@@ -573,7 +574,8 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
             case R.id.right_southeast:
             case R.id.right_southwest:
 
-            if(event.getAction() == MotionEvent.ACTION_UP){
+            if(event.getAction() == MotionEvent.ACTION_UP ||
+                    event.getAction() == MotionEvent.ACTION_CANCEL){
                 controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("stop"));
                 setLeftEnable(true);
                 setRightEnable(true);

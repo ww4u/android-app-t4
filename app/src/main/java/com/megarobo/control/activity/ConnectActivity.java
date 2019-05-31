@@ -154,6 +154,7 @@ public class ConnectActivity extends BaseActivity {
             for(int i=0;i<MegaApplication.beans.size();i++){
                 clientManager.setHost(MegaApplication.beans.get(i).getIp());
                 clientManager.connectToServer();
+                SystemClock.sleep(100);
             }
         }
         SystemClock.sleep(10000);
@@ -199,6 +200,7 @@ public class ConnectActivity extends BaseActivity {
                             robotList.add(robot);
                             adapter.notifyDataSetChanged();
                         }
+                        MegaApplication.latestRoboSet.add(robot.getIp());
                         break;
                     case MSG_EXIT_ROOM:
                         isExit = false;

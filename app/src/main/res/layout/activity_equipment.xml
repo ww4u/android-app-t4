@@ -150,4 +150,74 @@
             android:background="@drawable/control_cancel_selector"
             />
     </LinearLayout>
+
+    <LinearLayout
+        android:visibility="invisible"
+        android:id="@+id/programLayout"
+        android:layout_below="@+id/btnLayout"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+
+        <TextView
+            android:id="@+id/simpleProgramBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="简单搬运编程"
+            android:textColor="@color/white"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:background="@drawable/control_cancel_selector"
+            />
+
+        <TextView
+            android:id="@+id/customProgramBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="自定义编程"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@drawable/control_cancel_selector"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="invisible"
+        android:id="@+id/myProgramLayout"
+        android:layout_below="@+id/programLayout"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+
+        <TextView
+            android:id="@+id/myProgramBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的编程"
+            android:textColor="@color/white"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:background="@drawable/control_cancel_selector"
+            />
+
+        <TextView
+            android:id="@+id/otherBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的编程"
+            android:textColor="@color/white"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:background="@drawable/control_cancel_selector"
+            android:visibility="invisible"
+            />
+
+    </LinearLayout>
 </RelativeLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.megarobo.control.bean.AreaDeviceBean;
 
@@ -97,6 +98,7 @@ public class AllUitls {
                 while (position < 255) {
                     dp.setAddress(InetAddress.getByName(prefixStr + String.valueOf(position)));
                     socket.send(dp);
+                    Log.w("position",""+position);
                     position++;
                     if (position == 125) {//分两段掉包，一次性掉的话，达到236左右，会耗时3秒左右再往下掉
                         socket.close();
