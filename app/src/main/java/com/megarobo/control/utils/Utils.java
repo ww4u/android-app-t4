@@ -1057,7 +1057,7 @@ public class Utils {
         meta.setAlias("test");
         meta.setModel("test");
         meta.setHasHand(true);
-        meta.setSn("XXX1234");
+        meta.setSn("AQM1234567");
         robot.setIp(ip);
         robot.setMeta(meta);
         return robot;

@@ -140,11 +140,56 @@
             />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/remoteControlBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="遥控设备"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@drawable/control_cancel_selector"
+            />
+        <TextView
+            android:id="@+id/voiceBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="语音控制"
+            android:textColor="@color/white"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:background="@drawable/control_cancel_selector"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/voiceLayout"
+        android:layout_below="@+id/btnLayout"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+
+        <TextView
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="语音控制"
+            android:textColor="@color/white"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:background="@drawable/control_cancel_selector"
+            />
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/programBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="自定义编程"
             android:textColor="@color/white"
             android:gravity="center"
             android:background="@drawable/control_cancel_selector"

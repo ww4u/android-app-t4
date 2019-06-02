@@ -128,6 +128,16 @@
     <init>(java.lang.Throwable);
 }
 
+-keep class com.baidu.speech.**{*;}
+-keep class com.google.blockly.**{*;}
+
+-keep class com.baidu.tts.**{*;}
+-keep class com.baidu.speechsynthesizer.**{*;}
+
+
+
+
+
 
 
 

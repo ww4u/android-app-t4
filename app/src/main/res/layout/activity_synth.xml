@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_dark"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/back"
+        android:src="@drawable/ico_return_selector"
+        android:scaleType="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:id="@+id/equipment_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:drawablePadding="5dp"
+        android:textSize="18sp"
+        android:text="当前连接设备：AQM1...234567"/>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <Button
+            android:id="@+id/speak"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:lines="2"
+            android:text="合成并播放"
+            android:textSize="12dp" />
+
+        <Button
+            android:id="@+id/synthesize"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:lines="2"
+            android:text="只合成不播放"
+            android:textSize="12dp" />
+
+        <Button
+            android:id="@+id/batchSpeak"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:lines="2"
+            android:text="批量合成并播放"
+            android:textSize="12dp" />
+
+        <Button
+            android:id="@+id/loadModel"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:lines="2"
+            android:text="切换离线发音人"
+            android:textSize="12dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <Button
+            android:id="@+id/pause"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:lines="2"
+            android:text="播放暂停"
+            android:textSize="12dp" />
+
+        <Button
+            android:id="@+id/resume"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:lines="2"
+            android:text="播放恢复"
+            android:textSize="12dp" />
+
+        <Button
+            android:id="@+id/stop"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:lines="2"
+            android:text="停止合成引擎"
+            android:textSize="12dp" />
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <EditText
+        android:visibility="gone"
+        android:id="@+id/input"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="input" />
+
+    <TextView
+        android:layout_below="@id/equipment_name"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:id="@+id/showText"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:layout_margin="10dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/black_gray"
+        android:textColor="@color/white"
+        android:minLines="3"
+        android:scrollbars="vertical" />
+
+    <TextView
+        android:id="@+id/help"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开始录音"
+        android:background="@drawable/btn_search_selector"
+        android:textSize="12dp" />
+
+</RelativeLayout>

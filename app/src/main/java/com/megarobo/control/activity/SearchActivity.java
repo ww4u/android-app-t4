@@ -149,45 +149,46 @@ public class SearchActivity extends BaseActivity {
     }
 
     private void getList() {
-        clientManager = new SocketClientManager(ConstantUtil.HOST,
-                handler,ConstantUtil.CONTROL_PORT);
-        //1.首先判断最近列表是否有，有则直接尝试连接
-        if(MegaApplication.latestRoboSet.size() > 0){
-            Logger.e("latestRoboSet",MegaApplication.latestRoboSet.size()+"");
-            for (String ip : MegaApplication.latestRoboSet){
-                Logger.e("latestRoboSet",ip+"");
-                if(socketManagerMap != null && socketManagerMap.get(ip)!=null) {
-                    Logger.e("latestRoboSet111",ip+"");
-                    socketManagerMap.get(ip).connectToServer();
-                }else{
-                    new SocketClientManager(ip,
-                            handler, ConstantUtil.CONTROL_PORT).connectToServer();
-                }
-            }
-        }
-
-        AllUitls.initAreaIp(SearchActivity.this);
-        List<AreaDeviceBean> beans = new ArrayList<>();
-        int sum = 0;
-        while (beans.size() == 0 && sum < 8) {
-            beans.addAll(AllUitls.getAllCacheMac(MegaApplication.myIp));
-            SystemClock.sleep(beans.size()>0?0:1000);
-            sum++;
-        }
-
-        int size = beans.size();
-        for(int i=0;i<size;i++){
-            if(MegaApplication.latestRoboSet.contains(beans.get(i).getIp())){
-                continue;
-            }
-            Logger.e("beans.ip",beans.get(i).getIp());
-            clientManager.setHost(beans.get(i).getIp());
-            clientManager.connectToServer();
-            SystemClock.sleep(100);
-
-        }
-        isSearchFinished = true;
-        SystemClock.sleep(10000);
+//        clientManager = new SocketClientManager(ConstantUtil.HOST,
+//                handler,ConstantUtil.CONTROL_PORT);
+//        //1.首先判断最近列表是否有，有则直接尝试连接
+//        if(MegaApplication.latestRoboSet.size() > 0){
+//            Logger.e("latestRoboSet",MegaApplication.latestRoboSet.size()+"");
+//            for (String ip : MegaApplication.latestRoboSet){
+//                Logger.e("latestRoboSet",ip+"");
+//                if(socketManagerMap != null && socketManagerMap.get(ip)!=null) {
+//                    Logger.e("latestRoboSet111",ip+"");
+//                    socketManagerMap.get(ip).connectToServer();
+//                }else{
+//                    new SocketClientManager(ip,
+//                            handler, ConstantUtil.CONTROL_PORT).connectToServer();
+//                }
+//            }
+//        }
+//
+//        AllUitls.initAreaIp(SearchActivity.this);
+//        List<AreaDeviceBean> beans = new ArrayList<>();
+//        int sum = 0;
+//        while (beans.size() == 0 && sum < 8) {
+//            beans.addAll(AllUitls.getAllCacheMac(MegaApplication.myIp));
+//            SystemClock.sleep(beans.size()>0?0:1000);
+//            sum++;
+//        }
+//
+//        int size = beans.size();
+//        for(int i=0;i<size;i++){
+//            if(MegaApplication.latestRoboSet.contains(beans.get(i).getIp())){
+//                continue;
+//            }
+//            Logger.e("beans.ip",beans.get(i).getIp());
+//            clientManager.setHost(beans.get(i).getIp());
+//            clientManager.connectToServer();
+//            SystemClock.sleep(100);
+//
+//        }
+//        isSearchFinished = true;
+//        SystemClock.sleep(10000);
+        robotList.add(Utils.getTestRobot("192.168.1.1"));
         handler.sendEmptyMessage(ConstantUtil.IP_SEARCH_FINISHED);
     }
 
@@ -235,13 +236,13 @@ public class SearchActivity extends BaseActivity {
                         MegaApplication.latestRoboSet.add(robot.getIp());
                         break;
                     case ConstantUtil.IP_SEARCH_FINISHED:
-                        if(robotList != null && robotList.size() == 0){
-                            Logger.e("robotList",""+robotList.size());
+//                        if(robotList != null && robotList.size() == 0){
+//                            Logger.e("robotList",""+robotList.size());
 
                             setMask(false);
-                            showNoEquipment(true);
-                        }
-                        MegaApplication.robotList = robotList;
+//                            showNoEquipment(true);
+//                        }
+//                        MegaApplication.robotList = robotList;
                         break;
 //                    default:
 //                        Logger.e("robotList",""+robotList.size()+"msg.what"+msg.what);

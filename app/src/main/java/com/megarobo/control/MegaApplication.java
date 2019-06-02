@@ -3,10 +3,12 @@ package com.megarobo.control;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
 import android.os.SystemClock;
 
 import com.megarobo.control.bean.AreaDeviceBean;
 import com.megarobo.control.bean.Robot;
+import com.megarobo.control.mqtt.MQTTService;
 import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.AllUitls;
 import com.megarobo.control.utils.ThreadPoolWrap;
@@ -52,6 +54,8 @@ public class MegaApplication extends Application {
 
         myIp = AllUitls.getIPAddressStr(MegaApplication.this);
 
+        startService(new Intent(this, MQTTService.class));
+
         ThreadPoolWrap.getThreadPool().executeTask(new Runnable() {
             @Override
             public void run() {
@@ -65,6 +69,13 @@ public class MegaApplication extends Application {
             }
         });
 
+    }
+
+    public void exit(){
+        if(robotList != null){
+            robotList.clear();
+            robotList = null;
+        }
     }
     
 }

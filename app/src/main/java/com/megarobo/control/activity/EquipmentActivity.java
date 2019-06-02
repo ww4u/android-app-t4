@@ -19,6 +19,8 @@ import com.megarobo.control.bean.DeviceStatus;
 import com.megarobo.control.blockly.PythonActivity;
 import com.megarobo.control.net.ConstantUtil;
 import com.megarobo.control.net.SocketClientManager;
+import com.megarobo.control.sample.MainActivity;
+import com.megarobo.control.sample.SynthActivity;
 import com.megarobo.control.utils.CommandHelper;
 import com.megarobo.control.utils.Logger;
 import com.megarobo.control.utils.NetUtil;
@@ -54,6 +56,8 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
     @ViewInject(R.id.myProgramBtn)
     private TextView myProgramBtn;
 
+    @ViewInject(R.id.voiceBtn)
+    private TextView voiceBtn;
 
 
     private Handler handler;
@@ -72,6 +76,7 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
         simpleProgramBtn.setOnClickListener(this);
         customProgramBtn.setOnClickListener(this);
         myProgramBtn.setOnClickListener(this);
+        voiceBtn.setOnClickListener(this);
 
         initHandler();
         controlClient = new SocketClientManager(MegaApplication.ip,
@@ -182,6 +187,10 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
                 }
                 Intent myIntent = new Intent(EquipmentActivity.this, EquipmentControlActivity.class);
                 startActivity(myIntent);
+                break;
+            case R.id.voiceBtn:
+                Intent voiceIntent = new Intent(EquipmentActivity.this, SynthActivity.class);
+                startActivity(voiceIntent);
                 break;
         }
     }

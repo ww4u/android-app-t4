@@ -143,21 +143,20 @@ public class ConnectActivity extends BaseActivity {
                 setMask(false);
             }
         }
-
     }
 
     private void getList() {
-        Logger.e("MegaApplication.beans",MegaApplication.beans.size()+"......");
-        if(MegaApplication.beans != null && MegaApplication.beans.size() != 0){
-            clientManager = new SocketClientManager(ConstantUtil.HOST,
-                    handler,ConstantUtil.CONTROL_PORT);
-            for(int i=0;i<MegaApplication.beans.size();i++){
-                clientManager.setHost(MegaApplication.beans.get(i).getIp());
-                clientManager.connectToServer();
-                SystemClock.sleep(100);
-            }
-        }
-        SystemClock.sleep(10000);
+//        Logger.e("MegaApplication.beans",MegaApplication.beans.size()+"......");
+//        if(MegaApplication.beans != null && MegaApplication.beans.size() != 0){
+//            clientManager = new SocketClientManager(ConstantUtil.HOST,
+//                    handler,ConstantUtil.CONTROL_PORT);
+//            for(int i=0;i<MegaApplication.beans.size();i++){
+//                clientManager.setHost(MegaApplication.beans.get(i).getIp());
+//                clientManager.connectToServer();
+//                SystemClock.sleep(100);
+//            }
+//        }
+        robotList.add(Utils.getTestRobot("192.168.1.1"));
         handler.sendEmptyMessage(ConstantUtil.IP_SEARCH_FINISHED);
     }
 
@@ -206,9 +205,9 @@ public class ConnectActivity extends BaseActivity {
                         isExit = false;
                         break;
                     case ConstantUtil.IP_SEARCH_FINISHED:
-                        if(robotList != null && robotList.size() == 0){
+//                        if(robotList != null && robotList.size() == 0){
                             setMask(false);
-                        }
+//                        }
                         break;
                 }
             }
@@ -223,6 +222,7 @@ public class ConnectActivity extends BaseActivity {
             handler.sendEmptyMessageDelayed(MSG_EXIT_ROOM, MSG_EXIT_ROOM_DELAY);
         }else{
             super.onBackPressed();
+            MegaApplication.getInstance().exit();
         }
     }
 
