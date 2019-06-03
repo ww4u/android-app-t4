@@ -44,6 +44,7 @@ public class MQTTService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Logger.e("MQTT","onStartCommand....");
         init();
         return super.onStartCommand(intent, flags, startId);
     }
@@ -103,8 +104,10 @@ public class MQTTService extends Service {
 
     @Override
     public void onDestroy() {
+        Logger.e("MQTT","onDestroy....");
         try {
             client.disconnect();
+            client.unregisterResources();
         } catch (MqttException e) {
             e.printStackTrace();
         }

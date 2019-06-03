@@ -91,7 +91,7 @@
         </activity>
         <activity
             android:name=".sample.SynthActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:label="离在线语音合成" />
         <activity
             android:name=".sample.MiniActivity"

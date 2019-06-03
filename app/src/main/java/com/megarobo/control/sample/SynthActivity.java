@@ -4,6 +4,7 @@
 package com.megarobo.control.sample;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -87,6 +88,8 @@ public class SynthActivity extends BaseActivity implements View.OnClickListener 
     private IRecogListener listener;
 
     private MyRecognizer myRecognizer;
+
+    private Intent servicentent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +101,9 @@ public class SynthActivity extends BaseActivity implements View.OnClickListener 
         listener =  new MyTtsRecogListener(mainHandler,synthesizer);
         // DEMO集成步骤 1.2 初始化：new一个IRecogListener示例 & new 一个 MyRecognizer 示例
         myRecognizer = new MyRecognizer(this, listener);
+
+        servicentent = new Intent(getApplicationContext(), MQTTService.class);
+        startService(servicentent);
 
         EventBus.getDefault().register(this);
     }
@@ -262,7 +268,7 @@ public class SynthActivity extends BaseActivity implements View.OnClickListener 
         // 设置在线发声音人： 0 普通女声（默认） 1 普通男声 2 特别男声 3 情感男声<度逍遥> 4 情感儿童声<度丫丫>
         params.put(SpeechSynthesizer.PARAM_SPEAKER, "0");
         // 设置合成的音量，0-9 ，默认 5
-        params.put(SpeechSynthesizer.PARAM_VOLUME, "5");
+        params.put(SpeechSynthesizer.PARAM_VOLUME, "9");
         // 设置合成的语速，0-9 ，默认 5
         params.put(SpeechSynthesizer.PARAM_SPEED, "5");
         // 设置合成的语调，0-9 ，默认 5
@@ -397,6 +403,7 @@ public class SynthActivity extends BaseActivity implements View.OnClickListener 
         synthesizer.release();
         Log.i(TAG, "释放资源成功");
         EventBus.getDefault().unregister(this);
+        stopService(servicentent);
         super.onDestroy();
     }
 

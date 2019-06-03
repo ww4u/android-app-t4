@@ -10,6 +10,7 @@ import com.megarobo.control.mqtt.MQTTCommandHelper;
 import com.megarobo.control.mqtt.MQTTService;
 import com.megarobo.control.sample.control.MySyntherizer;
 import com.megarobo.control.utils.Cn2Spell;
+import com.megarobo.control.utils.Logger;
 import com.megarobo.control.utils.Utils;
 
 public class MyTtsRecogListener extends MessageStatusRecogListener {
@@ -39,11 +40,33 @@ public class MyTtsRecogListener extends MessageStatusRecogListener {
         //获取首字母
         String headStr = Cn2Spell.getPinYinHeadChar(result);
 
+        String pyStr = Cn2Spell.getPinYin(result);
+        Logger.e("pystr",pyStr);
+
+        mySyntherizer.setStereoVolume(1.0f,1.0f);
+
         if("xmxm".equals(headStr)){
             mySyntherizer.speak("你好，我在");
             return;
         }
 
+        if(pyStr.contains("shangwu") || pyStr.contains("shangwudeshiyan") ||
+                result.contains("上午") || result.contains("上午的实验")
+                ){
+            mySyntherizer.speak("上午的实验在10点半已经完成。");
+            return;
+        }
+
+        if(pyStr.contains("jiexialai") || result.contains("接下来") || result.contains("三聚") || result.contains("分成")
+                ){
+            mySyntherizer.speak("好的，预计在20分钟内完成。");
+            return;
+        }
+
+
+        /**
+         * 主要控制识别
+         */
         if("hl".equals(headStr) || "hn".equals(headStr) || "回零位".equals(result)
                 || "hlw".equals(headStr) || "hnw".equals(headStr)){//"回零"
             mySyntherizer.speak("好的");
@@ -66,7 +89,7 @@ public class MyTtsRecogListener extends MessageStatusRecogListener {
             return;
         }
 
-        if(result.contains("前") || "xqz".equals(headStr)
+        if(result.contains("前") || "xqz".equals(headStr) || pyStr.contains("qian")
                 || "wq".equals(headStr)){
             mySyntherizer.speak("好的");
             SystemClock.sleep(100);
@@ -81,7 +104,7 @@ public class MyTtsRecogListener extends MessageStatusRecogListener {
             return;
         }
 
-        if(result.contains("后") || "xhz".equals(headStr)
+        if(result.contains("后") || "xhz".equals(headStr) || pyStr.contains("hou")
                 || "wh".equals(headStr)){
             mySyntherizer.speak("好的");
             SystemClock.sleep(100);
@@ -96,7 +119,7 @@ public class MyTtsRecogListener extends MessageStatusRecogListener {
             return;
         }
 
-        if(result.contains("左") || "zz".equals(headStr)
+        if(result.contains("左") || "zz".equals(headStr) || pyStr.contains("zuo")
                 || "wz".equals(headStr)){
             mySyntherizer.speak("好的");
             SystemClock.sleep(100);
@@ -111,7 +134,7 @@ public class MyTtsRecogListener extends MessageStatusRecogListener {
             return;
         }
 
-        if(result.contains("右") || "yz".equals(headStr)
+        if(result.contains("右") || "yz".equals(headStr) || pyStr.contains("you")
                 || "wy".equals(headStr)){
             mySyntherizer.speak("好的");
             SystemClock.sleep(100);

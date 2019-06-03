@@ -54,8 +54,6 @@ public class MegaApplication extends Application {
 
         myIp = AllUitls.getIPAddressStr(MegaApplication.this);
 
-        startService(new Intent(this, MQTTService.class));
-
         ThreadPoolWrap.getThreadPool().executeTask(new Runnable() {
             @Override
             public void run() {
