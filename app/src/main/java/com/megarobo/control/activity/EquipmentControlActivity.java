@@ -431,7 +431,8 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 speedNum = speedValue;
                 //step = stepValue;
                 step = speedValue; //修改两个速度一样
-                jointStep = jointStepValue;
+                //jointStep = jointStepValue;
+                jointStep = speedValue;
                 controlClient.sendMsgToServer(CommandHelper.getInstance().configCommand(step,jointStep,speedNum));
                 goneBottomView();
             }
