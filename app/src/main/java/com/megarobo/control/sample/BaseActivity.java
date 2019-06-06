@@ -47,10 +47,17 @@ public class BaseActivity extends AppCompatActivity implements MainHandlerConsta
     protected TextView mHelp;
     protected EditText mInput;
     protected TextView mShowText;
+    protected TextView mShowTips;
     protected Handler mainHandler;
     protected ImageView backImg;
 
     private static final String TAG = "MainActivity";
+
+    protected static String DESC = "欢迎使用小镁机器人语音控制功能，点击“开始录音”按钮即可说话。。\n"
+            + "小镁小镁，"
+            + "向前走，向后走，左转，右转，向上，向下，回零位，恢复出厂设置，抓取，放开，停止.\n\n"
+            + "我的流式样本加样完毕了吗？\n\n"
+            + "把PCR混液分到96孔板中，每孔20uL\n\n";
 
     /*
      * @param savedInstanceState
@@ -102,6 +109,9 @@ public class BaseActivity extends AppCompatActivity implements MainHandlerConsta
         mInput = (EditText) this.findViewById(R.id.input);
         mShowText = (TextView) this.findViewById(R.id.showText);
         mShowText.setMovementMethod(new ScrollingMovementMethod());
+
+        mShowTips = (TextView) this.findViewById(R.id.showTips);
+        mShowTips.setText(DESC);
         backImg = (ImageView) this.findViewById(R.id.back);
     }
 

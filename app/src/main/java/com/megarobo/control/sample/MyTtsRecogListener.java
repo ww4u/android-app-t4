@@ -50,16 +50,18 @@ public class MyTtsRecogListener extends MessageStatusRecogListener {
             return;
         }
 
-        if(pyStr.contains("shangwu") || pyStr.contains("shangwudeshiyan") ||
-                result.contains("上午") || result.contains("上午的实验")
+        if(pyStr.contains("jiayang") || pyStr.contains("liushiyangben") ||
+                result.contains("流式样本") || result.contains("加样") ||
+                result.contains("样本")
                 ){
-            mySyntherizer.speak("上午的实验在10点半已经完成。");
+            mySyntherizer.speak("在上午10点半已经完成。");
             return;
         }
 
-        if(pyStr.contains("jiexialai") || result.contains("接下来") || result.contains("三聚") || result.contains("分成")
-                ){
+        if(pyStr.contains("pcr") || result.contains("pcr") || result.contains("96")){
             mySyntherizer.speak("好的，预计在20分钟内完成。");
+            SystemClock.sleep(100);
+            MQTTService.publish(MQTTCommandHelper.getInstance().demo());
             return;
         }
 
@@ -75,12 +77,11 @@ public class MyTtsRecogListener extends MessageStatusRecogListener {
             return;
         }
 
-        if("tw".equals(headStr) || "跳舞".equals(result)){//"跳舞"
-            mySyntherizer.speak("好的");
-            SystemClock.sleep(100);
-            MQTTService.publish(MQTTCommandHelper.getInstance().demo());
-            return;
-        }
+//        if("tw".equals(headStr) || "跳舞".equals(result)){//"跳舞"
+//            mySyntherizer.speak("好的");
+//            SystemClock.sleep(100);
+//            return;
+//        }
 
         if(result.contains("持续向前") || "cxxq".equals(headStr)){
             mySyntherizer.speak("好的");
@@ -149,7 +150,7 @@ public class MyTtsRecogListener extends MessageStatusRecogListener {
             return;
         }
 
-        if(result.contains("上") || "xs".equals(headStr)){
+        if(result.contains("上") || pyStr.contains("shang")){
             mySyntherizer.speak("好的");
             SystemClock.sleep(100);
             MQTTService.publish(MQTTCommandHelper.getInstance().up());
@@ -163,7 +164,7 @@ public class MyTtsRecogListener extends MessageStatusRecogListener {
             return;
         }
 
-        if(result.contains("下") || "xx".equals(headStr)){
+        if(result.contains("下") || pyStr.contains("xia")){
             mySyntherizer.speak("好的");
             SystemClock.sleep(100);
             MQTTService.publish(MQTTCommandHelper.getInstance().down());
@@ -171,28 +172,28 @@ public class MyTtsRecogListener extends MessageStatusRecogListener {
         }
 
         if(result.contains("出厂设置") || "hfccsz".equals(headStr)
-                || "ccsz".equals(headStr)){
+                || "ccsz".equals(headStr) || pyStr.contains("chuchangshezhi")){
             mySyntherizer.speak("好的");
             SystemClock.sleep(100);
             MQTTService.publish(MQTTCommandHelper.getInstance().fold());
             return;
         }
 
-        if(result.contains("抓取") || "zq".equals(headStr)){
+        if(result.contains("抓取") || pyStr.contains("zhua")){
             mySyntherizer.speak("好的");
             SystemClock.sleep(100);
             MQTTService.publish(MQTTCommandHelper.getInstance().close());
             return;
         }
 
-        if(result.contains("放开") || "fk".equals(headStr)){
+        if(result.contains("放开") || pyStr.contains("fang")){
             mySyntherizer.speak("好的");
             SystemClock.sleep(100);
             MQTTService.publish(MQTTCommandHelper.getInstance().open());
             return;
         }
 
-        if(result.contains("停止") || "tz".equals(headStr)){
+        if(result.contains("停止") || pyStr.contains("ting") || result.contains("停")){
             mySyntherizer.speak("好的");
             SystemClock.sleep(100);
             MQTTService.publish(MQTTCommandHelper.getInstance().stop());

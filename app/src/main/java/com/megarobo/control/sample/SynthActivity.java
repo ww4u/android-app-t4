@@ -77,11 +77,13 @@ public class SynthActivity extends BaseActivity implements View.OnClickListener 
     // 主控制类，所有合成控制方法从这个类开始
     protected MySyntherizer synthesizer;
 
-    protected static String DESC = "欢迎使用小镁机器人语音控制功能，点击“开始录音”按钮即可说话。。\n"
-            + "在使用时请确保已经连接WIFI。目前支持的命令有下面这些\n"
-            + "小镁小镁，"
-            + "跳舞，向前走，向后走，左转，右转，向上，向下，回零位，恢复出厂设置，抓取，放开，停止.\n"
-            + "发出命令之后，如果识别正确，则会响应并开始运动，结束会提示完毕\n\n";
+//    protected static String DESC = "欢迎使用小镁机器人语音控制功能，点击“开始录音”按钮即可说话。。\n"
+//            + "在使用时请确保已经连接WIFI。目前支持的命令有下面这些\n"
+//            + "小镁小镁，"
+//            + "跳舞，向前走，向后走，左转，右转，向上，向下，回零位，恢复出厂设置，抓取，放开，停止.\n"
+//            + "发出命令之后，如果识别正确，则会响应并开始运动，结束会提示完毕\n\n";
+
+    protected static String DESC = "\n";
 
     private static final String TAG = "SynthActivity";
 
