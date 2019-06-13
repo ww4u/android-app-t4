@@ -152,7 +152,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="invisible"
         android:id="@+id/programLayout"
         android:layout_below="@+id/btnLayout"
         android:layout_marginTop="20dp"
@@ -186,7 +185,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="invisible"
         android:id="@+id/myProgramLayout"
         android:layout_below="@+id/programLayout"
         android:layout_marginTop="20dp"

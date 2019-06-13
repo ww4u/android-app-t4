@@ -49,4 +49,7 @@
     <string name="action_demo_android">Android</string>
     <string name="action_demo_lacey_curves">Lacey Curves</string>
     <string name="action_demo_paint_strokes">Paint Strokes</string>
+
+    <string name="choose"><u>选择保存的点</u></string>
+
 </resources>

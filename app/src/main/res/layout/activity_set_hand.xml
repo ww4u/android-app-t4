@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_dark"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/back"
+        android:background="@drawable/control_btn_return_selector"
+        android:src="@drawable/icon_return"
+        android:scaleType="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_alignParentLeft="true"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/control_toolbar_selector"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/back"
+        android:layout_marginLeft="5dp"
+        >
+
+        <TextView
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="当前状态："/>
+
+
+        <TextView
+            android:layout_marginRight="10dp"
+            android:id="@+id/link_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_status"
+            android:drawableLeft="@drawable/icon_shebei02"
+            android:drawableRight="@drawable/icon_about"
+            android:drawablePadding="5dp"
+            android:text="正常"/>
+
+        <TextView
+            android:id="@+id/net_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_status"
+            android:drawableLeft="@drawable/icon_lianjie02"
+            android:drawablePadding="5dp"
+            android:text="正常"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_angle_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/back"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="起始角度："
+            android:textColor="@color/white"
+            />
+        <TextView
+            android:id="@+id/angle_start"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="50"
+            android:textColor="@color/white"
+            android:clickable="true"
+            android:imeOptions="actionDone"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_angle_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_angle_start"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="终止角度："
+            android:textColor="@color/white"
+            />
+        <EditText
+            android:id="@+id/angle"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:background="@drawable/btn_cancel_nor"
+            android:text="50"
+            android:textColor="@color/white"
+            android:inputType="number|numberDecimal"
+            android:clickable="true"
+            android:imeOptions="actionDone"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_step_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_angle_input"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="步        距："
+            android:textColor="@color/white"
+            />
+        <EditText
+            android:id="@+id/step"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:ems="5"
+            android:background="@drawable/btn_cancel_nor"
+            android:textColor="@color/white"
+            android:inputType="number|numberDecimal"
+            android:clickable="true"
+            android:imeOptions="actionDone"
+            android:textSize="18sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="%"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/open_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/stop"
+        android:layout_marginRight="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/control_open_selector"
+         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/open_btn"
+        android:layout_marginTop="5dp"
+        android:text="开"
+        android:layout_alignRight="@id/open_btn"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:layout_below="@id/open_btn"
+        />
+
+
+    <TextView
+        android:id="@+id/close_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/open_btn"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/control_close_selector"
+         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/close_btn"
+        android:layout_marginTop="5dp"
+        android:text="合"
+        android:layout_alignRight="@id/close_btn"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:layout_below="@id/close_btn"
+        />
+
+
+    <TextView
+        android:id="@+id/play"
+        android:layout_toLeftOf="@id/stop"
+        android:layout_marginRight="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@drawable/control_font_selector"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/ico_setting"
+        android:background="@drawable/control_toolbar_selector"
+        android:drawablePadding="5dp"
+        android:text="播放" />
+
+    <TextView
+        android:id="@+id/stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/emergency_stop_selector"
+        android:layout_alignParentRight="true"
+        android:textColor="@drawable/control_font_selector"
+        android:drawableLeft="@drawable/ico_stop"
+        android:drawablePadding="5dp"
+        android:text="紧急停止"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/max_button_layout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="80dp"
+        android:layout_marginLeft="40dp">
+
+
+
+        <TextView
+            android:id="@+id/max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="最大"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@drawable/control_cancel_selector"
+            android:textColor="@drawable/control_font_selector"
+            />
+
+        <TextView
+            android:id="@+id/min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="最小"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@drawable/control_cancel_selector"
+            android:textColor="@drawable/control_font_selector"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_button_layout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="40dp">
+
+
+
+        <TextView
+            android:id="@+id/confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确认"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@drawable/control_cancel_selector"
+            android:textColor="@drawable/control_font_selector"
+            />
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="放弃"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@drawable/control_cancel_selector"
+            android:textColor="@drawable/control_font_selector"
+            />
+    </LinearLayout>
+
+
+</RelativeLayout>

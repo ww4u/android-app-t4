@@ -22,6 +22,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +36,7 @@ import com.google.blockly.android.control.BlocklyController;
 import com.google.blockly.model.DefaultBlocks;
 import com.megarobo.control.MegaApplication;
 import com.megarobo.control.R;
+import com.megarobo.control.net.ConstantUtil;
 import com.megarobo.control.utils.CommandHelper;
 import com.megarobo.control.utils.Utils;
 
@@ -90,11 +92,61 @@ public class PythonActivity extends AbstractBlocklyActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String string = intent.getStringExtra("move");
-            Utils.MakeToast(PythonActivity.this,"ssssbbbb"+string);
+            String action = intent.getStringExtra("action");
+            Utils.MakeToast(PythonActivity.this,"ssssbbbb"+action);
+            //根据广播中传过来的block类型，跳转到相应的页面
+            if("point".equals(action)){
+                //跳转到设置x,y,z页面
+                startActivityForResult(new Intent(PythonActivity.this, SetPointActivity.class),
+                        ConstantUtil.REQUEST_CODE_POINT);
+            }else if("hand".equals(action)){
+                //跳转到设置手爪角度页面
+                startActivityForResult(new Intent(PythonActivity.this, SetHandActivity.class),
+                        ConstantUtil.REQUEST_CODE_HAND);
+            }else if("wrist".equals(action)){
+                //跳转到设置手腕角度页面
+                startActivityForResult(new Intent(PythonActivity.this, SetWristActivity.class),
+                        ConstantUtil.REQUEST_CODE_WRIST);
+            }
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case ConstantUtil.REQUEST_CODE_POINT:
+                if(resultCode == RESULT_OK){
+                    Bundle bundle = data.getExtras();
+                    String x = bundle.getString("x");
+                    String y = bundle.getString("y");
+                    String z = bundle.getString("z");
+                    getController().setPoint(x,y,z);
+                }else{
+                    Utils.MakeToast(PythonActivity.this,"未设置坐标");
+                }
+                break;
+            case ConstantUtil.REQUEST_CODE_HAND:
+                if(resultCode == RESULT_OK){
+                    Bundle bundle = data.getExtras();
+                    String angle = bundle.getString("angle");
+                    getController().setHand(angle);
+                }else{
+                    Utils.MakeToast(PythonActivity.this,"未设置手爪角度");
+                }
+                break;
+            case ConstantUtil.REQUEST_CODE_WRIST:
+                if(resultCode == RESULT_OK){
+                    Bundle bundle = data.getExtras();
+                    String angle = bundle.getString("angle");
+                    getController().setWrist(angle);
+
+                }else{
+                    Utils.MakeToast(PythonActivity.this,"未设置手腕角度");
+                }
+                break;
+        }
+    }
 
     private MyBroadCastReceiver receiver;
     private LocalBroadcastManager manager;

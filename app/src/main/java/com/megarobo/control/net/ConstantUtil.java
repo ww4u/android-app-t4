@@ -40,5 +40,11 @@ public class ConstantUtil {
 	//紧急停止消息
 	public static final int MESSAGE_EMERGENCY = 8003;
 
+	public static final int REQUEST_CODE_POINT = 1001;
+
+	public static final int REQUEST_CODE_HAND = 1002;
+
+	public static final int REQUEST_CODE_WRIST = 1003;
+
 
 }
