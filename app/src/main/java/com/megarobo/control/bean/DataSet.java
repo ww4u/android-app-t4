@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.megarobo.control.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,5 +53,16 @@ public class DataSet {
         DataSet dataSet = new DataSet();
         dataSet.setPointMap(pointMap);
         return dataSet;
+    }
+
+    public static List<Point> parseList(Map<String,Point> pointMap){
+        List<Point> pointList = new ArrayList<>();
+        if(pointMap == null){
+            return pointList;
+        }
+        for (String pointKey: pointMap.keySet()) {
+            pointList.add(pointMap.get(pointKey));
+        }
+        return pointList;
     }
 }

@@ -86,14 +86,23 @@ public class SetHandActivity extends BaseActivity implements View.OnClickListene
     @ViewInject(R.id.net_status)
     private TextView netStatus;
 
-    @ViewInject(R.id.position)
-    private TextView position;
-
     @ViewInject(R.id.angle)
     private TextView angle;
 
-    @ViewInject(R.id.step)
-    private EditText stepEdit;
+    @ViewInject(R.id.joint_step)
+    private TextView jointStepView;
+
+    @ViewInject(R.id.confirm)
+    private TextView confirm;
+
+    @ViewInject(R.id.cancel)
+    private TextView cancel;
+
+    @ViewInject(R.id.max)
+    private TextView max;
+
+    @ViewInject(R.id.min)
+    private TextView min;
 
 
     @Override
@@ -109,7 +118,7 @@ public class SetHandActivity extends BaseActivity implements View.OnClickListene
         controlClient = new SocketClientManager(MegaApplication.ip,
                 handler,ConstantUtil.CONTROL_PORT);
         controlClient.connectToServer();
-        MegaApplication.getInstance().controlClient = controlClient;
+
 
     }
 
@@ -156,12 +165,16 @@ public class SetHandActivity extends BaseActivity implements View.OnClickListene
      */
     @Override
     public void onClick(View v) {
+        String jointStep = jointStepView.getText().toString();
+        double joint = Double.valueOf(jointStep);
         switch (v.getId()){
             case R.id.open_btn:
-                controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(1,false,4));
+                controlClient.sendMsgToServer(CommandHelper.getInstance().jointMaxCommand(
+                        joint,4));
                 break;
             case R.id.close_btn:
-                controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(-1,false,4));
+                controlClient.sendMsgToServer(CommandHelper.getInstance().jointMaxCommand(
+                        -joint,4));
                 break;
             case R.id.stop:
                 controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("emergency_stop"));
@@ -174,32 +187,77 @@ public class SetHandActivity extends BaseActivity implements View.OnClickListene
                 startActivity(intent);
                 break;
             case R.id.play:
+                controlClient.sendMsgToServer(
+                        CommandHelper.getInstance().scriptCommand(generateCode()));
+                break;
+            case R.id.confirm:
+                if(pose == null){
+                    break;
+                }
                 Intent intent1 = new Intent();
-                intent1.putExtra("angle","50");
+                intent1.putExtra("angle", Utils.format(pose.getH()) + "");
                 setResult(RESULT_OK,intent1);
                 finish();
                 break;
+            case R.id.cancel:
+                finish();
+                break;
+            case R.id.max:
+                controlClient.sendMsgToServer(CommandHelper.getInstance().jointMaxCommand(
+                        9.9e37,4));
+                break;
+            case R.id.min:
+                controlClient.sendMsgToServer(CommandHelper.getInstance().jointMaxCommand(
+                        -9.9e37,4));
+                break;
+            case R.id.joint_step:
+                showSelectDialog(jointStepView);
+                break;
 
         }
+    }
+
+    private String generateCode() {
+        String code = "hand("+angle+")";
+        return code;
     }
 
 
 
 
     Config config;
+    private void initJointStep() {
+        if(config != null) {
+            jointStepWhich = getStepWhich(config.getJointStep());
+            jointStepView.setText(config.getJointStep() + "");
+//            jointStepEdit.setSelection(jointStepEdit.getText().length());
+        }
+    }
 
+    private int getStepWhich(double jointStep){
+        if(1 == jointStep){
+            return 0;
+        }else if(20 == jointStep){
+            return 1;
+        }else if(50 == jointStep){
+            return 2;
+        }else if(100 == jointStep){
+            return 3;
+        }
+        return 2;
+    }
 
     @Override
     public boolean onLongClick(View v) {
         switch (v.getId()) {
+//            case R.id.step:
+//                showSelectDialog(jointStep);
+//                break;
             case R.id.open_btn:
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(1,true,4));
                 break;
             case R.id.close_btn:
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(-1,true,4));
-                break;
-            case R.id.step:
-                showSelectDialog(stepEdit);
                 break;
         }
         return true;
@@ -239,6 +297,8 @@ public class SetHandActivity extends BaseActivity implements View.OnClickListene
                         if(isFirstIn) {
                             controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("device_status"));
                             controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
+                            //读取用户设置的信息，速度，步距
+                            controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("config"));
                             isFirstIn = false;
                         }
                         netStatus.setText("正常");
@@ -273,6 +333,7 @@ public class SetHandActivity extends BaseActivity implements View.OnClickListene
         String command = bundle.getString("command");
         if("config".equals(command)){
             config = Config.parseConfig(content);
+            initJointStep();
         }else if("package".equals(command)){
 
         }else if("link_status".equals(command)){
@@ -284,17 +345,14 @@ public class SetHandActivity extends BaseActivity implements View.OnClickListene
             JSONObject result = JSON.parseObject(content);
             if(result != null || !result.isEmpty()){
                 pose = Pose.parsePose(result.getString("pose"));
-                angle.setText(Math.round(pose.getW())+"°");
-                String positionStr = Math.round(pose.getX())+","+
-                        Math.round(pose.getY())+","+
-                        Math.round(pose.getZ())+",";
-//                position.setText(positionStr);
+                angle.setText(Math.round(pose.getH())+"°");
             }
         }else if("device_status".equals(command)){
             DeviceStatus deviceStatus = DeviceStatus.parseDeviceStatus(content);
             setStatus(deviceStatus);
         }else if("notify".equals(command)){
             controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(false));
+            setResult(ConstantUtil.RESULT_CODE_NOTIFY);
             onBackPressed();
         }else if("parameter".equals(command)){
             Parameter parameter = Parameter.parseParameter(content);
@@ -303,24 +361,24 @@ public class SetHandActivity extends BaseActivity implements View.OnClickListene
     }
 
 
-    private String speedPercent[] = new String[] { "1","20", "50", "100"};
-    private int speedWhich = 2;
+    private String jointStepPercent[] = new String[] { "1","20", "50", "100"};
+    private int jointStepWhich = 2;
 
     /**
      * 显示选择
      */
-    public void showSelectDialog(final EditText editText) {
+    public void showSelectDialog(final TextView editText) {
         editText.requestFocus();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("请选择：");
         // 选择下标
-        builder.setSingleChoiceItems(speedPercent, speedWhich,
+        builder.setSingleChoiceItems(jointStepPercent, jointStepWhich,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        speedWhich = which;
-                        editText.setText(speedPercent[which]);
-                        editText.setSelection(editText.getText().length());
+                        jointStepWhich = which;
+                        editText.setText(jointStepPercent[which]);
+//                        editText.setSelection(editText.getText().length());
                         dialog.cancel();
                     }
                 });
@@ -350,7 +408,13 @@ public class SetHandActivity extends BaseActivity implements View.OnClickListene
 
         linkStatus.setOnClickListener(this);
 
-        stepEdit.setOnLongClickListener(this);
+        jointStepView.setOnClickListener(this);
+
+        confirm.setOnClickListener(this);
+        cancel.setOnClickListener(this);
+
+        max.setOnClickListener(this);
+        min.setOnClickListener(this);
     }
 
 

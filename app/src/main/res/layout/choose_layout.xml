@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_dark"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:clickable="true"
+    >
+
+    <ImageView
+        android:id="@+id/mark_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ico_close"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="40dp"/>
+
+    <RelativeLayout
+        android:layout_below="@id/mark_close"
+        android:id="@+id/listview_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/black_gray"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="80dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginRight="120dp"
+        >
+
+        <ListView
+            android:id="@+id/point_list"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:divider="@null"
+            android:layout_height="wrap_content">
+
+
+        </ListView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/yline1"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/yline2"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/yline3"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/yline4"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

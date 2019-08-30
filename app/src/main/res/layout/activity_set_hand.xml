@@ -86,7 +86,7 @@
             android:textColor="@color/white"
             android:clickable="true"
             android:imeOptions="actionDone"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -120,7 +120,7 @@
             android:inputType="number|numberDecimal"
             android:clickable="true"
             android:imeOptions="actionDone"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -136,11 +136,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="步        距："
+            android:text="*步      距："
             android:textColor="@color/white"
             />
-        <EditText
-            android:id="@+id/step"
+        <TextView
+            android:id="@+id/joint_step"
             android:layout_weight="0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -149,31 +149,34 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:ems="5"
+            android:text="50"
             android:background="@drawable/btn_cancel_nor"
             android:textColor="@color/white"
-            android:inputType="number|numberDecimal"
             android:clickable="true"
-            android:imeOptions="actionDone"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:text="%"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textColor="@color/white"
             />
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        >
     <TextView
         android:id="@+id/open_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/stop"
         android:layout_marginRight="60dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp"
         android:background="@drawable/control_open_selector"
          />
 
@@ -214,9 +217,12 @@
         android:layout_below="@id/close_btn"
         />
 
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/play"
+        android:visibility="invisible"
         android:layout_toLeftOf="@id/stop"
         android:layout_marginRight="15dp"
         android:layout_width="wrap_content"
@@ -254,6 +260,7 @@
 
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/max"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -266,6 +273,7 @@
             />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/min"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -289,25 +297,26 @@
 
 
         <TextView
-            android:id="@+id/confirm"
+            android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="确认"
-            android:layout_marginRight="20dp"
+            android:text="放弃"
             android:gravity="center"
+            android:layout_marginRight="20dp"
             android:clickable="true"
             android:background="@drawable/control_cancel_selector"
             android:textColor="@drawable/control_font_selector"
             />
 
         <TextView
-            android:id="@+id/cancel"
+            android:id="@+id/confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="放弃"
+            android:text="确定"
+            android:layout_marginRight="20dp"
             android:gravity="center"
             android:clickable="true"
-            android:background="@drawable/control_cancel_selector"
+            android:background="@drawable/control_confirm_selector"
             android:textColor="@drawable/control_font_selector"
             />
     </LinearLayout>

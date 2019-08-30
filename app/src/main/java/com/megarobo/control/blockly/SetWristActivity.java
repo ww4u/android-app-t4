@@ -98,14 +98,17 @@ public class SetWristActivity extends BaseActivity implements View.OnClickListen
     @ViewInject(R.id.counterclockwise)
     private ImageButton counterClockWise;
 
-    @ViewInject(R.id.position)
-    private TextView position;
-
     @ViewInject(R.id.angle)
     private TextView angle;
 
     @ViewInject(R.id.step)
-    private EditText stepEdit;
+    private TextView step;
+
+    @ViewInject(R.id.confirm)
+    private TextView confirm;
+
+    @ViewInject(R.id.cancel)
+    private TextView cancel;
 
 
     @Override
@@ -121,7 +124,7 @@ public class SetWristActivity extends BaseActivity implements View.OnClickListen
         controlClient = new SocketClientManager(MegaApplication.ip,
                 handler,ConstantUtil.CONTROL_PORT);
         controlClient.connectToServer();
-        MegaApplication.getInstance().controlClient = controlClient;
+
 
     }
 
@@ -201,17 +204,54 @@ public class SetWristActivity extends BaseActivity implements View.OnClickListen
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(-1,false,3));
                 break;
             case R.id.play:
+                controlClient.sendMsgToServer(
+                                    CommandHelper.getInstance().scriptCommand(generateCode()));
+                break;
+            case R.id.confirm:
+                if(pose == null){
+                    break;
+                }
                 Intent intent1 = new Intent();
-                intent1.putExtra("angle","50");
+                intent1.putExtra("angle",Math.round(pose.getW())+"");
                 setResult(RESULT_OK,intent1);
                 finish();
+                break;
+            case R.id.cancel:
+                finish();
+                break;
+            case R.id.step:
+                showSelectDialog(step);
                 break;
         }
     }
 
+    private String generateCode() {
+        String code = "wrist("+Math.round(pose.getW())+")";
+        return code;
+    }
 
 
     Config config;
+    private void initSpeed() {
+        if(config != null) {
+            stepWhich = getStepWhich(config.getStep());
+            step.setText(config.getStep() + "");
+//            stepEdit.setSelection(stepEdit.getText().length());
+        }
+    }
+
+    private int getStepWhich(double step){
+        if(1 == step){
+            return 0;
+        }else if(20 == step){
+            return 1;
+        }else if(50 == step){
+            return 2;
+        }else if(100 == step){
+            return 3;
+        }
+        return 2;
+    }
 
 
     @Override
@@ -223,32 +263,32 @@ public class SetWristActivity extends BaseActivity implements View.OnClickListen
             case R.id.counterclockwise:
                 controlClient.sendMsgToServer(CommandHelper.getInstance().jointCommand(-1,true,3));
                 break;
-            case R.id.step:
-                showSelectDialog(stepEdit);
-                break;
+//            case R.id.step:
+//                showSelectDialog(step);
+//                break;
 
         }
         return true;
     }
 
-    private String speedPercent[] = new String[] { "1","20", "50", "100"};
-    private int speedWhich = 2;
+    private String stepPercent[] = new String[] { "1","20", "50", "100"};
+    private int stepWhich = 2;
 
     /**
      * 显示选择
      */
-    public void showSelectDialog(final EditText editText) {
+    public void showSelectDialog(final TextView editText) {
         editText.requestFocus();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("请选择：");
         // 选择下标
-        builder.setSingleChoiceItems(speedPercent, speedWhich,
+        builder.setSingleChoiceItems(stepPercent, stepWhich,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        speedWhich = which;
-                        editText.setText(speedPercent[which]);
-                        editText.setSelection(editText.getText().length());
+                        stepWhich = which;
+                        editText.setText(stepPercent[which]);
+//                        editText.setSelection(editText.getText().length());
                         dialog.cancel();
                     }
                 });
@@ -296,6 +336,8 @@ public class SetWristActivity extends BaseActivity implements View.OnClickListen
                         if(isFirstIn) {
                             controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("device_status"));
                             controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
+                            //读取用户设置的信息，速度，步距
+                            controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("config"));
                             isFirstIn = false;
                         }
                         netStatus.setText("正常");
@@ -329,6 +371,7 @@ public class SetWristActivity extends BaseActivity implements View.OnClickListen
         String command = bundle.getString("command");
         if("config".equals(command)){
             config = Config.parseConfig(content);
+            initSpeed();
         }else if("package".equals(command)){
 
         }else if("link_status".equals(command)){
@@ -341,16 +384,13 @@ public class SetWristActivity extends BaseActivity implements View.OnClickListen
             if(result != null || !result.isEmpty()){
                 pose = Pose.parsePose(result.getString("pose"));
                 angle.setText(Math.round(pose.getW())+"°");
-                String positionStr = Math.round(pose.getX())+","+
-                        Math.round(pose.getY())+","+
-                        Math.round(pose.getZ())+",";
-//                position.setText(positionStr);
             }
         }else if("device_status".equals(command)){
             DeviceStatus deviceStatus = DeviceStatus.parseDeviceStatus(content);
             setStatus(deviceStatus);
         }else if("notify".equals(command)){
             controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(false));
+            setResult(ConstantUtil.RESULT_CODE_NOTIFY);
             onBackPressed();
         }else if("parameter".equals(command)){
             Parameter parameter = Parameter.parseParameter(content);
@@ -394,7 +434,11 @@ public class SetWristActivity extends BaseActivity implements View.OnClickListen
 
         linkStatus.setOnClickListener(this);
 
-        stepEdit.setOnLongClickListener(this);
+//        stepEdit.setOnLongClickListener(this);
+        step.setOnClickListener(this);
+
+        confirm.setOnClickListener(this);
+        cancel.setOnClickListener(this);
     }
 
 

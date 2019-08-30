@@ -332,6 +332,7 @@ public class Utils {
 
     public interface DialogListenner {
         public void confirm();
+        public void cancel();
     }
 
     public interface DialogInputListenner {
@@ -670,6 +671,7 @@ public class Utils {
             @Override
             public void onClick(View arg0) {
                 dialog.cancel();
+                dialogListenner.cancel();
             }
         });
     }
@@ -1061,6 +1063,87 @@ public class Utils {
         robot.setIp(ip);
         robot.setMeta(meta);
         return robot;
+    }
+
+    /**
+     * 计算字符串中某个字符的个数
+     * @param str
+     * @param s
+     * @return
+     */
+    public static int countString(String str,String s) {
+        int count = 0,len = str.length();
+        while(str.indexOf(s) != -1) {
+            str = str.substring(str.indexOf(s) + 1,str.length());
+            count++;
+        }
+        return count;
+    }
+
+    public static String format(Double number){
+        java.text.DecimalFormat df = new java.text.DecimalFormat("0.0");
+        return df.format(number);
+    }
+
+    public static String inputStream2String(InputStream   is)   throws   IOException{
+        ByteArrayOutputStream   baos   =   new   ByteArrayOutputStream();
+        int   i=-1;
+        while((i=is.read())!=-1){
+            baos.write(i);
+        }
+        return   baos.toString();
+    }
+
+    /**
+     * 判断IO两个输入字符串是否符合一定的规则，必须以Y1Y2Y15开始，对应必须是101，且y的个数必须与后面长度相等
+     * @param firstStr
+     * @param secondStr
+     * @return
+     */
+    public static boolean isCorrectIO(String firstStr,String secondStr) {
+
+        if(!isNotEmptyString(firstStr) || !isNotEmptyString(secondStr)){
+            return false;
+        }
+
+        if(countString(firstStr, "X")+countString(firstStr, "x") != secondStr.length()) {
+            return false;
+        }
+
+        String regex1 = "^((X|x)([0-9]{1,3}))*$";
+        boolean firstInput = Pattern.compile(regex1).matcher(firstStr).find();
+
+        String regex2 = "^([0,1]*)$";
+        boolean secondInput = Pattern.compile(regex2).matcher(secondStr).find();
+
+
+        return firstInput && secondInput;
+    }
+
+    /**
+     * 判断IO两个输入字符串是否符合一定的规则，必须以Y1Y2Y15开始，对应必须是101，且y的个数必须与后面长度相等
+     * @param firstStr
+     * @param secondStr
+     * @return
+     */
+    public static boolean isCorrectOutput(String firstStr,String secondStr) {
+
+        if(!isNotEmptyString(firstStr) || !isNotEmptyString(secondStr)){
+            return false;
+        }
+
+        if(countString(firstStr, "Y")+countString(firstStr, "y") != secondStr.length()) {
+            return false;
+        }
+
+        String regex1 = "^((Y|y)([0-9]{1,3}))*$";
+        boolean firstInput = Pattern.compile(regex1).matcher(firstStr).find();
+
+        String regex2 = "^([0,1]*)$";
+        boolean secondInput = Pattern.compile(regex2).matcher(secondStr).find();
+
+
+        return firstInput && secondInput;
     }
 
 }

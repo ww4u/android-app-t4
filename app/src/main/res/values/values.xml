@@ -21,6 +21,7 @@
 
     <color name="orange">#FF624D</color>
     <color name="yellow">#FAB81F</color>
+    <color name="yellow_select">#DAA11D</color>
     <color name="black_dark">#121212</color>
     <color name="black_gray">#2B2B2B</color>
     <color name="blue_status">#1EDBB9</color>
@@ -32,6 +33,17 @@
     <color name="table_even_color">#2B2B2B</color>
     <color name="table_divider_color">#4E4E4E</color>
     <color name="line_color_1">#333333</color>
+
+    <color name="program_hint">#777777</color>
+
+
+    <color name="color_repeat">#3860B6</color>
+    <color name="color_move">#2CA1A3</color>
+    <color name="color_hand">#D0704E</color>
+    <color name="color_wrist">#D4AF6A</color>
+    <color name="color_delay">#9567BC</color>
+    <color name="color_wait_io">#7B99B4</color>
+    <color name="color_output_io">#34A560</color>
 
 
 

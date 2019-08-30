@@ -16,6 +16,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.megarobo.control.MegaApplication;
 import com.megarobo.control.R;
 import com.megarobo.control.bean.DeviceStatus;
+import com.megarobo.control.blockly.MyProgramActivity;
 import com.megarobo.control.blockly.PythonActivity;
 import com.megarobo.control.net.ConstantUtil;
 import com.megarobo.control.net.SocketClientManager;
@@ -77,9 +78,7 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
         controlClient = new SocketClientManager(MegaApplication.ip,
                 handler,ConstantUtil.CONTROL_PORT);
         controlClient.connectToServer();
-        if(MegaApplication.getInstance().controlClient == null) {
-            MegaApplication.getInstance().controlClient = controlClient;
-        }
+
 
         equipmentName.setText(MegaApplication.name);
     }
@@ -167,20 +166,22 @@ public class EquipmentActivity extends BaseActivity implements View.OnClickListe
                     controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(true));
                 }
                 Intent simpleIntent = new Intent(EquipmentActivity.this, PythonActivity.class);
+                simpleIntent.putExtra("type",PythonActivity.INTENT_TYPE_SIMPLE);
                 startActivity(simpleIntent);
                 break;
             case R.id.customProgramBtn:
                 if(controlClient!=null){
                     controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(true));
                 }
-                Intent customIntent = new Intent(EquipmentActivity.this, EquipmentControlActivity.class);
+                Intent customIntent = new Intent(EquipmentActivity.this, PythonActivity.class);
+                customIntent.putExtra("type",PythonActivity.INTENT_TYPE_CUSTOM);
                 startActivity(customIntent);
                 break;
             case R.id.myProgramBtn:
                 if(controlClient!=null){
                     controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(true));
                 }
-                Intent myIntent = new Intent(EquipmentActivity.this, EquipmentControlActivity.class);
+                Intent myIntent = new Intent(EquipmentActivity.this, MyProgramActivity.class);
                 startActivity(myIntent);
                 break;
         }

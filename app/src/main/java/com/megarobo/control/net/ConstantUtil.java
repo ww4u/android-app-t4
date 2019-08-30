@@ -46,5 +46,7 @@ public class ConstantUtil {
 
 	public static final int REQUEST_CODE_WRIST = 1003;
 
+	public static final int RESULT_CODE_NOTIFY = 2004;
+
 
 }

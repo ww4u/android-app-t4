@@ -9,6 +9,7 @@ import com.megarobo.control.bean.AreaDeviceBean;
 import com.megarobo.control.bean.Robot;
 import com.megarobo.control.net.SocketClientManager;
 import com.megarobo.control.utils.AllUitls;
+import com.megarobo.control.utils.MyCrashHandler;
 import com.megarobo.control.utils.ThreadPoolWrap;
 
 import java.util.ArrayList;
@@ -51,6 +52,8 @@ public class MegaApplication extends Application {
         list=new ArrayList<Activity>();
 
         myIp = AllUitls.getIPAddressStr(MegaApplication.this);
+
+        MyCrashHandler.getInstance().register(this);
 
         ThreadPoolWrap.getThreadPool().executeTask(new Runnable() {
             @Override

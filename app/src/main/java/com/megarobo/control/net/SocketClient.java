@@ -66,8 +66,8 @@ public class SocketClient {
 	}
 	
 	public boolean sendmsg(String msg){
-		Logger.e("sendmsg",msg);
 		if(ch!=null && ch.isConnected()){
+			Logger.e("sendmsg",msg);
 			ch.write(msg);
 			return true;
 		}

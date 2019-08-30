@@ -688,7 +688,7 @@ public class EquipmentControlActivity extends BaseActivity implements View.OnCli
                 angle.setText(Math.round(pose.getW())+"°");
                 String positionStr = Math.round(pose.getX())+","+
                         Math.round(pose.getY())+","+
-                        Math.round(pose.getZ())+",";
+                        Math.round(pose.getZ());
                 position.setText(positionStr);
             }
         }else if("device_status".equals(command)){

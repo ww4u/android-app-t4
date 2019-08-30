@@ -187,6 +187,11 @@ public class EquipmentStatusActivity extends BaseActivity implements View.OnClic
                             MegaApplication.getInstance().controlClient.sendMsgToServer(CommandHelper.getInstance().actionCommand("package"));
                         }
                     }
+
+                    @Override
+                    public void cancel() {
+
+                    }
                 },"确定将机器恢复出厂姿态吗?");
                 break;
             case R.id.back:

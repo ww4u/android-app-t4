@@ -79,6 +79,27 @@ public class CommandHelper {
         return jsonObject;
     }
 
+
+    /**
+     *
+     * @param step
+     * @param joint
+     * @return
+     */
+    public JSONObject jointMaxCommand(double step,int joint){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("command","joint_step");
+            jsonObject.put("step",step);
+            jsonObject.put("joint",joint);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
+    }
+
     /**
      * 3.功能
      * @return
@@ -223,4 +244,58 @@ public class CommandHelper {
 
         return jsonObject;
     }
+
+    /**
+     * 9.写文件
+     * @param fileName
+     * @param contents
+     * @return
+     */
+    public JSONObject writeFileCommand(String fileName,String contents){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("command","file");
+            jsonObject.put("name",fileName);
+            jsonObject.put("action","write");
+            jsonObject.put("contents",contents);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
+    }
+
+
+    /**
+     * 10.读取xml文件
+     * @param fileName
+     * @return
+     */
+    public JSONObject readFileCommand(String fileName){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("command","file");
+            jsonObject.put("name",fileName);
+            jsonObject.put("action","read");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
+    }
+
+
+    public JSONObject velCommand(int speed){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("command","velset");
+            jsonObject.put("vscale",speed);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
+    }
+
+
 }

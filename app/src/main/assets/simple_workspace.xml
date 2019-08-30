@@ -1,0 +1,24 @@
+
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <block type="controls_repeat_ext" id="d2a19c63-5f51-40ed-baf3-fef156115d6a" x="-73.0" y="11.0">
+    <field name="TIMES">2</field>
+    <statement name="DO">
+      <block type="text_print_1" id="b8ef37f2-9d72-4a98-9155-2b902ab3749a">
+        <field name="X">283.6</field>
+        <field name="Y">-23.9</field>
+        <field name="Z">518.9</field>
+        <field name="SPEED">50</field>
+        <field name="ROUTE">&#33258;&#30001;</field>
+        <next>
+          <block type="text_print_1" id="0348d1ff-1aa8-438c-9b2f-ead2e0233f47">
+            <field name="X">250.1</field>
+            <field name="Y">0</field>
+            <field name="Z">518.6</field>
+            <field name="SPEED">50</field>
+            <field name="ROUTE">&#33258;&#30001;</field>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+</xml>

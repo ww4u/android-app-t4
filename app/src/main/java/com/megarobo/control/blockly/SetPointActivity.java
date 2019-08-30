@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,12 +28,12 @@ import com.megarobo.control.MegaApplication;
 import com.megarobo.control.R;
 import com.megarobo.control.activity.BaseActivity;
 import com.megarobo.control.activity.EquipmentStatusActivity;
+import com.megarobo.control.adapter.PointListAdapter;
 import com.megarobo.control.bean.Config;
 import com.megarobo.control.bean.DataSet;
 import com.megarobo.control.bean.DeviceStatus;
 import com.megarobo.control.bean.LinkStatus;
 import com.megarobo.control.bean.Parameter;
-import com.megarobo.control.bean.Point;
 import com.megarobo.control.bean.Pose;
 import com.megarobo.control.event.ParameterReceiveEvent;
 import com.megarobo.control.net.ConstantUtil;
@@ -113,18 +114,37 @@ public class SetPointActivity extends BaseActivity implements View.OnClickListen
     private ImageButton rightSouthwest;
 
     @ViewInject(R.id.speed)
-    private EditText speed;
+    private TextView speed;
 
     @ViewInject(R.id.step)
-    private EditText stepEdit;
+    private TextView stepEdit;
 
     @ViewInject(R.id.route)
     private TextView route;
+
+    @ViewInject(R.id.position)
+    private TextView position;
+
+    @ViewInject(R.id.end_point)
+    private TextView endPosition;
+
+    @ViewInject(R.id.confirm)
+    private TextView confirm;
+
+    @ViewInject(R.id.cancel)
+    private TextView cancel;
+
+    @ViewInject(R.id.choose)
+    private TextView choose;
+
+    @ViewInject(R.id.mark_view_stub)
+    private ViewStub markViewStub;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Logger.e("setPointActivity","oncreate.............");
         setContentView(R.layout.activity_set_point);
         ViewUtils.inject(this);
         mContext = this;
@@ -135,8 +155,8 @@ public class SetPointActivity extends BaseActivity implements View.OnClickListen
         controlClient = new SocketClientManager(MegaApplication.ip,
                 handler,ConstantUtil.CONTROL_PORT);
         controlClient.connectToServer();
-        MegaApplication.getInstance().controlClient = controlClient;
 
+        route.setText(routeStr[routeWhich]);
     }
 
     private void setStatus(DeviceStatus deviceStatus) {
@@ -227,36 +247,106 @@ public class SetPointActivity extends BaseActivity implements View.OnClickListen
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(225,0,false));
                 break;
             case R.id.play:
+                controlClient.sendMsgToServer(
+                        CommandHelper.getInstance().scriptCommand(generateCode()));
+                break;
+            case R.id.confirm:
+                if(pose == null){
+                    break;
+                }
                 Intent intent1 = new Intent();
-                intent1.putExtra("x","50");
-                intent1.putExtra("y","60");
-                intent1.putExtra("z","70");
+                intent1.putExtra("x", Utils.format(pose.getX()) + "");
+                intent1.putExtra("y", Utils.format(pose.getY()) + "");
+                intent1.putExtra("z", Utils.format(pose.getZ()) + "");
+                intent1.putExtra("speed",speedPercent[speedWhich]+"");
+                intent1.putExtra("route",routeStr[routeWhich]+"");
                 setResult(RESULT_OK,intent1);
                 finish();
                 break;
+            case R.id.cancel:
+                finish();
+                break;
+            case R.id.choose:
+                doChooseAction();
+                break;
+            case R.id.speed:
+                showSelectDialog(speed);
+                break;
+            case R.id.step:
+                showSelectDialog(stepEdit);
+                break;
+            case R.id.route:
+                showRouteDialog(route);
+                break;
+
+
 
         }
     }
 
+    private String generateCode() {
+        String code = "move({'x':"
+                + Utils.format(pose.getX())+",'y':"
+                + Utils.format(pose.getY())+",'z':"
+                + Utils.format(pose.getZ())+"})";
+        return code;
+    }
+
+
+    private RelativeLayout mMarkView;
+
+    private ImageView markClose;
+    private ListView pointList;
+
+    private PointListAdapter adapter;
+
     /**
      * 处理记录该点逻辑
      */
-    private void doMarkAction() {
-        //点击先弹出页面展示已经保存的点位置
-        controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("dataset"));
-        //同时要查询目前该点位置
-        controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
-        point = new Point();
+    private void doChooseAction() {
+        showMarkView(R.layout.choose_layout);
+        markClose = findViewById(R.id.mark_close);
+        pointList = findViewById(R.id.point_list);
 
-        //记录该点
+        adapter = new PointListAdapter(SetPointActivity.this,DataSet.parseList(dataSet.getPointMap()));
+        pointList.setAdapter(adapter);
+
+
+        markClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goneBottomView();
+            }
+        });
+
+
     }
 
-    private TextView setConfirm;
-    private TextView setCancel;
-    private ImageView setClose;
-    private double step;
-    private double jointStep;
-    private double speedNum;
+    public void showMarkView(int layoutId){
+        Utils.hiddenKeyBoard(mContext);
+        if(mMarkView == null){//为空则初始化控件
+            markViewStub.setLayoutResource(layoutId);
+            mMarkView = (RelativeLayout) markViewStub.inflate();
+            mMarkView.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.push_bottom_in));
+        }else{//显示或隐藏View
+            mMarkView.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.push_bottom_in));
+            mMarkView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * 隐藏底部弹出的view
+     * @return
+     */
+    public boolean goneBottomView(){
+        if(mMarkView != null && mMarkView.getVisibility() == View.VISIBLE){
+            mMarkView.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.push_bottom_out));
+            mMarkView.setVisibility(View.GONE);
+            return true;
+        }
+
+        return false;
+    }
 
 
     Config config;
@@ -264,10 +354,10 @@ public class SetPointActivity extends BaseActivity implements View.OnClickListen
         if(config != null) {
             Logger.e("config","speed:"+config.getSpeed()+"step:"+config.getStep()+"jointStep:"+config.getJointStep());
             speed.setText(config.getSpeed() + "");
-            speed.setSelection(speed.getText().length());
+//            speed.setSelection(speed.getText().length());
             speedWhich = getSpeedwhich(config.getSpeed());
             stepEdit.setText(config.getStep() + "");
-            stepEdit.setSelection(stepEdit.getText().length());
+//            stepEdit.setSelection(stepEdit.getText().length());
         }
     }
 
@@ -335,15 +425,16 @@ public class SetPointActivity extends BaseActivity implements View.OnClickListen
                 controlClient.sendMsgToServer(CommandHelper.getInstance().stepCommand(225,0,true));
                 break;
 
-            case R.id.route:
-                showRouteDialog(route);
-                break;
-            case R.id.speed:
-                showSelectDialog(speed);
-                break;
-            case R.id.step:
-                showSelectDialog(stepEdit);
-                break;
+//            case R.id.route:
+//                showRouteDialog(route);
+//                break;
+//            case R.id.speed:
+//                showSelectDialog(speed);
+//                break;
+//            case R.id.step:
+//                showSelectDialog(stepEdit);
+//                break;
+
         }
         return true;
     }
@@ -374,8 +465,7 @@ public class SetPointActivity extends BaseActivity implements View.OnClickListen
         return false;
     }
 
-    DataSet dataSet;
-    Point point;
+    DataSet dataSet = new DataSet();
     Pose pose;
 
 
@@ -393,6 +483,10 @@ public class SetPointActivity extends BaseActivity implements View.OnClickListen
                         if(isFirstIn) {
                             controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("device_status"));
                             controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("pose"));
+                            //读取用户设置的信息，速度，步距
+                            controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("config"));
+                            //点击先弹出页面展示已经保存的点位置
+                            controlClient.sendMsgToServer(CommandHelper.getInstance().queryCommand("dataset"));
                             isFirstIn = false;
                         }
                         netStatus.setText("正常");
@@ -413,9 +507,14 @@ public class SetPointActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onBackPressed() {
+        if(mMarkView!=null && mMarkView.isShown()){
+            goneBottomView();
+            return;
+        }
         super.onBackPressed();
     }
 
+    private boolean isInit = true;
     /**
      * 处理所有服务器发过来的消息
      * @param msg
@@ -438,21 +537,34 @@ public class SetPointActivity extends BaseActivity implements View.OnClickListen
             JSONObject result = JSON.parseObject(content);
             if(result != null || !result.isEmpty()){
                 pose = Pose.parsePose(result.getString("pose"));
-                String positionStr = Math.round(pose.getX())+","+
-                        Math.round(pose.getY())+","+
-                        Math.round(pose.getZ())+",";
-//                position.setText(positionStr);
+                String positionStr = Utils.format(pose.getX())+","+
+                        Utils.format(pose.getY())+","+
+                        Utils.format(pose.getZ());
+                if(isInit){
+                    position.setText(positionStr);
+                    isInit = false;
+                }
+                endPosition.setText(positionStr);
             }
         }else if("device_status".equals(command)){
             DeviceStatus deviceStatus = DeviceStatus.parseDeviceStatus(content);
             setStatus(deviceStatus);
         }else if("notify".equals(command)){
             controlClient.sendMsgToServer(CommandHelper.getInstance().linkCommand(false));
+            setResult(ConstantUtil.RESULT_CODE_NOTIFY);
             onBackPressed();
         }else if("parameter".equals(command)){
             Parameter parameter = Parameter.parseParameter(content);
             EventBus.getDefault().postSticky(new ParameterReceiveEvent(parameter));
         }
+    }
+
+    public void setEndPosition(Pose pose){
+        String positionStr = Utils.format(pose.getX())+","+
+                Utils.format(pose.getY())+","+
+                Utils.format(pose.getZ());
+        endPosition.setText(positionStr);
+        this.pose = pose;
     }
 
 
@@ -462,7 +574,7 @@ public class SetPointActivity extends BaseActivity implements View.OnClickListen
     /**
      * 显示选择
      */
-    public void showSelectDialog(final EditText editText) {
+    public void showSelectDialog(final TextView editText) {
         editText.requestFocus();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("请选择：");
@@ -473,7 +585,7 @@ public class SetPointActivity extends BaseActivity implements View.OnClickListen
                     public void onClick(DialogInterface dialog, int which) {
                         speedWhich = which;
                         editText.setText(speedPercent[which]);
-                        editText.setSelection(editText.getText().length());
+//                        editText.setSelection(editText.getText().length());
                         dialog.cancel();
                     }
                 });
@@ -481,8 +593,8 @@ public class SetPointActivity extends BaseActivity implements View.OnClickListen
         dialog.show();
     }
 
-    private String routeStr[] = new String[] { "自由","直线", "工艺/圆滑"};
-    private int routeWhich = 2;
+    private String routeStr[] = new String[] { "自由","直线"};
+    private int routeWhich = 0;
 
     /**
      * 显示选择
@@ -556,9 +668,15 @@ public class SetPointActivity extends BaseActivity implements View.OnClickListen
 
         linkStatus.setOnClickListener(this);
 
-        speed.setOnLongClickListener(this);
-        stepEdit.setOnLongClickListener(this);
-        route.setOnLongClickListener(this);
+        speed.setOnClickListener(this);
+        stepEdit.setOnClickListener(this);
+        route.setOnClickListener(this);
+
+//        endPosition.setKeyListener(null);
+
+        confirm.setOnClickListener(this);
+        cancel.setOnClickListener(this);
+        choose.setOnClickListener(this);
     }
 
 

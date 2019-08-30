@@ -1,24 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Demonstrates an alternative content area in SplitActivity. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:background="@color/black_dark"
+    android:orientation="vertical" >
 
-    <FrameLayout
+    <ImageView
+        android:id="@+id/back"
+        android:background="@drawable/control_btn_return_selector"
+        android:src="@drawable/icon_return"
+        android:scaleType="center"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        >
-        <include layout="@layout/blockly_unified_workspace" />
-    </FrameLayout>
-
-    <TextView android:id="@+id/generated_code"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="@string/split_generate_message"
-        android:textIsSelectable="true"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_alignParentLeft="true"
         />
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/control_toolbar_selector"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/back"
+        android:layout_marginLeft="5dp"
+        >
+
+        <TextView
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="当前状态："/>
+
+
+        <TextView
+            android:layout_marginRight="10dp"
+            android:id="@+id/link_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_status"
+            android:drawableLeft="@drawable/icon_shebei02"
+            android:drawableRight="@drawable/icon_about"
+            android:drawablePadding="5dp"
+            android:text="正常"/>
+
+        <TextView
+            android:id="@+id/net_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue_status"
+            android:drawableLeft="@drawable/icon_lianjie02"
+            android:drawablePadding="5dp"
+            android:text="正常"/>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_toLeftOf="@id/save"
+        android:layout_marginRight="10dp"
+        android:id="@+id/download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:textColor="@drawable/control_font_selector"
+        android:background="@drawable/control_toolbar_selector"
+        android:text="下载"/>
+
+    <TextView
+        android:layout_toLeftOf="@id/upload"
+        android:layout_marginRight="10dp"
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:textColor="@drawable/control_font_selector"
+        android:background="@drawable/control_toolbar_selector"
+        android:text="保存"/>
+
+    <TextView
+        android:layout_toLeftOf="@id/save_and_play"
+        android:layout_marginRight="10dp"
+        android:id="@+id/upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:textColor="@drawable/control_font_selector"
+        android:background="@drawable/control_toolbar_selector"
+        android:text="上传"/>
+
+    <TextView
+        android:id="@+id/save_and_play"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@drawable/control_font_selector"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:background="@drawable/control_toolbar_selector"
+        android:text="上传并播放" />
+
+    <TextView
+        android:id="@+id/stop"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/emergency_stop_selector"
+        android:layout_alignParentRight="true"
+        android:textColor="@drawable/control_font_selector"
+        android:drawableLeft="@drawable/ico_stop"
+        android:drawablePadding="5dp"
+        android:text="紧急停止"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@id/workspace"
+        android:layout_below="@id/back"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@id/play_layout"
+        android:orientation="horizontal">
+
+
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            >
+            <include layout="@layout/blockly_unified_workspace" />
+        </FrameLayout>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/generated_code"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/black_gray"
+            android:text="@string/split_generate_message"
+            android:textColor="@color/yellow"
+            android:textIsSelectable="true"
+            />
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/above_cover"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/back"
+        android:layout_alignRight="@id/play_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:background="#00000000"
+        >
+
+    </View>
+    <LinearLayout
+        android:layout_below="@id/stop"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:id="@+id/play_layout">
+        <include layout="@layout/play_layout" />
+    </LinearLayout>
+
+
+</RelativeLayout>
